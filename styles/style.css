@@ -1,0 +1,52 @@
+body {
+  /* background: #911d19; */
+  background: url(../possible-images/bluish-felt.jpg);
+  /* background: url(../images/clubs-10.png); */
+  background-size: cover;
+}
+
+.container {
+  text-align: center;
+}
+.card {
+  height: 100px;
+  /* animation: dealCard 2s paused; */
+}
+
+.dealer {
+  margin: 0 auto;
+}
+
+.player {
+  margin: 20% 0 0 0;
+}
+
+#dealer-score {
+  color: aliceblue;
+  font-size: 2rem;
+}
+
+#user-score {
+  color: aliceblue;
+  font-size: 2rem;
+}
+
+#bet {
+  color: aliceblue;
+  font-size: 1.5rem;
+}
+
+#bankroll {
+  color: aliceblue;
+  font-size: 1.5rem;
+}
+
+@keyframes dealCard {
+  0% {
+    transform: translateX(400px) translateY(-100%);
+  }
+
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+}

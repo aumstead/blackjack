@@ -1,0 +1,186 @@
+const UIController = (function () {
+  const UISelectors = {
+    // cards
+    dealerCard1: 'dealer-card-1',
+    dealerCard2: 'dealer-card-2',
+    dealerCard3: 'dealer-card-3',
+    dealerCard4: 'dealer-card-4',
+    dealerCard5: 'dealer-card-5',
+    userCard1: 'user-card-1',
+    userCard2: 'user-card-2',
+    userCard3: 'user-card-3',
+    userCard4: 'user-card-4',
+    userCard5: 'user-card-5',
+    userSplit1: 'user-split-1',
+    userSplit2: 'user-split-2',
+    userSplit3: 'user-split-3',
+    userSplit4: 'user-split-4',
+    userSplit5: 'user-split-5',
+    userSplit6: 'user-split-6',
+    userSplit7: 'user-split-7',
+    userSplit8: 'user-split-8',
+    userSplit9: 'user-split-9',
+    userSplit10: 'user-split-10',
+
+    // buttons
+    dealBtn: 'deal',
+    hitBtn: 'hit',
+    standBtn: 'stand',
+    doubleBtn: 'double',
+    splitBtn: 'split',
+    nextHandBtn: 'next-hand',
+    insuranceYesBtn: 'insurance-yes-btn',
+    insuranceNoBtn: 'insurance-no-btn',
+    insuranceSubmitBtn: 'insurance-submit-btn',
+
+    // other
+    placeBet: 'place-bet',
+    insuranceWarning: 'insurance-warning',
+    insuranceForm: 'insurance-form',
+    insuranceInput: 'insurance-input',
+
+    // bet buttons
+    betBtn1: 'bet-1',
+    betBtn5: 'bet-5',
+    betBtn20: 'bet-20',
+
+    // displays
+    bet: 'bet',
+    splitBet1: 'split-bet-1',
+    splitBet2: 'split-bet-2',
+    bankroll: 'bankroll',
+    insuranceBet: 'insurance-bet',
+    dealerScore: 'dealer-score',
+    userScore: 'user-score',
+    splitScore1: 'split-score-1',
+    splitScore2: 'split-score-2'
+  }
+
+  const newHandUI = () => {
+    // hide elements
+    document.getElementById(UISelectors.dealerCard1).style.display = 'none';
+    document.getElementById(UISelectors.dealerCard2).style.display = 'none';
+    document.getElementById(UISelectors.dealerCard3).style.display = 'none';
+    document.getElementById(UISelectors.dealerCard4).style.display = 'none';
+    document.getElementById(UISelectors.dealerCard5).style.display = 'none';
+    document.getElementById(UISelectors.userCard1).style.display = 'none';
+    document.getElementById(UISelectors.userCard2).style.display = 'none';
+    document.getElementById(UISelectors.userCard3).style.display = 'none';
+    document.getElementById(UISelectors.userCard4).style.display = 'none';
+    document.getElementById(UISelectors.userCard5).style.display = 'none';
+    document.getElementById(UISelectors.userSplit1).style.display = 'none';
+    document.getElementById(UISelectors.userSplit2).style.display = 'none';
+    document.getElementById(UISelectors.userSplit3).style.display = 'none';
+    document.getElementById(UISelectors.userSplit4).style.display = 'none';
+    document.getElementById(UISelectors.userSplit8).style.display = 'none';
+    document.getElementById(UISelectors.userSplit7).style.display = 'none';
+    document.getElementById(UISelectors.userSplit5).style.display = 'none';
+    document.getElementById(UISelectors.userSplit6).style.display = 'none';
+    document.getElementById(UISelectors.userSplit9).style.display = 'none';
+    document.getElementById(UISelectors.userSplit10).style.display = 'none';
+    document.getElementById(UISelectors.splitBtn).style.display = 'none';
+    document.getElementById(UISelectors.dealBtn).style.display = 'none';
+    document.getElementById(UISelectors.doubleBtn).style.display = 'none';
+    document.getElementById(UISelectors.nextHandBtn).style.display = 'none';
+    document.getElementById(UISelectors.standBtn).style.display = 'none';
+    document.getElementById(UISelectors.hitBtn).style.display = 'none';
+    document.getElementById(UISelectors.insuranceWarning).style.display = 'none';
+    document.getElementById(UISelectors.insuranceForm).style.display = 'none';
+    document.getElementById(UISelectors.splitBet1).style.display = 'none';
+    document.getElementById(UISelectors.splitBet2).style.display = 'none';
+    document.getElementById(UISelectors.insuranceBet).style.display = 'none';
+    document.getElementById(UISelectors.userScore).style.display = 'none';
+    document.getElementById(UISelectors.dealerScore).style.display = 'none';
+    document.getElementById(UISelectors.splitScore1).style.display = 'none';
+    document.getElementById(UISelectors.splitScore2).style.display = 'none';
+
+    // show elements
+    document.getElementById(UISelectors.placeBet).style.display = 'inline-block';
+    document.getElementById(UISelectors.betBtn1).style.display = 'inline-block';
+    document.getElementById(UISelectors.betBtn5).style.display = 'inline-block';
+    document.getElementById(UISelectors.betBtn20).style.display = 'inline-block';
+    document.getElementById(UISelectors.bet).style.display = 'inline-block';
+  };
+
+
+
+  
+
+  return {
+    hideElement: selector => {
+      document.getElementById(selector).style.display = 'none';
+    },
+
+    showElement: (selector, property = 'inline-block') => {
+      document.getElementById(selector).style.display = property;
+    },
+
+    getUISelectors: () => {
+      return UISelectors;
+    },
+
+    displayBankroll: bankroll => {
+      document.getElementById(UISelectors.bankroll).textContent = `Your money: $${bankroll}`;
+    },
+
+    displayBet: bet => {
+      document.getElementById(UISelectors.bet).textContent = `Your bet: $${bet}`;
+    },
+
+    displayCard: (card, selector) => {
+      document.getElementById(selector).src = `./images/${card.suit}-${card.value}.png`;
+      document.getElementById(selector).style.display = 'inline-block';
+    },
+
+    displayDealerScore: (dealerScore) => {
+      document.getElementById(UISelectors.dealerScore).textContent = `Dealer hand score: ${dealerScore}`;
+      document.getElementById(UISelectors.dealerScore).style.display = 'block';
+    },
+
+    displayUserScore: (userScore) => {
+      document.getElementById(UISelectors.userScore).textContent = `Your hand score: ${userScore}`;
+      document.getElementById(UISelectors.userScore).style.display = 'block';
+    },
+
+    getInsuranceInput: () => {
+      const value = document.getElementById(UISelectors.insuranceInput).value;
+      // reset form input
+      document.getElementById(UISelectors.insuranceInput).value = '';
+      return value
+    },
+
+    displayInsuranceBet: insuranceBet => {
+      document.getElementById(UISelectors.insuranceBet).textContent = `Insurance bet: ${insuranceBet}`;
+      document.getElementById(UISelectors.insuranceBet).style.display = 'block';
+    },
+
+    displaySplitBets: bet => {
+      document.getElementById(UISelectors.splitBet1).textContent = `Hand 1 bet: ${bet}`;
+      document.getElementById(UISelectors.splitBet2).textContent = `Hand 2 bet: ${bet}`;
+      document.getElementById(UISelectors.splitBet1).style.display = 'block';
+      document.getElementById(UISelectors.splitBet2).style.display = 'block';
+    },
+
+    displaySplitScore1: score => {
+      document.getElementById(UISelectors.splitScore1).textContent = `Split hand 1 score: ${score}`;
+      document.getElementById(UISelectors.splitScore1).style.display = 'block';
+    },
+
+    loadElement: (value, selector, text) => {
+      document.getElementById(selector).textContent = `${text} ${value}`;
+    },
+
+    prepareNextHand: () => {
+      // show next hand button
+      document.getElementById(UISelectors.nextHandBtn).style.display = 'inline-block';
+    },
+
+    nextHand: () => {
+      newHandUI();
+    },
+
+    animateCard: selector => {
+      document.getElementById(selector).style.animationPlayState = 'running';
+    }
+  }
+})();

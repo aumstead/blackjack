@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/styles/style.css">
+  <title>Blackjack</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="dealer">
+      <img src="/images/playing-card-back-1.png" id="dealer-card-2" class="card">
+      <img src="/images/playing-card-back-1.png" id="dealer-card-1" class="card">
+      <img src="/images/playing-card-back-1.png" id="dealer-card-3" class="card">
+      <img src="/images/playing-card-back-1.png" id="dealer-card-4" class="card">
+      <img src="/images/playing-card-back-1.png" id="dealer-card-5" class="card">
+    </div>
+
+    <p id="dealer-score"></p>
+
+    <div class="player">
+      <img src="/images/playing-card-back-1.png" id="user-card-1" class="card">
+      <img src="/images/playing-card-back-1.png" id="user-card-2" class="card">
+      <img src="/images/playing-card-back-1.png" id="user-card-3" class="card">
+      <img src="/images/playing-card-back-1.png" id="user-card-4" class="card">
+      <img src="/images/playing-card-back-1.png" id="user-card-5" class="card">
+    </div>
+
+    <div class="player-split-1">
+      <img src="/images/playing-card-back-1.png" id="user-split-1" class="card">
+      <img src="/images/playing-card-back-1.png" id="user-split-2" class="card">
+      <img src="/images/playing-card-back-1.png" id="user-split-3" class="card">
+      <img src="/images/playing-card-back-1.png" id="user-split-4" class="card">
+      <img src="/images/playing-card-back-1.png" id="user-split-5" class="card">
+    </div>
+
+    <div class="player-split-2">
+      <img src="/images/playing-card-back-1.png" id="user-split-6" class="card">
+      <img src="/images/playing-card-back-1.png" id="user-split-7" class="card">
+      <img src="/images/playing-card-back-1.png" id="user-split-8" class="card">
+      <img src="/images/playing-card-back-1.png" id="user-split-9" class="card">
+      <img src="/images/playing-card-back-1.png" id="user-split-10" class="card">
+    </div>
+
+    <button id="deal">Deal</button>
+    <button id="hit">Hit</button>
+    <button id="stand">Stand</button>
+    <button id="next-hand">Next Hand</button>
+    <button id="split">Split</button>
+    <button id="double">Double</button>
+    
+
+    <p id="place-bet">Place your bet!</p>
+
+    <div id="insurance-warning">
+      <p>Dealer is showing an Ace. Do you want insurance?</p>
+      <button id="insurance-yes-btn">Yes</button>
+      <button id="insurance-no-btn">No</button>
+    </div>
+    
+    <button id="bet-1">$1</button>
+    <button id="bet-5">$5</button>
+    <button id="bet-20">$20</button>
+
+    <p id="user-score"></p>
+    <p id="split-score-1"></p>
+    <p id="split-score-2"></p>
+    <p id="insurance-bet"></p>
+    <p id="bet"></p>
+    <p id="split-bet-1"></p>
+    <p id="split-bet-2"></p>
+    <p id="bankroll"></p>
+    
+
+    <form id="insurance-form">
+      <label for="insurance-input">How much? (up to half of original bet)</label>
+      <input type="number" id="insurance-input" placeholder="">
+      <button type="submit" id="insurance-submit-btn">Submit</button>
+    </form>
+    
+  </div>
+
+  
+  <script src="/modules/UIController.js"></script>
+  <script src="/modules/scoreController.js"></script>
+  <script src="/modules/betController.js"></script>
+  <script src="/modules/cardController.js"></script>
+  
+  <script src="app.js"></script>
+</body>
+
+</html>
