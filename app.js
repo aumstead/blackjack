@@ -10,7 +10,7 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     document.getElementById(UISelectors.betBtn20).addEventListener('click', betControlCenter);
 
     // deal button event listener
-    document.getElementById(UISelectors.dealBtn).addEventListener('click', dealControlCenter);
+    document.getElementById(UISelectors.dealBtn).addEventListener('click', dealCards);
 
     // hit and stand button event listeners
     document.getElementById(UISelectors.hitBtn).addEventListener('click', hitControlCenter);
@@ -563,11 +563,11 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     // get and set double state.
     const betData = betCtrl.getBetData();
     betData.doubleState = true;
-    
+
     // double bet with setter
     bet += bet;
     betCtrl.setBet(bet);
-    
+
 
     // load bet and show element
     UICtrl.loadElement(bet, UISelectors.bet, `Bet is doubled to: `);
@@ -600,8 +600,8 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     const cardData = cardCtrl.getCardData();
 
     // check for double state
-    const betData = betCtrl.getBetData(); 
-    
+    const betData = betCtrl.getBetData();
+
     if (betData.doubleState) {
       const card = cardCtrl.dealUser();
       UICtrl.displayCard(card, UISelectors.userCard3);
@@ -609,9 +609,9 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
       displayScore('user');
       // user can only hit once in double state.
       dealerFinishes();
-    } 
-      // check for split state and a split aces situation.
-      else if (cardData.splitState && cardData.user.splitHand1[0].value === 'ace' && cardData.user.splitHand2[0].value === 'ace') {
+    }
+    // check for split state and a split aces situation.
+    else if (cardData.splitState && cardData.user.splitHand1[0].value === 'ace' && cardData.user.splitHand2[0].value === 'ace') {
       splitAcesControlCenter();
     } else if (cardData.splitState) {
       splitHandControlCenter();
@@ -623,36 +623,51 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
       UICtrl.hideElement(UISelectors.doubleBtn);
       UICtrl.hideElement(UISelectors.splitBtn);
 
-      // 2. deal user a card and store card object into variable so it can be passed to UI controller.
-      const card = cardCtrl.hitUser();
-
-      // 3. display card in UI
+      // ANIMATION FUNCTIONALITY
       if (cardData.user.turn === 3) {
-        UICtrl.displayCard(card, UISelectors.userCard3)
+        UICtrl.showElement(UISelectors.userCard3);
+        UICtrl.animateCard(UISelectors.userCard3);
       } else if (cardData.user.turn === 4) {
-        UICtrl.displayCard(card, UISelectors.userCard4)
+        UICtrl.showElement(UISelectors.userCard4);
+        UICtrl.animateCard(UISelectors.userCard4);
       } else if (cardData.user.turn === 5) {
-        UICtrl.displayCard(card, UISelectors.userCard5)
+        UICtrl.showElement(UISelectors.userCard5);
+        UICtrl.animateCard(UISelectors.userCard5);
       }
 
-      // 4. calculate score
-      calcScore(cardData.user, 'user');
+      // put the rest of the function into a setTimeout.
+      setTimeout(() => {
+        // 2. deal user a card and store card object into variable so it can be passed to UI controller.
+        const card = cardCtrl.hitUser();
 
-      // 5. display user score
-      displayScore('user');
+        // 3. display card in UI
+        if (cardData.user.turn === 3) {
+          UICtrl.displayCard(card, UISelectors.userCard3)
+        } else if (cardData.user.turn === 4) {
+          UICtrl.displayCard(card, UISelectors.userCard4)
+        } else if (cardData.user.turn === 5) {
+          UICtrl.displayCard(card, UISelectors.userCard5)
+        }
 
-      // 6. code for user bust and user 21. If user hits and gets 21, they shouldn't have to click stand button.
-      if (score.user > 21) {
-        console.log('user busted');
-        betCtrl.dealerWinsBet();
-        displayBankroll();
-        UICtrl.prepareNextHand();
-      } else if (score.user === 21) {
-        standControlCenter();
-      }
+        // 4. calculate score
+        calcScore(cardData.user, 'user');
 
-      // 7. increment user turn
-      cardCtrl.incrementUserTurn();
+        // 5. display user score
+        displayScore('user');
+
+        // 6. code for user bust and user 21. If user hits and gets 21, they shouldn't have to click stand button.
+        if (score.user > 21) {
+          console.log('user busted');
+          betCtrl.dealerWinsBet();
+          displayBankroll();
+          UICtrl.prepareNextHand();
+        } else if (score.user === 21) {
+          standControlCenter();
+        }
+
+        // 7. increment user turn
+        cardCtrl.incrementUserTurn();
+      }, 200);
     };
   };
 
@@ -677,8 +692,68 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
       // 3. if not split state, dealer plays hand
       dealerFinishes();
     }
-
   }
+
+  // PROMISES FOR ANIMATION CHAIN
+  const dealUserCard1 = () => {
+    UICtrl.showElement(UISelectors.userCard1);
+    UICtrl.animateCard(UISelectors.userCard1);
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const userCard1 = cardCtrl.dealUser();
+        UICtrl.displayCard(userCard1, UISelectors.userCard1);
+        resolve();
+      }, 200);
+    });
+  };
+
+  const dealDealerCard1 = () => {
+    UICtrl.showElement(UISelectors.dealerCard1);
+    UICtrl.animateCard(UISelectors.dealerCard1);
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        cardCtrl.dealDealer();
+        // dealer card 1 is face down. No need to display card.
+        resolve();
+      }, 200);
+    });
+  };
+
+  const dealUserCard2 = () => {
+    UICtrl.showElement(UISelectors.userCard2);
+    UICtrl.animateCard(UISelectors.userCard2);
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        userCard2 = cardCtrl.dealUser();
+        UICtrl.displayCard(userCard2, UISelectors.userCard2);
+        resolve();
+      }, 200);
+    });
+  };
+
+  const dealDealerCard2 = () => {
+    UICtrl.showElement(UISelectors.dealerCard2);
+    UICtrl.animateCard(UISelectors.dealerCard2);
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        dealerCard2 = cardCtrl.dealDealer();
+        UICtrl.displayCard(dealerCard2, UISelectors.dealerCard2);
+        resolve();
+      }, 200);
+    });
+  };
+
+  const dealCards = () => {
+    dealUserCard1()
+      .then(dealDealerCard1)
+      .then(dealUserCard2)
+      .then(dealDealerCard2)
+      .then(dealControlCenter);
+  };
 
   const dealControlCenter = () => {
     let userCard1, userCard2, dealerCard1, dealerCard2;
@@ -693,11 +768,14 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     UICtrl.hideElement(UISelectors.betBtn5);
     UICtrl.hideElement(UISelectors.betBtn20);
 
+    // 2 PROMISE CHAIN EXPERIMENT FOR ANIMATIONS
+
+
     // 2. deal 4 cards starting with user. Store returned card object into variable.
-    userCard1 = cardCtrl.dealUser();
-    dealerCard1 = cardCtrl.dealDealer();
-    userCard2 = cardCtrl.dealUser();
-    dealerCard2 = cardCtrl.dealDealer();
+    // userCard1 = cardCtrl.dealUser();
+    // dealerCard1 = cardCtrl.dealDealer();
+    // userCard2 = cardCtrl.dealUser();
+    // dealerCard2 = cardCtrl.dealDealer();
 
     //
     // FUNCTIONS FOR TESTING
@@ -708,16 +786,18 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     // dealerCard2 = cardCtrl.testDealDealer2();
 
     // 3. display cards with dealer's first card hardcoded to be face down.
-    UICtrl.displayCard(userCard1, UISelectors.userCard1);
-    document.getElementById(UISelectors.dealerCard1).src = './images/playing-card-back-1.png';
-    document.getElementById(UISelectors.dealerCard1).style.display = 'inline-block';
-    UICtrl.displayCard(userCard2, UISelectors.userCard2);
-    UICtrl.displayCard(dealerCard2, UISelectors.dealerCard2);
+    // UICtrl.displayCard(userCard1, UISelectors.userCard1);
+    // document.getElementById(UISelectors.dealerCard1).src = './images/playing-card-back-1.png';
+    // document.getElementById(UISelectors.dealerCard1).style.display = 'inline-block';
+    // UICtrl.displayCard(userCard2, UISelectors.userCard2);
+    // UICtrl.displayCard(dealerCard2, UISelectors.dealerCard2);
 
     // 4. hide the deal button, show hit, show stand
     UICtrl.hideElement(UISelectors.dealBtn);
     UICtrl.showElement(UISelectors.hitBtn);
     UICtrl.showElement(UISelectors.standBtn);
+
+    // BREAK FUNCTION INTO TWO FROM HERE(IF WE BREAK)
 
     // 5. calculate user and dealer score.
     calcScore(cardData.user, 'user');

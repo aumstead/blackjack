@@ -11,7 +11,12 @@
 
 <body>
   <div class="container">
-    <div class="dealer">
+
+    <svg width="100" height="180" class="placeholderContainer--dealer">
+      <rect x="10" y="10" rx="10" ry="10" width="78" height="100" class="placeholderRect" />
+    </svg>
+
+    <div class="dealerCards">
       <img src="/images/playing-card-back-1.png" id="dealer-card-2" class="card">
       <img src="/images/playing-card-back-1.png" id="dealer-card-1" class="card">
       <img src="/images/playing-card-back-1.png" id="dealer-card-3" class="card">
@@ -19,9 +24,17 @@
       <img src="/images/playing-card-back-1.png" id="dealer-card-5" class="card">
     </div>
 
-    <p id="dealer-score"></p>
+    <p id="dealer-score" class="score--dealer"></p>
 
-    <div class="player">
+    <svg width="100" height="180" class="placeholderContainer--user">
+        <rect x="10" y="10" rx="10" ry="10" width="78" height="100" class="placeholderRect" />
+    </svg>
+
+    <p id="place-bet" class="placeBet">Place your bet!</p>
+
+    <p id="user-score" class="score--user"></p>
+
+    <div class="userCards">
       <img src="/images/playing-card-back-1.png" id="user-card-1" class="card">
       <img src="/images/playing-card-back-1.png" id="user-card-2" class="card">
       <img src="/images/playing-card-back-1.png" id="user-card-3" class="card">
@@ -29,7 +42,7 @@
       <img src="/images/playing-card-back-1.png" id="user-card-5" class="card">
     </div>
 
-    <div class="player-split-1">
+    <div class="userSplit--1">
       <img src="/images/playing-card-back-1.png" id="user-split-1" class="card">
       <img src="/images/playing-card-back-1.png" id="user-split-2" class="card">
       <img src="/images/playing-card-back-1.png" id="user-split-3" class="card">
@@ -37,7 +50,7 @@
       <img src="/images/playing-card-back-1.png" id="user-split-5" class="card">
     </div>
 
-    <div class="player-split-2">
+    <div class="userSplit--2">
       <img src="/images/playing-card-back-1.png" id="user-split-6" class="card">
       <img src="/images/playing-card-back-1.png" id="user-split-7" class="card">
       <img src="/images/playing-card-back-1.png" id="user-split-8" class="card">
@@ -51,21 +64,25 @@
     <button id="next-hand">Next Hand</button>
     <button id="split">Split</button>
     <button id="double">Double</button>
-    
 
-    <p id="place-bet">Place your bet!</p>
+
+    
 
     <div id="insurance-warning">
       <p>Dealer is showing an Ace. Do you want insurance?</p>
       <button id="insurance-yes-btn">Yes</button>
       <button id="insurance-no-btn">No</button>
     </div>
-    
-    <button id="bet-1">$1</button>
-    <button id="bet-5">$5</button>
-    <button id="bet-20">$20</button>
 
-    <p id="user-score"></p>
+
+
+    <div class="betBtns">
+      <input type="image" class="chip" id="bet-1" src="./images/chip-blue.png" alt="bet 1 chip button">
+      <input type="image" class="chip" id="bet-5" src="./images/chip-green.png" alt="bet 5 chip button">
+      <input type="image" class="chip" id="bet-20" src="./images/chip-red.png" alt="bet 20 chip button">
+    </div>
+
+    
     <p id="split-score-1"></p>
     <p id="split-score-2"></p>
     <p id="insurance-bet"></p>
@@ -73,22 +90,22 @@
     <p id="split-bet-1"></p>
     <p id="split-bet-2"></p>
     <p id="bankroll"></p>
-    
+
 
     <form id="insurance-form">
       <label for="insurance-input">How much? (up to half of original bet)</label>
       <input type="number" id="insurance-input" placeholder="">
       <button type="submit" id="insurance-submit-btn">Submit</button>
     </form>
-    
+
   </div>
 
-  
+
   <script src="/modules/UIController.js"></script>
   <script src="/modules/scoreController.js"></script>
   <script src="/modules/betController.js"></script>
   <script src="/modules/cardController.js"></script>
-  
+
   <script src="app.js"></script>
 </body>
 

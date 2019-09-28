@@ -100,6 +100,28 @@ const UIController = (function () {
     document.getElementById(UISelectors.betBtn5).style.display = 'inline-block';
     document.getElementById(UISelectors.betBtn20).style.display = 'inline-block';
     document.getElementById(UISelectors.bet).style.display = 'inline-block';
+
+    // load card back for all cards
+    document.getElementById(UISelectors.userCard1).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.userCard2).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.userCard3).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.userCard4).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.userCard5).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.dealerCard1).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.dealerCard2).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.dealerCard3).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.dealerCard4).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.dealerCard5).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.userSplit1).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.userSplit2).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.userSplit3).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.userSplit4).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.userSplit5).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.userSplit6).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.userSplit7).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.userSplit8).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.userSplit9).src = '../images/playing-card-back-1.png';
+    document.getElementById(UISelectors.userSplit10).src = '../images/playing-card-back-1.png';
   };
 
 
@@ -133,12 +155,12 @@ const UIController = (function () {
     },
 
     displayDealerScore: (dealerScore) => {
-      document.getElementById(UISelectors.dealerScore).textContent = `Dealer hand score: ${dealerScore}`;
+      document.getElementById(UISelectors.dealerScore).textContent = `${dealerScore}`;
       document.getElementById(UISelectors.dealerScore).style.display = 'block';
     },
 
     displayUserScore: (userScore) => {
-      document.getElementById(UISelectors.userScore).textContent = `Your hand score: ${userScore}`;
+      document.getElementById(UISelectors.userScore).textContent = `${userScore}`;
       document.getElementById(UISelectors.userScore).style.display = 'block';
     },
 
