@@ -1,0 +1,150 @@
+@keyframes dealCard {
+  0% {
+    transform: translateX(40rem) translateY(-100%); }
+  100% {
+    transform: translateX(0) translateY(0); } }
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit; }
+
+html {
+  font-size: 62.5%; }
+
+body {
+  background: url(../images/bluish-felt.jpg);
+  background-size: cover;
+  box-sizing: border-box; }
+
+.container {
+  /* text-align: center; */
+  position: relative; }
+
+body {
+  font-family: "Rubik"; }
+
+.bankroll {
+  position: absolute;
+  left: 30%;
+  transform: translateX(-50%);
+  top: 55rem;
+  font-size: 3.5rem;
+  color: gainsboro; }
+
+.btn {
+  font-family: "Rubik";
+  font-size: 2.5rem; }
+
+.btn {
+  border: solid 4px rgba(200, 224, 92, 0.7);
+  background-color: #154125;
+  color: aliceblue;
+  position: absolute; }
+  .btn:focus {
+    outline: none; }
+  .btn:hover {
+    cursor: pointer; }
+  .btn--deal {
+    top: 49rem;
+    left: 62%;
+    border-radius: 100%;
+    width: 12rem;
+    height: 12rem; }
+  .btn--hit {
+    top: 50rem;
+    left: 50%;
+    height: 9rem;
+    width: 15rem;
+    border-radius: 2rem;
+    transform: translateX(-115%); }
+  .btn--stand {
+    top: 50rem;
+    left: 50%;
+    height: 9rem;
+    width: 15rem;
+    border-radius: 2rem;
+    transform: translateX(15%); }
+
+.betBtns {
+  position: absolute;
+  top: 55rem;
+  left: 50%;
+  transform: translateX(-50%); }
+
+.chip {
+  height: 7rem;
+  margin-left: 2rem; }
+
+.chip:focus {
+  outline: none; }
+
+.chip:first-child {
+  margin-left: 0; }
+
+.placeholderContainer--dealer {
+  position: absolute;
+  left: 50%;
+  top: 2.8rem;
+  transform: translateX(-50%); }
+
+.placeholderRect {
+  fill: none;
+  stroke-width: 4;
+  stroke: rgba(200, 224, 92, 0.7); }
+
+.dealerCards {
+  position: absolute;
+  left: 50%;
+  top: 3.9rem;
+  transform: translateX(-50%); }
+
+.card {
+  height: 10rem;
+  animation: dealCard .2s paused; }
+
+.score--dealer {
+  position: absolute;
+  left: 70%;
+  transform: translateX(-50%);
+  top: 15.5rem;
+  font-size: 2rem;
+  color: aliceblue; }
+
+.placeBet {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 23rem;
+  font-size: 3rem;
+  color: aliceblue; }
+
+.bet {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 28rem;
+  font-size: 2rem;
+  color: gainsboro; }
+
+.score--user {
+  position: absolute;
+  left: 70%;
+  transform: translateX(-50%);
+  top: 32rem;
+  font-size: 2rem;
+  color: aliceblue; }
+
+.placeholderContainer--user {
+  position: absolute;
+  left: 50%;
+  top: 32rem;
+  transform: translateX(-50%); }
+
+.userCards {
+  position: absolute;
+  left: 50%;
+  top: 36rem;
+  transform: translateX(-50%); }

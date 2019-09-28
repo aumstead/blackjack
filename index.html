@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="/styles/style.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Arimo|Rubik|Work+Sans&display=swap" rel="stylesheet">
   <title>Blackjack</title>
 </head>
 
@@ -31,6 +32,8 @@
     </svg>
 
     <p id="place-bet" class="placeBet">Place your bet!</p>
+
+    <p id="bet" class="bet"></p>
 
     <p id="user-score" class="score--user"></p>
 
@@ -58,14 +61,21 @@
       <img src="/images/playing-card-back-1.png" id="user-split-10" class="card">
     </div>
 
-    <button id="deal">Deal</button>
-    <button id="hit">Hit</button>
-    <button id="stand">Stand</button>
-    <button id="next-hand">Next Hand</button>
+    <button id="deal" class="btn btn--deal">DEAL</button>
+
+    <div class="betBtns">
+        <input type="image" class="chip" id="bet-1" src="./images/chip-blue.png" alt="bet 1 chip button">
+        <input type="image" class="chip" id="bet-5" src="./images/chip-green.png" alt="bet 5 chip button">
+        <input type="image" class="chip" id="bet-20" src="./images/chip-red.png" alt="bet 20 chip button">
+    </div>
+
+    <button id="hit" class="btn btn--hit">Hit</button>
+    <button id="stand" class="btn btn--stand">Stand</button>
+    <button id="next-hand" class="btn btn--nextHand">Next Hand</button>
     <button id="split">Split</button>
     <button id="double">Double</button>
 
-
+    <p id="bankroll" class="bankroll"></p>
     
 
     <div id="insurance-warning">
@@ -76,20 +86,16 @@
 
 
 
-    <div class="betBtns">
-      <input type="image" class="chip" id="bet-1" src="./images/chip-blue.png" alt="bet 1 chip button">
-      <input type="image" class="chip" id="bet-5" src="./images/chip-green.png" alt="bet 5 chip button">
-      <input type="image" class="chip" id="bet-20" src="./images/chip-red.png" alt="bet 20 chip button">
-    </div>
+    
 
     
     <p id="split-score-1"></p>
     <p id="split-score-2"></p>
     <p id="insurance-bet"></p>
-    <p id="bet"></p>
+    
     <p id="split-bet-1"></p>
     <p id="split-bet-2"></p>
-    <p id="bankroll"></p>
+    
 
 
     <form id="insurance-form">

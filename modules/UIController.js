@@ -142,11 +142,11 @@ const UIController = (function () {
     },
 
     displayBankroll: bankroll => {
-      document.getElementById(UISelectors.bankroll).textContent = `Your money: $${bankroll}`;
+      document.getElementById(UISelectors.bankroll).textContent = `Chips: $${bankroll}`;
     },
 
     displayBet: bet => {
-      document.getElementById(UISelectors.bet).textContent = `Your bet: $${bet}`;
+      document.getElementById(UISelectors.bet).textContent = `$${bet}`;
     },
 
     displayCard: (card, selector) => {

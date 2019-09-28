@@ -1,0 +1,9 @@
+@keyframes dealCard {
+  0% {
+    transform: translateX(40rem) translateY(-100%);
+  }
+
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+}

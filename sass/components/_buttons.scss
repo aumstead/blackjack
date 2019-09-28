@@ -1,0 +1,62 @@
+.btn {
+  border: solid 4px $color-table-yellow;
+  background-color: $color-btn-fill;
+  color: $color-primary;
+  position: absolute;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &--deal {
+    top: 49rem;
+    left: 62%;
+    border-radius: 100%;
+    width: 12rem;
+    height: 12rem;
+  }
+
+  &--hit {
+    top: 50rem;
+    left: 50%;
+    height: 9rem;
+    width: 15rem;
+    border-radius: 2rem;
+    transform: translateX(-115%);
+  }
+
+  &--stand {
+    top: 50rem;
+    left: 50%;
+    height: 9rem;
+    width: 15rem;
+    border-radius: 2rem;
+    transform: translateX(15%);
+  }
+}
+
+
+
+.betBtns {
+  position: absolute;
+  top: 55rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.chip {
+  height: 7rem;
+  margin-left: 2rem;
+}
+
+.chip:focus {
+  outline: none;
+}
+
+.chip:first-child {
+  margin-left: 0;
+}
