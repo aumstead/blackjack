@@ -1,8 +1,13 @@
 .btn {
   border: solid 4px $color-table-yellow;
+  // background-image: linear-gradient(
+  //   to right bottom,
+  //   rgba($color-btn-light, .9), 
+  //   rgba($color-btn-dark, .9));
   background-color: $color-btn-fill;
   color: $color-primary;
   position: absolute;
+  box-shadow: 1rem 1rem .7rem rgba($color-shadow, .2);
 
   &:focus {
     outline: none;
@@ -10,6 +15,7 @@
 
   &:hover {
     cursor: pointer;
+    background-color: darken($color-btn-fill, 3%);
   }
 
   &--deal {
@@ -18,24 +24,83 @@
     border-radius: 100%;
     width: 12rem;
     height: 12rem;
+
+    &:active {
+      transform: translateY($btn-depress);
+      box-shadow: 0 .5rem 1rem rgba($color-shadow, .2);
+    }
   }
 
   &--hit {
     top: 50rem;
     left: 50%;
-    height: 9rem;
-    width: 15rem;
-    border-radius: 2rem;
+    height: 13rem;
+    width: 13rem;
+    border-radius: 100%;
     transform: translateX(-115%);
+
+    &:active {
+      transform: translate(-115%, $btn-depress);
+      box-shadow: 0 .5rem 1rem rgba($color-shadow, .2);
+    }
   }
 
   &--stand {
     top: 50rem;
     left: 50%;
-    height: 9rem;
-    width: 15rem;
-    border-radius: 2rem;
+    height: 13rem;
+    width: 13rem;
+    border-radius: 100%;
     transform: translateX(15%);
+
+    &:active {
+      transform: translate(15%, $btn-depress);
+      box-shadow: 0 .5rem 1rem rgba($color-shadow, .2);
+    }
+  }
+
+  &--nextHand {
+    top: 50rem;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 13rem;
+    width: 13rem;
+    border-radius: 100%;
+
+    &:active {
+      transform: translate(-50%, $btn-depress);
+      box-shadow: 0 .5rem 1rem rgba($color-shadow, .2);
+    }
+  }
+}
+
+.btn__option {
+  border: solid 4px $color-table-yellow;
+  background-color: $color-btn-fill;
+  color: $color-primary;
+  position: absolute;
+  box-shadow: 1rem 1rem .7rem rgba($color-shadow, .2);
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: darken($color-btn-fill, 3%);
+  }
+
+  &--double {
+    top: 49rem;
+    left: 65%;
+    border-radius: 1rem;
+    width: 9rem;
+    height: 6rem;
+
+    &:active {
+      transform: translateY($btn-depress);
+      box-shadow: 0 .5rem 1rem rgba($color-shadow, .2);
+    }
   }
 }
 

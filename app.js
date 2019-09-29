@@ -435,32 +435,40 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
   const dealerTurn3 = () => {
     const score = scoreCtrl.getScore();
     const cardData = cardCtrl.getCardData();
+
     // create promise. Will always resolve. Resolve is called if dealer's score is less than 17.
     return new Promise((resolve, reject) => {
+
       const dealerCard3 = cardCtrl.dealDealer();
       setTimeout(() => {
-        UICtrl.displayCard(dealerCard3, UISelectors.dealerCard3);
-        calcScore(cardData.dealer, 'dealer');
-        displayScore('dealer');
+        // show and animate card. Then put display in a set timeout. This creates the pause for user to register the dealer's card, and then animate the next card.
+        UICtrl.showElement(UISelectors.dealerCard3);
+        UICtrl.animateCard(UISelectors.dealerCard3);
 
-        if (score.dealer < 17) {
-          resolve();
-        } else if (score.dealer > 21) {
-          console.log('Dealer busts.');
-          if (cardData.splitState) {
-            splitDealerBusts();
+        setTimeout(() => {
+          UICtrl.displayCard(dealerCard3, UISelectors.dealerCard3);
+          calcScore(cardData.dealer, 'dealer');
+          displayScore('dealer');
+
+          if (score.dealer < 17) {
+            resolve();
+          } else if (score.dealer > 21) {
+            console.log('Dealer busts.');
+            if (cardData.splitState) {
+              splitDealerBusts();
+            } else {
+              dealerBusts();
+            }
           } else {
-            dealerBusts();
+            if (cardData.splitState) {
+              splitCheckWinner();
+              UICtrl.prepareNextHand();
+            } else {
+              checkWinner();
+              UICtrl.prepareNextHand();
+            }
           }
-        } else {
-          if (cardData.splitState) {
-            splitCheckWinner();
-            UICtrl.prepareNextHand();
-          } else {
-            checkWinner();
-            UICtrl.prepareNextHand();
-          }
-        }
+        }, 200);
       }, 1000);
     });
   };
@@ -472,13 +480,54 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     return new Promise((resolve, reject) => {
       const dealerCard4 = cardCtrl.dealDealer();
       setTimeout(() => {
-        UICtrl.displayCard(dealerCard4, UISelectors.dealerCard4);
+        // show and animate card. Then put display in a set timeout. This creates the pause for user to register the dealer's card, and then animate the next card.
+        UICtrl.showElement(UISelectors.dealerCard4);
+        UICtrl.animateCard(UISelectors.dealerCard4);
+
+        setTimeout(() => {
+          UICtrl.displayCard(dealerCard4, UISelectors.dealerCard4);
+          calcScore(cardData.dealer, 'dealer');
+          displayScore('dealer');
+
+          if (score.dealer < 17) {
+            resolve();
+          } else if (score.dealer > 21) {
+            console.log('Dealer busts.');
+            if (cardData.splitState) {
+              splitDealerBusts();
+            } else {
+              dealerBusts();
+            }
+          } else {
+            if (cardData.splitState) {
+              splitCheckWinner();
+              UICtrl.prepareNextHand();
+            } else {
+              checkWinner();
+              UICtrl.prepareNextHand();
+            }
+          }
+        }, 200);
+      }, 1000);
+    });
+  };
+
+  const dealerTurn5 = () => {
+    const score = scoreCtrl.getScore();
+    const cardData = cardCtrl.getCardData();
+
+    const dealerCard5 = cardCtrl.dealDealer();
+    setTimeout(() => {
+      // show and animate card. Then put display in a set timeout. This creates the pause for user to register the dealer's card, and then animate the next card.
+      UICtrl.showElement(UISelectors.dealerCard5);
+      UICtrl.animateCard(UISelectors.dealerCard5);
+
+      setTimeout(() => {
+        UICtrl.displayCard(dealerCard5, UISelectors.dealerCard5);
         calcScore(cardData.dealer, 'dealer');
         displayScore('dealer');
 
-        if (score.dealer < 17) {
-          resolve();
-        } else if (score.dealer > 21) {
+        if (score.dealer > 21) {
           console.log('Dealer busts.');
           if (cardData.splitState) {
             splitDealerBusts();
@@ -494,36 +543,7 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
             UICtrl.prepareNextHand();
           }
         }
-      }, 1000);
-    });
-  };
-
-  const dealerTurn5 = () => {
-    const score = scoreCtrl.getScore();
-    const cardData = cardCtrl.getCardData();
-
-    const dealerCard5 = cardCtrl.dealDealer();
-    setTimeout(() => {
-      UICtrl.displayCard(dealerCard5, UISelectors.dealerCard5);
-      calcScore(cardData.dealer, 'dealer');
-      displayScore('dealer');
-
-      if (score.dealer > 21) {
-        console.log('Dealer busts.');
-        if (cardData.splitState) {
-          splitDealerBusts();
-        } else {
-          dealerBusts();
-        }
-      } else {
-        if (cardData.splitState) {
-          splitCheckWinner();
-          UICtrl.prepareNextHand();
-        } else {
-          checkWinner();
-          UICtrl.prepareNextHand();
-        }
-      }
+      }, 200);
     }, 1000);
   };
 
@@ -701,7 +721,8 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
     return new Promise((resolve) => {
       setTimeout(() => {
-        const userCard1 = cardCtrl.dealUser();
+        // const userCard1 = cardCtrl.dealUser();
+        const userCard1 = cardCtrl.testDealUser1();
         UICtrl.displayCard(userCard1, UISelectors.userCard1);
         resolve();
       }, 200);
@@ -715,6 +736,7 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     return new Promise((resolve) => {
       setTimeout(() => {
         cardCtrl.dealDealer();
+        // cardCtrl.testDealDealer1();
         // dealer card 1 is face down. No need to display card.
         resolve();
       }, 200);
@@ -727,7 +749,8 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
     return new Promise((resolve) => {
       setTimeout(() => {
-        userCard2 = cardCtrl.dealUser();
+        // const userCard2 = cardCtrl.dealUser();
+        const userCard2 = cardCtrl.testDealUser2();
         UICtrl.displayCard(userCard2, UISelectors.userCard2);
         resolve();
       }, 200);
@@ -740,7 +763,8 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
     return new Promise((resolve) => {
       setTimeout(() => {
-        dealerCard2 = cardCtrl.dealDealer();
+        const dealerCard2 = cardCtrl.dealDealer();
+        // const dealerCard2 = cardCtrl.testDealDealer2();
         UICtrl.displayCard(dealerCard2, UISelectors.dealerCard2);
         resolve();
       }, 200);
@@ -756,7 +780,6 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
   };
 
   const dealControlCenter = () => {
-    let userCard1, userCard2, dealerCard1, dealerCard2;
     const cardData = cardCtrl.getCardData();
     const score = scoreCtrl.getScore();
     const bankroll = betCtrl.getBankroll();

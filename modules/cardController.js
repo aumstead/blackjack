@@ -161,7 +161,7 @@ const cardController = (function () {
       return card;
     },
     testDealDealer1: () => {
-      let card = spades_1;
+      let card = spades_2;
       cardData.dealer.hand.push(card);
       return card;
     },
@@ -171,7 +171,7 @@ const cardController = (function () {
       return card;
     },
     testDealDealer2: () => {
-      let card = hearts_1;
+      let card = hearts_2;
       cardData.dealer.hand.push(card);
       return card;
     },

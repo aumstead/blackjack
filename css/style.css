@@ -28,7 +28,7 @@ body {
 
 .bankroll {
   position: absolute;
-  left: 30%;
+  left: 20%;
   transform: translateX(-50%);
   top: 55rem;
   font-size: 3.5rem;
@@ -38,35 +38,80 @@ body {
   font-family: "Rubik";
   font-size: 2.5rem; }
 
+.btn__option {
+  font-size: 2rem; }
+
 .btn {
   border: solid 4px rgba(200, 224, 92, 0.7);
   background-color: #154125;
   color: aliceblue;
-  position: absolute; }
+  position: absolute;
+  box-shadow: 1rem 1rem 0.7rem rgba(0, 0, 0, 0.2); }
   .btn:focus {
     outline: none; }
   .btn:hover {
-    cursor: pointer; }
+    cursor: pointer;
+    background-color: #11351e; }
   .btn--deal {
     top: 49rem;
     left: 62%;
     border-radius: 100%;
     width: 12rem;
     height: 12rem; }
+    .btn--deal:active {
+      transform: translateY(0.3rem);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
   .btn--hit {
     top: 50rem;
     left: 50%;
-    height: 9rem;
-    width: 15rem;
-    border-radius: 2rem;
+    height: 13rem;
+    width: 13rem;
+    border-radius: 100%;
     transform: translateX(-115%); }
+    .btn--hit:active {
+      transform: translate(-115%, 0.3rem);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
   .btn--stand {
     top: 50rem;
     left: 50%;
-    height: 9rem;
-    width: 15rem;
-    border-radius: 2rem;
+    height: 13rem;
+    width: 13rem;
+    border-radius: 100%;
     transform: translateX(15%); }
+    .btn--stand:active {
+      transform: translate(15%, 0.3rem);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
+  .btn--nextHand {
+    top: 50rem;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 13rem;
+    width: 13rem;
+    border-radius: 100%; }
+    .btn--nextHand:active {
+      transform: translate(-50%, 0.3rem);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
+
+.btn__option {
+  border: solid 4px rgba(200, 224, 92, 0.7);
+  background-color: #154125;
+  color: aliceblue;
+  position: absolute;
+  box-shadow: 1rem 1rem 0.7rem rgba(0, 0, 0, 0.2); }
+  .btn__option:focus {
+    outline: none; }
+  .btn__option:hover {
+    cursor: pointer;
+    background-color: #11351e; }
+  .btn__option--double {
+    top: 49rem;
+    left: 65%;
+    border-radius: 1rem;
+    width: 9rem;
+    height: 6rem; }
+    .btn__option--double:active {
+      transform: translateY(0.3rem);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
 
 .betBtns {
   position: absolute;
@@ -98,11 +143,11 @@ body {
 .dealerCards {
   position: absolute;
   left: 50%;
-  top: 3.9rem;
+  top: 2.9rem;
   transform: translateX(-50%); }
 
 .card {
-  height: 10rem;
+  height: 12rem;
   animation: dealCard .2s paused; }
 
 .score--dealer {
@@ -140,11 +185,11 @@ body {
 .placeholderContainer--user {
   position: absolute;
   left: 50%;
-  top: 32rem;
+  top: 35rem;
   transform: translateX(-50%); }
 
 .userCards {
   position: absolute;
   left: 50%;
-  top: 36rem;
+  top: 35rem;
   transform: translateX(-50%); }

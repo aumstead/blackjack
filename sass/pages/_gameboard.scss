@@ -14,12 +14,12 @@
 .dealerCards {
   position: absolute;
   left: 50%;
-  top: 3.9rem;
+  top: 2.9rem;
   transform: translateX(-50%);
 }
 
 .card {
-  height: 10rem;
+  height: 12rem;
   animation: dealCard .2s paused;
 }
 
@@ -62,14 +62,14 @@
 .placeholderContainer--user {
   position: absolute;
   left: 50%;
-  top: 32rem;
+  top: 35rem;
   transform: translateX(-50%);
 }
 
 .userCards {
   position: absolute;
   left: 50%;
-  top: 36rem;
+  top: 35rem;
   transform: translateX(-50%);
 }
 

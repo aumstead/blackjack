@@ -195,6 +195,10 @@ const UIController = (function () {
     prepareNextHand: () => {
       // show next hand button
       document.getElementById(UISelectors.nextHandBtn).style.display = 'inline-block';
+
+      // hide buttons
+      document.getElementById(UISelectors.hitBtn).style.display = 'none';
+      document.getElementById(UISelectors.standBtn).style.display = 'none';
     },
 
     nextHand: () => {
