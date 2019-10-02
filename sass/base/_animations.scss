@@ -7,3 +7,55 @@
     transform: translateX(0) translateY(0);
   }
 }
+
+@keyframes placeChip1 {
+  0% {
+    transform: translateX(-1100%) translateY(1000%);
+  }
+
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+}
+
+@keyframes placeChip5 {
+  0% {
+    transform: translateX(-50rem) translateY(100rem);
+  }
+
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+}
+
+@keyframes placeChip20 {
+  0% {
+    transform: translateX(-50rem) translateY(55rem);
+  }
+
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+}
+
+// @keyframes fadeDealBtn {
+//   1% {
+//     opacity: .5;
+//   }
+  
+//   100% {
+//     transform: translateX(-50%) translateY(10rem);
+//     opacity: 0;
+//   }
+// }
+
+// @keyframes fadeOptionBtn {
+//   1% {
+//     opacity: .5;
+//   }
+  
+//   100% {
+//     transform: translateY(5rem);
+//     opacity: 0;
+//   }
+// }

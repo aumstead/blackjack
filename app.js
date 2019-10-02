@@ -17,7 +17,7 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     document.getElementById(UISelectors.standBtn).addEventListener('click', standControlCenter);
 
     // new hand button event listener
-    document.getElementById(UISelectors.nextHandBtn).addEventListener('click', nextHand);
+    document.getElementById(UISelectors.nextHandBtn).addEventListener('click', nextHandControlCenter);
 
     // insurance button event listeners
     document.getElementById(UISelectors.insuranceYesBtn).addEventListener('click', insuranceYes);
@@ -29,9 +29,19 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
     // double button event listener
     document.getElementById(UISelectors.doubleBtn).addEventListener('click', doubleControlCenter);
+
+    // reset button event listener
+    document.getElementById(UISelectors.resetBetBtn).addEventListener('click', resetBet);
   };
 
-  // FUNCTIONS FOR CONVENIENCE
+  // UTILITY FUNCTIONS
+  const prepareReanimation = (selector) => {
+    const el = document.getElementById(selector);
+    const newEl = el.cloneNode(true);
+    el.parentNode.replaceChild(newEl, el);
+    UICtrl.pauseAnimation(selector);
+  }
+
   const calcScore = (playerObj, property) => {
     const score = scoreCtrl.getScore();
     scoreCtrl.calculateScore(playerObj, score, property);
@@ -71,19 +81,21 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     player === 'user' ? UICtrl.displayUserScore(score.user) : UICtrl.displayDealerScore(score.dealer);
   };
 
-  const nextHand = () => {
-    // call each controller's next hand function
-    cardCtrl.nextHand();
-    scoreCtrl.nextHand();
-    betCtrl.nextHand();
-    UICtrl.nextHand();
-
-    // get and display bet
-    const bet = betController.getBet();
+  const resetBet = () => {
+    let bet = betCtrl.getBet();
+    bet = 0;
+    betCtrl.setBet(bet);
     UICtrl.displayBet(bet);
 
-    // create a blank line in console
-    console.log('');
+    UICtrl.hideElement(UISelectors.potChipGhost1);
+    UICtrl.hideElement(UISelectors.potChipGhost5);
+    UICtrl.hideElement(UISelectors.potChipGhost20);
+
+    // disable the reset bet btn, since the bet is back to zero.
+    UICtrl.disableBtn(UISelectors.resetBetBtn);
+
+    // also disable the deal btn, since bet is at zero.
+    UICtrl.disableBtn(UISelectors.dealBtn);
   };
 
   // SPLIT FUNCTIONS
@@ -462,10 +474,10 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
           } else {
             if (cardData.splitState) {
               splitCheckWinner();
-              UICtrl.prepareNextHand();
+              setTimeout(UICtrl.prepareNextHand, 1000);
             } else {
               checkWinner();
-              UICtrl.prepareNextHand();
+              setTimeout(UICtrl.prepareNextHand, 1000);
             }
           }
         }, 200);
@@ -501,10 +513,10 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
           } else {
             if (cardData.splitState) {
               splitCheckWinner();
-              UICtrl.prepareNextHand();
+              setTimeout(UICtrl.prepareNextHand, 1000);
             } else {
               checkWinner();
-              UICtrl.prepareNextHand();
+              setTimeout(UICtrl.prepareNextHand, 1000);
             }
           }
         }, 200);
@@ -537,10 +549,10 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
         } else {
           if (cardData.splitState) {
             splitCheckWinner();
-            UICtrl.prepareNextHand();
+            setTimeout(UICtrl.prepareNextHand, 1000);
           } else {
             checkWinner();
-            UICtrl.prepareNextHand();
+            setTimeout(UICtrl.prepareNextHand, 1000);
           }
         }
       }, 200);
@@ -560,20 +572,23 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     // 3. show dealer's score
     displayScore('dealer');
 
-    // 4. dealer hits until 17. Enter promise chain.
-    if (score.dealer < 17) {
-      dealerTurn3()
-        .then(dealerTurn4)
-        .then(dealerTurn5);
-    } else {
-      if (cardData.splitState) {
-        splitCheckWinner();
-        UICtrl.prepareNextHand();
+    // set timeout for gameplay flow delay
+    setTimeout(() => {
+      // 4. dealer hits until 17. Enter promise chain.
+      if (score.dealer < 17) {
+        dealerTurn3()
+          .then(dealerTurn4)
+          .then(dealerTurn5);
       } else {
-        checkWinner();
-        UICtrl.prepareNextHand();
+        if (cardData.splitState) {
+          splitCheckWinner();
+          UICtrl.prepareNextHand();
+        } else {
+          checkWinner();
+          setTimeout(UICtrl.prepareNextHand, 1000);
+        }
       }
-    }
+    }, 500);
   };
 
   // CONTROL CENTER FUNCTIONS
@@ -593,22 +608,56 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     UICtrl.loadElement(bet, UISelectors.bet, `Bet is doubled to: `);
     UICtrl.showElement(UISelectors.bet);
 
-    // hide stand and double buttons
-    UICtrl.hideElement(UISelectors.standBtn);
-    UICtrl.hideElement(UISelectors.doubleBtn);
+    // disable stand and double buttons
+    UICtrl.disableBtn(UISelectors.standBtn);
+    UICtrl.disableBtn(UISelectors.doubleBtn);
   };
 
   const betControlCenter = e => {
-    // 1. reveal deal button
-    UICtrl.showElement(UISelectors.dealBtn);
-
-    // 2. increase bet by 1, 5, or 20
+    // increase bet by 1, 5, or 20 and show pot chip equivalent, if user has enough money.
     if (e.target.id === 'bet-1') {
-      betCtrl.bet1();
+      if (betCtrl.bet1()) {
+        UICtrl.showElement(UISelectors.potChip1);
+        UICtrl.animate(UISelectors.potChip1);
+        // 2a. after animation completes, in order to reanimate, the element must be removed from the DOM and reinserted. Used in timeout because animation takes .2s to complete. Then element gets removed and reinserted. But even before that, the first line in the function hides the element because when the node is copied, it animates. So, by hiding it, the animation doesn't appear twice.
+        setTimeout(() => {
+          UICtrl.hideElement(UISelectors.potChip1);
+          UICtrl.showElement(UISelectors.potChipGhost1);
+          prepareReanimation(UISelectors.potChip1);
+        }, 400);
+        // reveal and enable deal button
+        UICtrl.showElement(UISelectors.dealBtn);
+        UICtrl.enableBtn(UISelectors.dealBtn);
+        UICtrl.enableBtn(UISelectors.resetBetBtn);
+      }
     } else if (e.target.id === 'bet-5') {
-      betCtrl.bet5();
+      if (betCtrl.bet5()) {
+        UICtrl.showElement(UISelectors.potChip5);
+        UICtrl.animate(UISelectors.potChip5);
+        setTimeout(() => {
+          UICtrl.hideElement(UISelectors.potChip5);
+          UICtrl.showElement(UISelectors.potChipGhost5);
+          prepareReanimation(UISelectors.potChip5);
+        }, 400);
+        // reveal and enable deal button
+        UICtrl.showElement(UISelectors.dealBtn);
+        UICtrl.enableBtn(UISelectors.dealBtn);
+        UICtrl.enableBtn(UISelectors.resetBetBtn);
+      }
     } else if (e.target.id === 'bet-20') {
-      betCtrl.bet20();
+      if (betCtrl.bet20()) {
+        UICtrl.showElement(UISelectors.potChip20);
+        UICtrl.animate(UISelectors.potChip20);
+        setTimeout(() => {
+          UICtrl.hideElement(UISelectors.potChip20);
+          UICtrl.showElement(UISelectors.potChipGhost20);
+          prepareReanimation(UISelectors.potChip20);
+        }, 400);
+        // reveal and enable deal button. Enable reset bet btn.
+        UICtrl.showElement(UISelectors.dealBtn);
+        UICtrl.enableBtn(UISelectors.dealBtn);
+        UICtrl.enableBtn(UISelectors.resetBetBtn);
+      }
     }
 
     // 3. get and display bet
@@ -623,12 +672,17 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     const betData = betCtrl.getBetData();
 
     if (betData.doubleState) {
-      const card = cardCtrl.dealUser();
-      UICtrl.displayCard(card, UISelectors.userCard3);
-      calcScore(cardData.user, 'user');
-      displayScore('user');
-      // user can only hit once in double state.
-      dealerFinishes();
+      UICtrl.showElement(UISelectors.userCard3);
+      UICtrl.animateCard(UISelectors.userCard3);
+
+      setTimeout(() => {
+        const card = cardCtrl.dealUser();
+        UICtrl.displayCard(card, UISelectors.userCard3);
+        calcScore(cardData.user, 'user');
+        displayScore('user');
+        // user can only hit once in double state.
+        dealerFinishes();
+      }, 200);
     }
     // check for split state and a split aces situation.
     else if (cardData.splitState && cardData.user.splitHand1[0].value === 'ace' && cardData.user.splitHand2[0].value === 'ace') {
@@ -639,9 +693,14 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
       const score = scoreCtrl.getScore();
       const cardData = cardCtrl.getCardData();
 
-      // 1. hide irrelevant buttons
-      UICtrl.hideElement(UISelectors.doubleBtn);
-      UICtrl.hideElement(UISelectors.splitBtn);
+      // disable irrelevant buttons. Hide btn after card comes out 200 ms.
+      UICtrl.disableBtn(UISelectors.doubleBtn);
+      setTimeout(() => {
+        UICtrl.hideElement(UISelectors.doubleBtn);
+        UICtrl.hideElement(UISelectors.splitBtn);
+      }, 200);
+
+
 
       // ANIMATION FUNCTIONALITY
       if (cardData.user.turn === 3) {
@@ -683,6 +742,9 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
           UICtrl.prepareNextHand();
         } else if (score.user === 21) {
           standControlCenter();
+          // hide hit and stand so user can't click them while in timeout functions.
+          UICtrl.hideElement(UISelectors.hitBtn);
+          UICtrl.hideElement(UISelectors.standBtn);
         }
 
         // 7. increment user turn
@@ -694,9 +756,12 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
   const standControlCenter = () => {
     const cardData = cardCtrl.getCardData();
 
-    // 1. hide irrelevant buttons
-    UICtrl.hideElement(UISelectors.doubleBtn);
-    UICtrl.hideElement(UISelectors.splitBtn);
+    // 1. disable irrelevant buttons.
+    UICtrl.disableBtn(UISelectors.doubleBtn);
+
+    // disable hit and stand buttons
+    UICtrl.disableBtn(UISelectors.hitBtn);
+    UICtrl.disableBtn(UISelectors.standBtn);
 
     // 2. check for split state
     if (cardData.splitState) {
@@ -707,6 +772,7 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
         UICtrl.hideElement(UISelectors.standBtn);
       } else {
         dealerFinishes();
+
       }
     } else {
       // 3. if not split state, dealer plays hand
@@ -714,7 +780,7 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     }
   }
 
-  // PROMISES FOR ANIMATION CHAIN
+  // PROMISES FOR CARD ANIMATION CHAIN
   const dealUserCard1 = () => {
     UICtrl.showElement(UISelectors.userCard1);
     UICtrl.animateCard(UISelectors.userCard1);
@@ -772,6 +838,12 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
   };
 
   const dealCards = () => {
+    // disable deal btn. Hide it right before hit and stand btns show
+    UICtrl.disableBtn(UISelectors.dealBtn);
+    setTimeout(() => {
+      UICtrl.hideElement(UISelectors.dealBtn);
+    }, 800);
+
     dealUserCard1()
       .then(dealDealerCard1)
       .then(dealUserCard2)
@@ -785,42 +857,22 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     const bankroll = betCtrl.getBankroll();
     const bet = betCtrl.getBet();
 
-    // 1. hide place bet text and bet buttons
+    // 1. hide place bet UI text
     UICtrl.hideElement(UISelectors.placeBet);
-    UICtrl.hideElement(UISelectors.betBtn1);
-    UICtrl.hideElement(UISelectors.betBtn5);
-    UICtrl.hideElement(UISelectors.betBtn20);
 
-    // 2 PROMISE CHAIN EXPERIMENT FOR ANIMATIONS
+    // 2. disable chip and reset bet btns
+    UICtrl.disableBetBtn(UISelectors.betBtn1);
+    UICtrl.disableBetBtn(UISelectors.betBtn5);
+    UICtrl.disableBetBtn(UISelectors.betBtn20);
+    UICtrl.disableBtn(UISelectors.resetBetBtn);
 
+    // enable hit, enable stand
+    UICtrl.enableBtn(UISelectors.hitBtn);
+    UICtrl.enableBtn(UISelectors.standBtn);
 
-    // 2. deal 4 cards starting with user. Store returned card object into variable.
-    // userCard1 = cardCtrl.dealUser();
-    // dealerCard1 = cardCtrl.dealDealer();
-    // userCard2 = cardCtrl.dealUser();
-    // dealerCard2 = cardCtrl.dealDealer();
-
-    //
-    // FUNCTIONS FOR TESTING
-    //
-    // userCard1 = cardCtrl.testDealUser1();
-    // dealerCard1 = cardCtrl.testDealDealer1();
-    // userCard2 = cardCtrl.testDealUser2();
-    // dealerCard2 = cardCtrl.testDealDealer2();
-
-    // 3. display cards with dealer's first card hardcoded to be face down.
-    // UICtrl.displayCard(userCard1, UISelectors.userCard1);
-    // document.getElementById(UISelectors.dealerCard1).src = './images/playing-card-back-1.png';
-    // document.getElementById(UISelectors.dealerCard1).style.display = 'inline-block';
-    // UICtrl.displayCard(userCard2, UISelectors.userCard2);
-    // UICtrl.displayCard(dealerCard2, UISelectors.dealerCard2);
-
-    // 4. hide the deal button, show hit, show stand
-    UICtrl.hideElement(UISelectors.dealBtn);
+    // 4. show hit, show stand
     UICtrl.showElement(UISelectors.hitBtn);
     UICtrl.showElement(UISelectors.standBtn);
-
-    // BREAK FUNCTION INTO TWO FROM HERE(IF WE BREAK)
 
     // 5. calculate user and dealer score.
     calcScore(cardData.user, 'user');
@@ -863,7 +915,25 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     if (score.user === 9 || score.user === 10 || score.user === 11 && bankroll - bet * 2 >= 0) {
       UICtrl.showElement(UISelectors.doubleBtn);
     }
-  }
+  };
+
+  const nextHandControlCenter = () => {
+    // call each controller's next hand function
+    cardCtrl.nextHand();
+    scoreCtrl.nextHand();
+    betCtrl.nextHand();
+    UICtrl.nextHand();
+
+    // get and display bet
+    const bet = betController.getBet();
+    UICtrl.displayBet(bet);
+
+    // enable option btns. These can only be disabled once, so they may be enabled here in preparation for the next hand.
+    UICtrl.enableBtn(UISelectors.doubleBtn);
+
+    // create a blank line in console
+    console.log('');
+  };
 
   return {
     init: function () {

@@ -1,13 +1,11 @@
 .btn {
-  border: solid 4px $color-table-yellow;
-  // background-image: linear-gradient(
-  //   to right bottom,
-  //   rgba($color-btn-light, .9), 
-  //   rgba($color-btn-dark, .9));
-  background-color: $color-btn-fill;
-  color: $color-primary;
+  background-image: linear-gradient(to bottom, rgba($color-btn-light, .9), rgba($color-btn-medium, .9));
+  color: black;
   position: absolute;
-  box-shadow: 1rem 1rem .7rem rgba($color-shadow, .2);
+  font-family: $font-primary;
+  font-size: 1.6rem;
+  box-shadow: 1rem 1rem .7rem rgba($color-black, .2);
+  border: none;
 
   &:focus {
     outline: none;
@@ -15,47 +13,49 @@
 
   &:hover {
     cursor: pointer;
-    background-color: darken($color-btn-fill, 3%);
+    background-image: linear-gradient(to bottom, rgba($color-btn-light, .9), rgba($color-btn-dark, .9));
   }
 
   &--deal {
-    top: 49rem;
-    left: 62%;
-    border-radius: 100%;
+    top: 50rem;
+    left: 50%;
+    border-radius: .5rem;
+    height: 8rem;
     width: 12rem;
-    height: 12rem;
+    transform: translateX(-50%);
 
     &:active {
-      transform: translateY($btn-depress);
-      box-shadow: 0 .5rem 1rem rgba($color-shadow, .2);
+      transform: translate(-50%, $btn-depress);
+      box-shadow: 0 .5rem 1rem rgba($color-black, .2);
+      
     }
   }
 
   &--hit {
     top: 50rem;
     left: 50%;
-    height: 13rem;
-    width: 13rem;
-    border-radius: 100%;
+    height: 8rem;
+    width: 12rem;
+    border-radius: .5rem;
     transform: translateX(-115%);
 
     &:active {
       transform: translate(-115%, $btn-depress);
-      box-shadow: 0 .5rem 1rem rgba($color-shadow, .2);
+      box-shadow: 0 .5rem 1rem rgba($color-black, .2);
     }
   }
 
   &--stand {
     top: 50rem;
     left: 50%;
-    height: 13rem;
-    width: 13rem;
-    border-radius: 100%;
+    height: 8rem;
+    width: 12rem;
+    border-radius: .5rem;
     transform: translateX(15%);
 
     &:active {
       transform: translate(15%, $btn-depress);
-      box-shadow: 0 .5rem 1rem rgba($color-shadow, .2);
+      box-shadow: 0 .5rem 1rem rgba($color-black, .2);
     }
   }
 
@@ -63,43 +63,40 @@
     top: 50rem;
     left: 50%;
     transform: translateX(-50%);
-    height: 13rem;
-    width: 13rem;
-    border-radius: 100%;
+    height: 8rem;
+    width: 12rem;
+    border-radius: .5rem;
 
     &:active {
       transform: translate(-50%, $btn-depress);
-      box-shadow: 0 .5rem 1rem rgba($color-shadow, .2);
+      box-shadow: 0 .5rem 1rem rgba($color-black, .2);
     }
-  }
-}
-
-.btn__option {
-  border: solid 4px $color-table-yellow;
-  background-color: $color-btn-fill;
-  color: $color-primary;
-  position: absolute;
-  box-shadow: 1rem 1rem .7rem rgba($color-shadow, .2);
-
-  &:focus {
-    outline: none;
-  }
-
-  &:hover {
-    cursor: pointer;
-    background-color: darken($color-btn-fill, 3%);
   }
 
   &--double {
-    top: 49rem;
+    top: 45rem;
     left: 65%;
-    border-radius: 1rem;
-    width: 9rem;
-    height: 6rem;
+    height: 8rem;
+    width: 8rem;
+    border-radius: 100%;
 
     &:active {
       transform: translateY($btn-depress);
-      box-shadow: 0 .5rem 1rem rgba($color-shadow, .2);
+      box-shadow: 0 .5rem 1rem rgba($color-black, .2);
+    }
+  }
+
+  &--resetBet {
+    top: 63rem;
+    left: 20%;
+    height: 3.2rem;
+    width: 10rem;
+    border-radius: .5rem;
+    font-size: 1.3rem;
+
+    &:active {
+      transform: translateY($btn-depress);
+      box-shadow: 0 .5rem 1rem rgba($color-black, .2);
     }
   }
 }
@@ -109,13 +106,12 @@
 .betBtns {
   position: absolute;
   top: 55rem;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 20%;
 }
 
 .chip {
   height: 7rem;
-  margin-left: 2rem;
+  margin-left: 1rem;
 }
 
 .chip:focus {
@@ -125,3 +121,23 @@
 .chip:first-child {
   margin-left: 0;
 }
+
+.disabled {
+  color: aliceblue;
+  
+  &:hover {
+    cursor: default;
+    background-image: linear-gradient(to bottom, rgba($color-btn-light, .9), rgba($color-btn-medium, .9));
+  }
+}
+
+.disabled-bet {
+  color: aliceblue;
+
+  &:hover {
+    cursor: default;
+  }
+}
+
+
+

@@ -1,8 +1,6 @@
 .placeholderContainer--dealer {
-  position: absolute;
-  left: 50%;
+  @include centerElement;
   top: 2.8rem;
-  transform: translateX(-50%);
 }
 
 .placeholderRect {
@@ -12,10 +10,8 @@
 }
 
 .dealerCards {
-  position: absolute;
-  left: 50%;
+  @include centerElement;
   top: 2.9rem;
-  transform: translateX(-50%);
 }
 
 .card {
@@ -33,21 +29,60 @@
 }
 
 .placeBet {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  @include centerElement;
   top: 23rem;
   font-size: 3rem;
   color: $color-primary;
 }
 
 .bet {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  @include centerElement;
   top: 28rem;
   font-size: 2rem;
-  color: gainsboro;
+  color: $color-primary;
+}
+
+.pot {
+  @include centerElement;
+  top: 31rem;
+}
+
+.pot__chip {
+  height: 3rem;
+
+  &--1 {
+    animation: placeChip1 .4s paused;
+    position: absolute;
+    right: .2rem;
+  }
+
+  &--5 {
+    animation: placeChip5 .4s paused;
+    position: absolute;
+    left: -1.3rem
+    
+  }
+
+  &--20 {
+    animation: placeChip20 .4s paused;
+    position: absolute; 
+    left: .2rem;
+  }
+
+  &__ghost--1 {
+    position: absolute;
+    right: .2rem;
+  }
+
+  &__ghost--5 {
+    position: absolute;
+    left: -1.3rem;
+  }
+
+  &__ghost--20 {
+    position: absolute;
+    left: .2rem;
+  }
 }
 
 .score--user {
@@ -60,16 +95,12 @@
 }
 
 .placeholderContainer--user {
-  position: absolute;
-  left: 50%;
+  @include centerElement;
   top: 35rem;
-  transform: translateX(-50%);
 }
 
 .userCards {
-  position: absolute;
-  left: 50%;
+  @include centerElement;
   top: 35rem;
-  transform: translateX(-50%);
 }
 

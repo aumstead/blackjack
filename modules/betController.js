@@ -12,24 +12,30 @@ const betController = (function () {
     bet1: () => {
       if (bankroll - bet - 1 >= 0) {
         bet++;
+        return true;
       } else {
         alert('not enough money');
+        return false;
       }
     },
 
     bet5: () => {
       if (bankroll - bet - 5 >= 0) {
         bet += 5;
+        return true;
       } else {
         alert('not enough money');
+        return false;
       }
     },
 
     bet20: () => {
       if (bankroll - bet - 20 >= 0) {
         bet += 20;
+        return true;
       } else {
         alert('not enough money');
+        return false;
       }
     },
 

@@ -32,6 +32,7 @@ const UIController = (function () {
     insuranceYesBtn: 'insurance-yes-btn',
     insuranceNoBtn: 'insurance-no-btn',
     insuranceSubmitBtn: 'insurance-submit-btn',
+    resetBetBtn: 'reset-bet',
 
     // other
     placeBet: 'place-bet',
@@ -53,7 +54,13 @@ const UIController = (function () {
     dealerScore: 'dealer-score',
     userScore: 'user-score',
     splitScore1: 'split-score-1',
-    splitScore2: 'split-score-2'
+    splitScore2: 'split-score-2',
+    potChip1: 'pot-chip-1',
+    potChip5: 'pot-chip-5',
+    potChip20: 'pot-chip-20',
+    potChipGhost1: 'pot-chip-ghost-1',
+    potChipGhost5: 'pot-chip-ghost-5',
+    potChipGhost20: 'pot-chip-ghost-20',
   }
 
   const newHandUI = () => {
@@ -93,6 +100,12 @@ const UIController = (function () {
     document.getElementById(UISelectors.dealerScore).style.display = 'none';
     document.getElementById(UISelectors.splitScore1).style.display = 'none';
     document.getElementById(UISelectors.splitScore2).style.display = 'none';
+    document.getElementById(UISelectors.potChip1).style.display = 'none';
+    document.getElementById(UISelectors.potChip5).style.display = 'none';
+    document.getElementById(UISelectors.potChip20).style.display = 'none';
+    document.getElementById(UISelectors.potChipGhost1).style.display = 'none';
+    document.getElementById(UISelectors.potChipGhost5).style.display = 'none';
+    document.getElementById(UISelectors.potChipGhost20).style.display = 'none';
 
     // show elements
     document.getElementById(UISelectors.placeBet).style.display = 'inline-block';
@@ -122,6 +135,18 @@ const UIController = (function () {
     document.getElementById(UISelectors.userSplit8).src = '../images/playing-card-back-1.png';
     document.getElementById(UISelectors.userSplit9).src = '../images/playing-card-back-1.png';
     document.getElementById(UISelectors.userSplit10).src = '../images/playing-card-back-1.png';
+
+    // set reset bet button to disabled and add the style.
+    document.getElementById(UISelectors.resetBetBtn).disabled = true;
+    document.getElementById(UISelectors.resetBetBtn).classList.add('disabled');
+
+    // enable bet btns and remove disabled-bet style
+    document.getElementById(UISelectors.betBtn1).disabled = false;
+    document.getElementById(UISelectors.betBtn5).disabled = false;
+    document.getElementById(UISelectors.betBtn20).disabled = false;
+    document.getElementById(UISelectors.betBtn1).classList.remove('disabled-bet');
+    document.getElementById(UISelectors.betBtn5).classList.remove('disabled-bet');
+    document.getElementById(UISelectors.betBtn20).classList.remove('disabled-bet');
   };
 
 
@@ -207,6 +232,29 @@ const UIController = (function () {
 
     animateCard: selector => {
       document.getElementById(selector).style.animationPlayState = 'running';
+    },
+
+    animate: selector => {
+      document.getElementById(selector).style.animationPlayState = 'running';
+    },
+
+    pauseAnimation: selector => {
+      document.getElementById(selector).style.animationPlayState = 'paused';
+    },
+
+    disableBtn: selector => {
+      document.getElementById(selector).disabled = true;
+      document.getElementById(selector).classList.add('disabled');
+    },
+
+    enableBtn: selector => {
+      document.getElementById(selector).disabled = false;
+      document.getElementById(selector).classList.remove('disabled');
+    },
+
+    disableBetBtn: selector => {
+      document.getElementById(selector).disabled = true;
+      document.getElementById(selector).classList.add('disabled-bet');
     }
   }
 })();

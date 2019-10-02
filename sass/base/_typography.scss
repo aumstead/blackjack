@@ -5,17 +5,7 @@ body {
 .bankroll {
   position: absolute;
   left: 20%;
-  transform: translateX(-50%);
-  top: 55rem;
+  top: 50rem;
   font-size: 3.5rem;
-  color: gainsboro;
-}
-
-.btn {
-  font-family: $font-primary;
-  font-size: 2.5rem;
-}
-
-.btn__option {
-  font-size: 2rem;
+  color: $color-primary;
 }
