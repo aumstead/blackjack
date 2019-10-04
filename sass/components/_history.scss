@@ -1,0 +1,27 @@
+.history {
+  background-color: rgb(231, 231, 231);
+  height: 10rem;
+  width: 45rem;
+  border-radius: 3px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: 1.6rem;
+  overflow: auto;
+
+  &__heading {
+    color: black;
+  }
+
+  
+
+  &__item {
+    &--score {
+      color: red;
+    }
+
+    &--result {
+      color: grey;
+    }
+  }
+}

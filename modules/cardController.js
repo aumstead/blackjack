@@ -166,7 +166,7 @@ const cardController = (function () {
       return card;
     },
     testDealUser2: () => {
-      let card = diamonds_6;
+      let card = diamonds_5;
       cardData.user.hand.push(card);
       return card;
     },

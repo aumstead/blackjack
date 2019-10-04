@@ -38,15 +38,15 @@ body {
   box-sizing: border-box; }
 
 .container {
-  /* text-align: center; */
-  position: relative; }
+  position: relative;
+  height: 100vh; }
 
 body {
   font-family: "Rubik"; }
 
 .bankroll {
   position: absolute;
-  left: 20%;
+  left: 12%;
   top: 50rem;
   font-size: 3.5rem;
   color: #f0f8ff; }
@@ -113,9 +113,18 @@ body {
     .btn--double:active {
       transform: translateY(0.2rem);
       box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
+  .btn--split {
+    top: 54rem;
+    left: 65%;
+    height: 8rem;
+    width: 8rem;
+    border-radius: 100%; }
+    .btn--split:active {
+      transform: translateY(0.2rem);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
   .btn--resetBet {
     top: 63rem;
-    left: 20%;
+    left: 12%;
     height: 3.2rem;
     width: 10rem;
     border-radius: .5rem;
@@ -127,7 +136,7 @@ body {
 .betBtns {
   position: absolute;
   top: 55rem;
-  left: 20%; }
+  left: 12%; }
 
 .chip {
   height: 7rem;
@@ -149,6 +158,23 @@ body {
   color: aliceblue; }
   .disabled-bet:hover {
     cursor: default; }
+
+.history {
+  background-color: #e7e7e7;
+  height: 10rem;
+  width: 45rem;
+  border-radius: 3px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: 1.6rem;
+  overflow: auto; }
+  .history__heading {
+    color: black; }
+  .history__item--score {
+    color: red; }
+  .history__item--result {
+    color: grey; }
 
 .placeholderContainer--dealer {
   position: absolute;
@@ -244,3 +270,51 @@ body {
   left: 50%;
   transform: translateX(-50%);
   top: 35rem; }
+
+.userSplit1 {
+  position: absolute;
+  top: 35rem;
+  left: 25%;
+  transform: translateX(-50%); }
+
+.userSplit2 {
+  position: absolute;
+  top: 35rem;
+  right: 25%;
+  transform: translateX(50%); }
+
+.split-score {
+  position: absolute;
+  font-size: 2rem;
+  color: #f0f8ff; }
+  .split-score--1 {
+    left: 25%;
+    top: 23rem;
+    transform: translateX(-50%); }
+  .split-score--2 {
+    right: 25%;
+    top: 23rem;
+    transform: translateX(50%); }
+
+.split-bet {
+  position: absolute;
+  font-size: 2rem;
+  color: #f0f8ff; }
+  .split-bet--1 {
+    left: 25%;
+    top: 28rem;
+    transform: translateX(-50%); }
+  .split-bet--2 {
+    right: 25%;
+    top: 28rem;
+    transform: translateX(50%); }
+
+.split-pot--1 {
+  position: absolute;
+  left: 25%;
+  top: 31rem; }
+
+.split-pot--2 {
+  position: absolute;
+  right: 25%;
+  top: 31rem; }

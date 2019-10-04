@@ -113,6 +113,6 @@ const betController = (function () {
 
     setBet: (amount) => {
       bet = amount;
-    }
+    },
   }
 })();

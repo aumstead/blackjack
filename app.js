@@ -48,7 +48,11 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
   };
 
   const dealerBusts = () => {
+    const bet = betCtrl.getBet();
+    const bankroll = betCtrl.getBankroll();
+
     console.log('dealer busts');
+    UICtrl.logItem(`Dealer busts. You win $${bet}. Your chips: $${bankroll + bet}.`);
     betCtrl.userWinsBet();
     displayBankroll();
     UICtrl.prepareNextHand();
@@ -56,15 +60,19 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
   const checkWinner = () => {
     const score = scoreCtrl.getScore();
+    const bet = betCtrl.getBet();
+    const bankroll = betCtrl.getBankroll();
 
     if (score.user > score.dealer) {
       console.log('player wins');
+      UICtrl.logItem(`You: ${score.user}. Dealer: ${score.dealer}.`, `+ ${bet} = $${bankroll + bet}.`);
       betCtrl.userWinsBet();
     } else if (score.user === 21) {
       console.log('push. bet is returned.')
       betCtrl.push();
     } else {
       console.log('house wins');
+      UICtrl.logItem(`You: ${score.user}. Dealer: ${score.dealer}. Dealer wins.`, `- ${bet} = $${bankroll + bet}.`);
       betCtrl.dealerWinsBet();
     };
     // display bankroll every function call
@@ -104,8 +112,9 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     // 1. set split state to true
     cardData.splitState = true;
 
-    // 2. hide the split button and the user hand
+    // 2. hide the option buttons and the user hand
     UICtrl.hideElement(UISelectors.splitBtn);
+    UICtrl.hideElement(UISelectors.doubleBtn);
     UICtrl.hideElement(UISelectors.userCard1);
     UICtrl.hideElement(UISelectors.userCard2);
 
@@ -113,7 +122,9 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     cardData.user.splitHand1.push(cardData.user.hand[0]);
     cardData.user.splitHand2.push(cardData.user.hand[1]);
 
-    // 4. assign and show the split hands for UI
+    // 4. assign and show the split hands for UI. Animate them to their set positions.
+    UICtrl.animateCard(UISelectors.userSplit1);
+    UICtrl.animateCard(UISelectors.userSplit6);
     UICtrl.displayCard(cardData.user.hand[0], UISelectors.userSplit1);
     UICtrl.displayCard(cardData.user.hand[1], UISelectors.userSplit6);
 
@@ -122,9 +133,42 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     UICtrl.displaySplitBets(bet);
     UICtrl.hideElement(UISelectors.bet);
 
-    // 6. hide user score display and stand button. User must hit at least once.
+    // copy the pot element 
+    // show the split pot div
+    
+    // hide the main pot.
+    UICtrl.hideElement(UISelectors.pot);
+    // copy the pot element twice.
+    const element = document.getElementById(UISelectors.pot);
+    const newElement1 = element.cloneNode(true);
+    const newElement2 = element.cloneNode(true);
+    // add split-pot classes to new element
+    newElement1.classList.add('split-pot--1');
+    newElement2.classList.add('split-pot--2');
+    // remove pot class
+    newElement1.classList.remove('pot');
+    newElement2.classList.remove('pot');
+    // change the ids of each copy.
+    newElement1.id = 'split-pot-1';
+    newElement2.id = 'split-pot-2';
+    
+    // append to container
+    document.querySelector('.container').appendChild(newElement1);
+    document.querySelector('.container').appendChild(newElement2);
+
+    // show in UI
+    UICtrl.showElement(UISelectors.splitPot1);
+    UICtrl.showElement(UISelectors.splitPot2);
+
+    
+    
+    
+
+    // 6. hide user score display
     UICtrl.hideElement(UISelectors.userScore);
-    UICtrl.hideElement(UISelectors.standBtn);
+
+    // disable stand button. User must hit at least once.
+    UICtrl.disableBtn(UISelectors.standBtn);
   };
 
   const splitAcesControlCenter = () => {
@@ -162,124 +206,174 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
     switch (cardData.user.turn) {
       case (3):
-        // 1. deal card. Parameters are user object and hand number.
-        cardCtrl.dealSplit(cardData.user, '1');
+        UICtrl.showElement(UISelectors.userSplit2);
+        UICtrl.animateCard(UISelectors.userSplit2);
 
-        // 2. calculate score of the hand. Parameters are user object and score object property.
-        calcScore(cardData.user, 'split1');
+        setTimeout(() => {
+          // 1. deal card. Parameters are user object and hand number.
+          cardCtrl.dealSplit(cardData.user, '1');
 
-        // 3. display card
-        UICtrl.displayCard(cardData.user.splitHand1[1], UISelectors.userSplit2);
+          // 2. calculate score of the hand. Parameters are user object and score object property.
+          calcScore(cardData.user, 'split1');
 
-        // 4. get score for split1, load it into element, and display element.
-        scoreSplit1 = scoreCtrl.getScoreSplit1();
-        UICtrl.loadElement(scoreSplit1, UISelectors.splitScore1, `Hand 1 score: `);
-        UICtrl.showElement(UISelectors.splitScore1, 'block');
+          // 3. display card
+          UICtrl.displayCard(cardData.user.splitHand1[1], UISelectors.userSplit2);
 
-        // 5. increment user turn before calling splitCheckHand1 because the function changes user turn to 7 if bust or score = 21.
-        cardData.user.turn++;
+          // 4. get score for split1, load it into element, and display element.
+          scoreSplit1 = scoreCtrl.getScoreSplit1();
+          UICtrl.loadElement(scoreSplit1, UISelectors.splitScore1, `Hand 1 score: `);
+          UICtrl.showElement(UISelectors.splitScore1, 'block');
 
-        // 6. call splitCheckHand1. This checks for and handles split hand 1 bust.
-        splitCheckHand1();
+          // 5. increment user turn before calling splitCheckHand1 because the function changes user turn to 7 if bust or score = 21.
+          cardData.user.turn++;
+
+          // 6. call splitCheckHand1. This checks for and handles split hand 1 bust.
+          splitCheckHand1();
+        }, 200);
+
+        // enable stand btn
+        UICtrl.enableBtn(UISelectors.standBtn);
 
         // 7. break out of switch.
         break;
       case (4):
-        cardCtrl.dealSplit(cardData.user, '1');
-        calcScore(cardData.user, 'split1');
-        UICtrl.displayCard(cardData.user.splitHand1[2], UISelectors.userSplit3);
+        UICtrl.showElement(UISelectors.userSplit3);
+        UICtrl.animateCard(UISelectors.userSplit3);
 
-        // 4. get score, load, and display
-        scoreSplit1 = scoreCtrl.getScoreSplit1();
-        UICtrl.loadElement(scoreSplit1, UISelectors.splitScore1, `Hand 1 score: `);
-        UICtrl.showElement(UISelectors.splitScore1, 'block');
+        setTimeout(() => {
+          cardCtrl.dealSplit(cardData.user, '1');
+          calcScore(cardData.user, 'split1');
+          UICtrl.displayCard(cardData.user.splitHand1[2], UISelectors.userSplit3);
 
-        cardData.user.turn++;
-        splitCheckHand1();
+          // 4. get score, load, and display
+          scoreSplit1 = scoreCtrl.getScoreSplit1();
+          UICtrl.loadElement(scoreSplit1, UISelectors.splitScore1, `Hand 1 score: `);
+          UICtrl.showElement(UISelectors.splitScore1, 'block');
+
+          cardData.user.turn++;
+          splitCheckHand1();
+        }, 200);
+
         break;
       case (5):
-        cardCtrl.dealSplit(cardData.user, '1');
-        calcScore(cardData.user, 'split1');
-        UICtrl.displayCard(cardData.user.splitHand1[3], UISelectors.userSplit4);
+        UICtrl.showElement(UISelectors.userSplit4);
+        UICtrl.animateCard(UISelectors.userSplit4);
 
-        // 4. get score, load, and display
-        scoreSplit1 = scoreCtrl.getScoreSplit1();
-        UICtrl.loadElement(scoreSplit1, UISelectors.splitScore1, `Hand 1 score: `);
-        UICtrl.showElement(UISelectors.splitScore1, 'block');
+        setTimeout(() => {
+          cardCtrl.dealSplit(cardData.user, '1');
+          calcScore(cardData.user, 'split1');
+          UICtrl.displayCard(cardData.user.splitHand1[3], UISelectors.userSplit4);
 
-        cardData.user.turn++;
-        splitCheckHand1();
+          // 4. get score, load, and display
+          scoreSplit1 = scoreCtrl.getScoreSplit1();
+          UICtrl.loadElement(scoreSplit1, UISelectors.splitScore1, `Hand 1 score: `);
+          UICtrl.showElement(UISelectors.splitScore1, 'block');
+
+          cardData.user.turn++;
+          splitCheckHand1();
+        }, 200);
+
         break;
       case (6):
-        cardCtrl.dealSplit(cardData.user, '1');
-        calcScore(cardData.user, 'split1');
-        UICtrl.displayCard(cardData.user.splitHand1[4], UISelectors.userSplit5);
+        UICtrl.showElement(UISelectors.userSplit5);
+        UICtrl.animateCard(UISelectors.userSplit5);
 
-        // 4. get score, load, and display
-        scoreSplit1 = scoreCtrl.getScoreSplit1();
-        UICtrl.loadElement(scoreSplit1, UISelectors.splitScore1, `Hand 1 score: `);
-        UICtrl.showElement(UISelectors.splitScore1, 'block');
+        setTimeout(() => {
+          cardCtrl.dealSplit(cardData.user, '1');
+          calcScore(cardData.user, 'split1');
+          UICtrl.displayCard(cardData.user.splitHand1[4], UISelectors.userSplit5);
 
-        cardData.user.turn++;
-        splitCheckHand1();
-        // hide the stand button for case 7. Player must hit at least once.
-        UICtrl.hideElement(UISelectors.standBtn);
+          // 4. get score, load, and display
+          scoreSplit1 = scoreCtrl.getScoreSplit1();
+          UICtrl.loadElement(scoreSplit1, UISelectors.splitScore1, `Hand 1 score: `);
+          UICtrl.showElement(UISelectors.splitScore1, 'block');
+
+          cardData.user.turn++;
+          splitCheckHand1();
+          // disable the stand button for case 7. Player must hit at least once.
+          UICtrl.disableBtn(UISelectors.standBtn);
+        }, 200);
+
         break;
       case (7):
-        cardCtrl.dealSplit(cardData.user, '2');
-        calcScore(cardData.user, 'split2');
-        UICtrl.displayCard(cardData.user.splitHand2[1], UISelectors.userSplit7);
+        UICtrl.showElement(UISelectors.userSplit7);
+        UICtrl.animateCard(UISelectors.userSplit7);
 
-        // 4. get score, load, and display
-        scoreSplit2 = scoreCtrl.getScoreSplit2();
-        UICtrl.loadElement(scoreSplit2, UISelectors.splitScore2, `Hand 2 score: `);
-        UICtrl.showElement(UISelectors.splitScore2, 'block');
+        setTimeout(() => {
+          cardCtrl.dealSplit(cardData.user, '2');
+          calcScore(cardData.user, 'split2');
+          UICtrl.displayCard(cardData.user.splitHand2[1], UISelectors.userSplit7);
 
-        cardData.user.turn++;
-        splitCheckHand2();
-        // show the stand button because it's an option for the user.
-        UICtrl.showElement(UISelectors.standBtn);
+          // 4. get score, load, and display
+          scoreSplit2 = scoreCtrl.getScoreSplit2();
+          UICtrl.loadElement(scoreSplit2, UISelectors.splitScore2, `Hand 2 score: `);
+          UICtrl.showElement(UISelectors.splitScore2, 'block');
+
+          cardData.user.turn++;
+          splitCheckHand2();
+          // enable the stand button because it's an option for the user.
+          UICtrl.enableBtn(UISelectors.standBtn);
+        }, 200);
+
         break;
       case (8):
-        cardCtrl.dealSplit(cardData.user, '2');
-        calcScore(cardData.user, 'split2');
-        UICtrl.displayCard(cardData.user.splitHand2[2], UISelectors.userSplit8);
+        UICtrl.showElement(UISelectors.userSplit8);
+        UICtrl.animateCard(UISelectors.userSplit8);
 
-        // 4. get score, load, and display
-        scoreSplit2 = scoreCtrl.getScoreSplit2();
-        UICtrl.loadElement(scoreSplit2, UISelectors.splitScore2, `Hand 2 score: `);
-        UICtrl.showElement(UISelectors.splitScore2, 'block');
+        setTimeout(() => {
+          cardCtrl.dealSplit(cardData.user, '2');
+          calcScore(cardData.user, 'split2');
+          UICtrl.displayCard(cardData.user.splitHand2[2], UISelectors.userSplit8);
 
-        cardData.user.turn++;
-        splitCheckHand2();
+          // 4. get score, load, and display
+          scoreSplit2 = scoreCtrl.getScoreSplit2();
+          UICtrl.loadElement(scoreSplit2, UISelectors.splitScore2, `Hand 2 score: `);
+          UICtrl.showElement(UISelectors.splitScore2, 'block');
+
+          cardData.user.turn++;
+          splitCheckHand2();
+        }, 200);
+
         break;
       case (9):
-        cardCtrl.dealSplit(cardData.user, '2');
-        calcScore(cardData.user, 'split2');
-        UICtrl.displayCard(cardData.user.splitHand2[3], UISelectors.userSplit9);
+        UICtrl.showElement(UISelectors.userSplit9);
+        UICtrl.animateCard(UISelectors.userSplit9);
 
-        // 4. get score, load, and display
-        scoreSplit2 = scoreCtrl.getScoreSplit2();
-        UICtrl.loadElement(scoreSplit2, UISelectors.splitScore2, `Hand 2 score: `);
-        UICtrl.showElement(UISelectors.splitScore2, 'block');
+        setTimeout(() => {
+          cardCtrl.dealSplit(cardData.user, '2');
+          calcScore(cardData.user, 'split2');
+          UICtrl.displayCard(cardData.user.splitHand2[3], UISelectors.userSplit9);
 
-        cardData.user.turn++;
-        splitCheckHand2();
+          // 4. get score, load, and display
+          scoreSplit2 = scoreCtrl.getScoreSplit2();
+          UICtrl.loadElement(scoreSplit2, UISelectors.splitScore2, `Hand 2 score: `);
+          UICtrl.showElement(UISelectors.splitScore2, 'block');
+
+          cardData.user.turn++;
+          splitCheckHand2();
+        }, 200);
+
         break;
       case (10):
-        cardCtrl.dealSplit(cardData.user, '2');
-        calcScore(cardData.user, 'split2');
-        UICtrl.displayCard(cardData.user.splitHand2[4], UISelectors.userSplit10);
+        UICtrl.showElement(UISelectors.userSplit10);
+        UICtrl.animateCard(UISelectors.userSplit10);
 
-        // 4. get score, load, and display
-        scoreSplit2 = scoreCtrl.getScoreSplit2();
-        UICtrl.loadElement(scoreSplit2, UISelectors.splitScore2, `Hand 2 score: `);
-        UICtrl.showElement(UISelectors.splitScore2, 'block');
-
-        cardData.user.turn++;
-        splitCheckHand2();
-        // hit all the way through without busting or getting 21. Run dealer code.
-        dealerFinishes();
+        setTimeout(() => {
+          cardCtrl.dealSplit(cardData.user, '2');
+          calcScore(cardData.user, 'split2');
+          UICtrl.displayCard(cardData.user.splitHand2[4], UISelectors.userSplit10);
+  
+          // 4. get score, load, and display
+          scoreSplit2 = scoreCtrl.getScoreSplit2();
+          UICtrl.loadElement(scoreSplit2, UISelectors.splitScore2, `Hand 2 score: `);
+          UICtrl.showElement(UISelectors.splitScore2, 'block');
+  
+          cardData.user.turn++;
+          splitCheckHand2();
+          // hit all the way through without busting or getting 21. Run dealer code.
+          dealerFinishes();
+        }, 200);
+        
         break;
       default: console.log('There was an error in switch statement.')
     }
@@ -296,13 +390,13 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
       // 1. change the user turn to 7. Split hand 1 is over. Start split hand 2.
       cardData.user.turn = 7;
 
-      // 2. hide the stand button for turn 7. User must hit at least once.
-      UICtrl.hideElement(UISelectors.standBtn);
+      // 2. disable the stand button for turn 7. User must hit at least once.
+      UICtrl.disableBtn(UISelectors.standBtn);
 
     } else if (scoreSplit1 === 21) {
       console.log('Split hand 1 has 21.');
       cardData.user.turn = 7;
-      UICtrl.hideElement(UISelectors.standBtn);
+      UICtrl.disableBtn(UISelectors.standBtn);
     } else {
       // 3. show the stand button because it was hidden for initial hit, but now user can stand.
       UICtrl.showElement(UISelectors.standBtn);
@@ -315,6 +409,8 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
     if (scoreSplit2 > 21) {
       console.log('Split hand 2 busted.');
+      UICtrl.disableBtn(UISelectors.standBtn);
+      UICtrl.disableBtn(UISelectors.hitBtn);
       if (scoreSplit1 > 21) {
         // handle bets here because dealer code doesn't need to run. Both split hands busted. 
         betCtrl.userLosesSplitHand('1');
@@ -588,7 +684,7 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
           setTimeout(UICtrl.prepareNextHand, 1000);
         }
       }
-    }, 500);
+    }, 100);
   };
 
   // CONTROL CENTER FUNCTIONS
@@ -756,26 +852,26 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
   const standControlCenter = () => {
     const cardData = cardCtrl.getCardData();
 
-    // 1. disable irrelevant buttons.
-    UICtrl.disableBtn(UISelectors.doubleBtn);
-
-    // disable hit and stand buttons
-    UICtrl.disableBtn(UISelectors.hitBtn);
-    UICtrl.disableBtn(UISelectors.standBtn);
-
-    // 2. check for split state
+    // check for split state
     if (cardData.splitState) {
       if (cardData.user.turn < 7) {
         // 2a. if user turn is less than 7, change to 7 in order to move on to split hand 2.
         cardData.user.turn = 7;
-        // 2b. hide stand button. User must hit once.
-        UICtrl.hideElement(UISelectors.standBtn);
+        // 2b. disable stand button. User must hit once.
+        UICtrl.disableBtn(UISelectors.standBtn);
       } else {
         dealerFinishes();
 
       }
     } else {
-      // 3. if not split state, dealer plays hand
+      // if not split state, dealer plays hand
+      // disable hit and stand buttons
+      UICtrl.disableBtn(UISelectors.hitBtn);
+      UICtrl.disableBtn(UISelectors.standBtn);
+
+      // disable irrelevant buttons until they become hidden
+      UICtrl.disableBtn(UISelectors.doubleBtn);
+
       dealerFinishes();
     }
   }
@@ -930,6 +1026,10 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
     // enable option btns. These can only be disabled once, so they may be enabled here in preparation for the next hand.
     UICtrl.enableBtn(UISelectors.doubleBtn);
+
+    // remove split-pot elements from the DOM.
+    document.getElementById('split-pot-1').remove();
+    document.getElementById('split-pot-2').remove();
 
     // create a blank line in console
     console.log('');

@@ -39,6 +39,8 @@ const UIController = (function () {
     insuranceWarning: 'insurance-warning',
     insuranceForm: 'insurance-form',
     insuranceInput: 'insurance-input',
+    history: 'history',
+    historyHeading: 'history-heading',
 
     // bet buttons
     betBtn1: 'bet-1',
@@ -61,6 +63,9 @@ const UIController = (function () {
     potChipGhost1: 'pot-chip-ghost-1',
     potChipGhost5: 'pot-chip-ghost-5',
     potChipGhost20: 'pot-chip-ghost-20',
+    splitPot1: 'split-pot-1',
+    splitPot2: 'split-pot-2',
+    pot: 'pot'
   }
 
   const newHandUI = () => {
@@ -113,6 +118,7 @@ const UIController = (function () {
     document.getElementById(UISelectors.betBtn5).style.display = 'inline-block';
     document.getElementById(UISelectors.betBtn20).style.display = 'inline-block';
     document.getElementById(UISelectors.bet).style.display = 'inline-block';
+    document.getElementById(UISelectors.pot).style.display = 'inline-block';
 
     // load card back for all cards
     document.getElementById(UISelectors.userCard1).src = '../images/playing-card-back-1.png';
@@ -255,6 +261,23 @@ const UIController = (function () {
     disableBetBtn: selector => {
       document.getElementById(selector).disabled = true;
       document.getElementById(selector).classList.add('disabled-bet');
+    },
+
+    logItem: (scoreText, resultText) => {
+      const history = document.getElementById(UISelectors.history);
+      // create li elements
+      const scoreItem = document.createElement('li');
+      const resultItem = document.createElement('li');
+      // add class names and argument text
+      scoreItem.className = 'history__item--score';
+      scoreItem.innerHTML = scoreText;
+      resultItem.className = 'history__item--result';
+      resultItem.innerHTML = resultText;
+      // insert into unordered list.
+      history.insertAdjacentElement('beforeend', scoreItem);
+      history.insertAdjacentElement('beforeend', resultItem);
+      // lets the scroll bar start so newest hand is visible. Otherwise newest hand is at the bottom of div.
+      history.scrollTop = history.scrollHeight - history.clientHeight;
     }
   }
 })();

@@ -1,0 +1,63 @@
+.userSplit1 {
+  position: absolute;
+  top: $top-user-cards;
+  left: 25%;
+  transform: translateX(-50%);
+}
+
+.userSplit2 {
+  position: absolute;
+  top: $top-user-cards;
+  right: 25%;
+  transform: translateX(50%);
+}
+
+.split-score {
+  position: absolute;
+  font-size: 2rem;
+  color: $color-primary;
+
+  &--1 {
+    left: 25%;
+    top: 23rem;
+    transform: translateX(-50%);
+  }
+
+  &--2 {
+    right: 25%;
+    top: 23rem;
+    transform: translateX(50%);
+  }
+}
+
+.split-bet {
+  position: absolute;
+  font-size: 2rem;
+  color: $color-primary;
+
+  &--1 {
+    left: 25%;
+    top: 28rem;
+    transform: translateX(-50%);
+  }
+
+  &--2 {
+    right: 25%;
+    top: 28rem;
+    transform: translateX(50%);
+  }
+}
+
+.split-pot {
+  &--1 {
+    position: absolute;
+    left: 25%;
+    top: 31rem;
+  }
+
+  &--2 {
+    position: absolute;
+    right: 25%;
+    top: 31rem;
+  }
+}

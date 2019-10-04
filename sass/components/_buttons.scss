@@ -86,9 +86,22 @@
     }
   }
 
+  &--split {
+    top: 54rem;
+    left: 65%;
+    height: 8rem;
+    width: 8rem;
+    border-radius: 100%;
+
+    &:active {
+      transform: translateY($btn-depress);
+      box-shadow: 0 .5rem 1rem rgba($color-black, .2);
+    }
+  }
+
   &--resetBet {
     top: 63rem;
-    left: 20%;
+    left: 12%;
     height: 3.2rem;
     width: 10rem;
     border-radius: .5rem;
@@ -106,7 +119,7 @@
 .betBtns {
   position: absolute;
   top: 55rem;
-  left: 20%;
+  left: 12%;
 }
 
 .chip {

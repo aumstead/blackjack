@@ -13,6 +13,12 @@
 <body>
   <div class="container">
 
+
+    <ul id="history" class="history">
+      <li id="history-heading" class="history__heading">Hand history</li>
+    </ul>
+
+
     <svg width="100" height="180" class="placeholderContainer--dealer">
       <rect x="10" y="10" rx="10" ry="10" width="78" height="100" class="placeholderRect" />
     </svg>
@@ -61,7 +67,7 @@
       <img src="/images/playing-card-back-1.png" id="user-card-5" class="card">
     </div>
 
-    <div class="userSplit--1">
+    <div class="userSplit1">
       <img src="/images/playing-card-back-1.png" id="user-split-1" class="card">
       <img src="/images/playing-card-back-1.png" id="user-split-2" class="card">
       <img src="/images/playing-card-back-1.png" id="user-split-3" class="card">
@@ -69,7 +75,7 @@
       <img src="/images/playing-card-back-1.png" id="user-split-5" class="card">
     </div>
 
-    <div class="userSplit--2">
+    <div class="userSplit2">
       <img src="/images/playing-card-back-1.png" id="user-split-6" class="card">
       <img src="/images/playing-card-back-1.png" id="user-split-7" class="card">
       <img src="/images/playing-card-back-1.png" id="user-split-8" class="card">
@@ -94,6 +100,13 @@
 
     <p id="bankroll" class="bankroll"></p>
 
+    <p id="split-score-1" class="split-score split-score--1"></p>
+    <p id="split-score-2" class="split-score split-score--2"></p>
+    <p id="split-bet-1" class="split-bet split-bet--1"></p>
+    <p id="split-bet-2" class="split-bet split-bet--2"></p>
+
+    <!-- <div id="split-pot-1" class="split-pot split-pot--1"><p>text</p></div>
+    <div id="split-pot-2" class="split-pot split-pot--2"><p>text</p></div> -->
 
     <div id="insurance-warning">
       <p>Dealer is showing an Ace. Do you want insurance?</p>
@@ -101,17 +114,9 @@
       <button id="insurance-no-btn">No</button>
     </div>
 
-
-
-
-
-
-    <p id="split-score-1"></p>
-    <p id="split-score-2"></p>
     <p id="insurance-bet"></p>
 
-    <p id="split-bet-1"></p>
-    <p id="split-bet-2"></p>
+
 
 
 
