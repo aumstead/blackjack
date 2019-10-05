@@ -36,7 +36,6 @@ const UIController = (function () {
 
     // other
     placeBet: 'place-bet',
-    insuranceWarning: 'insurance-warning',
     insuranceForm: 'insurance-form',
     insuranceInput: 'insurance-input',
     history: 'history',
@@ -52,7 +51,8 @@ const UIController = (function () {
     splitBet1: 'split-bet-1',
     splitBet2: 'split-bet-2',
     bankroll: 'bankroll',
-    insuranceBet: 'insurance-bet',
+    insuranceWarning: 'insurance-warning',
+    insuranceInputWarning: 'insurance-input-warning',
     dealerScore: 'dealer-score',
     userScore: 'user-score',
     splitScore1: 'split-score-1',
@@ -96,11 +96,11 @@ const UIController = (function () {
     document.getElementById(UISelectors.nextHandBtn).style.display = 'none';
     document.getElementById(UISelectors.standBtn).style.display = 'none';
     document.getElementById(UISelectors.hitBtn).style.display = 'none';
-    document.getElementById(UISelectors.insuranceWarning).style.display = 'none';
     document.getElementById(UISelectors.insuranceForm).style.display = 'none';
+    document.getElementById(UISelectors.insuranceWarning).style.display = 'none';
+    document.getElementById(UISelectors.insuranceInputWarning).style.display = 'none';
     document.getElementById(UISelectors.splitBet1).style.display = 'none';
     document.getElementById(UISelectors.splitBet2).style.display = 'none';
-    document.getElementById(UISelectors.insuranceBet).style.display = 'none';
     document.getElementById(UISelectors.userScore).style.display = 'none';
     document.getElementById(UISelectors.dealerScore).style.display = 'none';
     document.getElementById(UISelectors.splitScore1).style.display = 'none';
@@ -153,6 +153,12 @@ const UIController = (function () {
     document.getElementById(UISelectors.betBtn1).classList.remove('disabled-bet');
     document.getElementById(UISelectors.betBtn5).classList.remove('disabled-bet');
     document.getElementById(UISelectors.betBtn20).classList.remove('disabled-bet');
+
+    // enable other potentially disabled buttons and remove the disabled class.
+    document.getElementById(UISelectors.splitBtn).disabled = false;
+    document.getElementById(UISelectors.splitBtn).classList.remove('disabled');
+    document.getElementById(UISelectors.doubleBtn).disabled = false;
+    document.getElementById(UISelectors.doubleBtn).classList.remove('disabled');
   };
 
 
@@ -202,11 +208,6 @@ const UIController = (function () {
       return value
     },
 
-    displayInsuranceBet: insuranceBet => {
-      document.getElementById(UISelectors.insuranceBet).textContent = `Insurance bet: ${insuranceBet}`;
-      document.getElementById(UISelectors.insuranceBet).style.display = 'block';
-    },
-
     displaySplitBets: bet => {
       document.getElementById(UISelectors.splitBet1).textContent = `Hand 1 bet: ${bet}`;
       document.getElementById(UISelectors.splitBet2).textContent = `Hand 2 bet: ${bet}`;
@@ -230,6 +231,8 @@ const UIController = (function () {
       // hide buttons
       document.getElementById(UISelectors.hitBtn).style.display = 'none';
       document.getElementById(UISelectors.standBtn).style.display = 'none';
+      document.getElementById(UISelectors.doubleBtn).style.display = 'none';
+      document.getElementById(UISelectors.splitBtn).style.display = 'none';
     },
 
     nextHand: () => {
@@ -263,21 +266,40 @@ const UIController = (function () {
       document.getElementById(selector).classList.add('disabled-bet');
     },
 
-    logItem: (scoreText, resultText) => {
+    logHand: (scoreText, resultText) => {
       const history = document.getElementById(UISelectors.history);
       // create li elements
       const scoreItem = document.createElement('li');
       const resultItem = document.createElement('li');
+      
       // add class names and argument text
       scoreItem.className = 'history__item--score';
       scoreItem.innerHTML = scoreText;
       resultItem.className = 'history__item--result';
       resultItem.innerHTML = resultText;
+      
       // insert into unordered list.
       history.insertAdjacentElement('beforeend', scoreItem);
       history.insertAdjacentElement('beforeend', resultItem);
+
       // lets the scroll bar start so newest hand is visible. Otherwise newest hand is at the bottom of div.
       history.scrollTop = history.scrollHeight - history.clientHeight;
+    },
+
+    logText: (text) => {
+      const history = document.getElementById(UISelectors.history);
+      const li = document.createElement('li');
+      li.className = 'history__item--text';
+      li.innerHTML = text;
+      history.insertAdjacentElement('beforeend', li);
+      history.scrollTop = history.scrollHeight - history.clientHeight;
+    },
+
+    logBlank: () => {
+      const history = document.getElementById(UISelectors.history);
+      const li = document.createElement('li');
+      li.innerHTML = '&nbsp';
+      history.insertAdjacentElement('beforeend', li);
     }
   }
 })();

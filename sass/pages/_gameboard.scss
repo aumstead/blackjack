@@ -1,6 +1,6 @@
 .placeholderContainer--dealer {
   @include centerElement;
-  top: 2.8rem;
+  top: 2rem;
 }
 
 .placeholderRect {
@@ -11,7 +11,7 @@
 
 .dealerCards {
   @include centerElement;
-  top: 2.9rem;
+  top: 2.1rem;
 }
 
 .card {
@@ -37,14 +37,14 @@
 
 .bet {
   @include centerElement;
-  top: 28rem;
+  top: 27rem;
   font-size: 2rem;
   color: $color-primary;
 }
 
 .pot {
   @include centerElement;
-  top: 31rem;
+  top: 30rem;
 }
 
 .pot__chip {
@@ -104,3 +104,69 @@
   top: $top-user-cards;
 }
 
+// INSURANCE WARNING
+.insurance-warning {
+  @include centerElement;
+  position: absolute;
+  top: 17rem;
+  text-align: center;
+
+  &__text {
+  font-size: 2rem;
+  color: $color-primary;
+  }
+}
+
+// INSURANCE FORM
+.insurance-form {
+  @include centerElement;
+  position: absolute;
+  top: 20rem;
+  text-align: center;
+
+  &__label {
+    font-size: 1.5rem;
+    color: $color-primary;
+    display: block;
+  }
+
+  &__input {
+    display: inline-block;
+    font-size: 1.5rem;
+    padding: .6rem;
+    border: none;
+    width: 15rem;
+    height: 3.2rem;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+    
+    
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__tooltip {
+    background-color: $color-warning;
+    color: $color-primary;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    top: -5.5rem;
+    left: -4.5rem;
+    font-size: 1.5rem;
+    width: 150%;
+    padding: .5rem;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 100%; /* At the bottom of the tooltip */
+      left: 50%;
+      margin-left: -5px;
+      border-width: 7px;
+      border-style: solid;
+      border-color: $color-warning transparent transparent transparent;
+    }
+  }
+}

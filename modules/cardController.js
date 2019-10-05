@@ -73,8 +73,10 @@ const cardController = (function () {
       splitHand1: [],
       splitHand2: []
     },
-    splitState: false
+    splitState: false,
   };
+
+  let handCount = 1;
 
   // deal a card function. Parameter is the player — dealer or user. Called in the public function.
   const dealCard = (obj) => {
@@ -131,6 +133,10 @@ const cardController = (function () {
       cardData.user.turn++;
     },
 
+    incrementHandCount: () => {
+      handCount++;
+    },
+
     nextHand: () => {
       // reset deck
       deck = [clubs_1, clubs_2, clubs_3, clubs_4, clubs_5, clubs_6, clubs_7, clubs_8, clubs_9, clubs_10, clubs_11, clubs_12, clubs_13, diamonds_1, diamonds_2, diamonds_3, diamonds_4, diamonds_5, diamonds_6, diamonds_7, diamonds_8, diamonds_9, diamonds_10, diamonds_11, diamonds_12, diamonds_13, hearts_1, hearts_2, hearts_3, hearts_4, hearts_5, hearts_6, hearts_7, hearts_8, hearts_9, hearts_10, hearts_11, hearts_12, hearts_13, spades_1, spades_2, spades_3, spades_4, spades_5, spades_6, spades_7, spades_8, spades_9, spades_10, spades_11, spades_12, spades_13];
@@ -154,6 +160,8 @@ const cardController = (function () {
 
     getDeck: () => deck,
 
+    getHandCount: () => handCount,
+
     // METHODS USED FOR TESTING
     testDealUser1: () => {
       let card = clubs_5;
@@ -161,7 +169,7 @@ const cardController = (function () {
       return card;
     },
     testDealDealer1: () => {
-      let card = spades_2;
+      let card = spades_1;
       cardData.dealer.hand.push(card);
       return card;
     },
@@ -171,7 +179,7 @@ const cardController = (function () {
       return card;
     },
     testDealDealer2: () => {
-      let card = hearts_2;
+      let card = hearts_1;
       cardData.dealer.hand.push(card);
       return card;
     },

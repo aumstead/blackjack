@@ -1,27 +1,51 @@
 .history {
   background-color: rgb(231, 231, 231);
-  height: 10rem;
-  width: 45rem;
+  height: 15rem;
+  width: 40rem;
   border-radius: 3px;
   position: absolute;
-  right: 0;
-  bottom: 0;
-  font-size: 1.6rem;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  font-size: 1.4rem;
   overflow: auto;
+  list-style: none;
 
   &__heading {
     color: black;
+    margin-left: 1rem;
+    margin-top: .5rem;
   }
 
   
 
   &__item {
     &--score {
-      color: red;
+      color: rgb(182, 28, 28);
+      margin-left: 1rem;
     }
 
     &--result {
       color: grey;
+      margin-left: 1rem;
+    }
+
+    &--text {
+      color: grey;
+      margin-left: 1rem;
     }
   }
+}
+
+.tab {
+  position: absolute;
+  top: 50.5rem;
+  right: 3rem;
+  background-color: rgb(228, 228, 228);
+  font-size: 2rem;
+  padding: .5rem 2rem;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom: solid 1px black;
+  z-index: 2;
+  box-shadow: 0 .2rem .5rem rgba($color: black, $alpha: .2)
 }

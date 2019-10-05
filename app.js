@@ -51,8 +51,8 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     const bet = betCtrl.getBet();
     const bankroll = betCtrl.getBankroll();
 
-    console.log('dealer busts');
-    UICtrl.logItem(`Dealer busts. You win $${bet}. Your chips: $${bankroll + bet}.`);
+    UICtrl.logHand(`Dealer busts.`, `${bankroll} + ${bet} = ${bankroll + bet}.`);
+    UICtrl.logBlank();
     betCtrl.userWinsBet();
     displayBankroll();
     UICtrl.prepareNextHand();
@@ -64,15 +64,16 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     const bankroll = betCtrl.getBankroll();
 
     if (score.user > score.dealer) {
-      console.log('player wins');
-      UICtrl.logItem(`You: ${score.user}. Dealer: ${score.dealer}.`, `+ ${bet} = $${bankroll + bet}.`);
+      UICtrl.logHand(`Player wins: ${score.user}-${score.dealer}.`, `Chip count: ${bankroll} + ${bet} = ${bankroll + bet}.`);
+      UICtrl.logBlank();
       betCtrl.userWinsBet();
-    } else if (score.user === 21) {
-      console.log('push. bet is returned.')
+    } else if (score.user === score.dealer) {
+      UICtrl.logHand(`Push: ${score.user}-${score.dealer}. Bet is returned.`, `Chip count: ${bankroll}.`);
+      UICtrl.logBlank();
       betCtrl.push();
     } else {
-      console.log('house wins');
-      UICtrl.logItem(`You: ${score.user}. Dealer: ${score.dealer}. Dealer wins.`, `- ${bet} = $${bankroll + bet}.`);
+      UICtrl.logHand(`House wins: ${score.dealer}-${score.user}.`, `Chip count: ${bankroll} - ${bet} = ${bankroll - bet}.`);
+      UICtrl.logBlank();
       betCtrl.dealerWinsBet();
     };
     // display bankroll every function call
@@ -135,7 +136,7 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
     // copy the pot element 
     // show the split pot div
-    
+
     // hide the main pot.
     UICtrl.hideElement(UISelectors.pot);
     // copy the pot element twice.
@@ -151,7 +152,7 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     // change the ids of each copy.
     newElement1.id = 'split-pot-1';
     newElement2.id = 'split-pot-2';
-    
+
     // append to container
     document.querySelector('.container').appendChild(newElement1);
     document.querySelector('.container').appendChild(newElement2);
@@ -160,9 +161,9 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     UICtrl.showElement(UISelectors.splitPot1);
     UICtrl.showElement(UISelectors.splitPot2);
 
-    
-    
-    
+
+
+
 
     // 6. hide user score display
     UICtrl.hideElement(UISelectors.userScore);
@@ -362,18 +363,18 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
           cardCtrl.dealSplit(cardData.user, '2');
           calcScore(cardData.user, 'split2');
           UICtrl.displayCard(cardData.user.splitHand2[4], UISelectors.userSplit10);
-  
+
           // 4. get score, load, and display
           scoreSplit2 = scoreCtrl.getScoreSplit2();
           UICtrl.loadElement(scoreSplit2, UISelectors.splitScore2, `Hand 2 score: `);
           UICtrl.showElement(UISelectors.splitScore2, 'block');
-  
+
           cardData.user.turn++;
           splitCheckHand2();
           // hit all the way through without busting or getting 21. Run dealer code.
           dealerFinishes();
         }, 200);
-        
+
         break;
       default: console.log('There was an error in switch statement.')
     }
@@ -492,51 +493,86 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
   // INSURANCE FUNCTIONS
   const insuranceYes = () => {
+    // on event: show the form, hide insurance, and disable all options until user chooses insurance amount.
     UICtrl.showElement(UISelectors.insuranceForm);
     UICtrl.hideElement(UISelectors.insuranceWarning);
+    UICtrl.disableBtn(UISelectors.hitBtn);
+    UICtrl.disableBtn(UISelectors.standBtn);
+    UICtrl.disableBtn(UISelectors.splitBtn);
+    UICtrl.disableBtn(UISelectors.doubleBtn);
   };
 
   const insuranceSubmit = (e) => {
     e.preventDefault();
-    const insuranceBet = parseInt(UICtrl.getInsuranceInput());
+    const insuranceBet = Math.round(parseFloat(UICtrl.getInsuranceInput()));
     const score = scoreCtrl.getScore();
     const cardData = cardController.getCardData();
+    const bankroll = betCtrl.getBankroll();
+    const bet = betCtrl.getBet();
+    const maxBet = Math.round(bet / 2);
 
-    UICtrl.displayInsuranceBet(insuranceBet);
-    UICtrl.hideElement(UISelectors.insuranceForm);
+    // verify user input. If more than zero and less than half of original bet, run code. Else, show warning.
+    if (insuranceBet > 0 && insuranceBet <= maxBet) {
+      UICtrl.hideElement(UISelectors.insuranceForm);
 
-    console.log('dealer checking hole card...');
-    if (score.dealer === 21) {
-      console.log('dealer has a natural. User wins insurance bet.');
-      UICtrl.displayCard(cardData.dealer.hand[0], UISelectors.dealerCard1);
-      betCtrl.userWinsInsuranceBet(insuranceBet);
-      betCtrl.dealerWinsBet();
-      displayBankroll();
-      UICtrl.prepareNextHand();
+      UICtrl.logText(`Dealer checking hole card...`);
+      setTimeout(() => {
+        if (score.dealer === 21) {
+          UICtrl.logHand(`Dealer has blackjack. Player wins insurance bet. Pays 2:1.`, `Chip count: ${bankroll} + ${insuranceBet * 2} = ${bankroll + insuranceBet * 2}.`);
+          UICtrl.logText(`Chip count: ${bankroll} - ${bet} = ${bankroll - bet}.`);
+          UICtrl.logBlank();
+          UICtrl.displayCard(cardData.dealer.hand[0], UISelectors.dealerCard1);
+          betCtrl.userWinsInsuranceBet(insuranceBet);
+          betCtrl.dealerWinsBet();
+          displayBankroll();
+          UICtrl.prepareNextHand();
+        } else {
+          UICtrl.logText(`Dealer does not have blackjack. Player loses insurance bet.`);
+          UICtrl.logText(`Chip count: ${bankroll} - ${insuranceBet} = ${bankroll - insuranceBet}.`);
+          betCtrl.userLosesInsuranceBet(insuranceBet);
+          displayBankroll();
+
+          // enable all buttons for user
+          UICtrl.enableBtn(UISelectors.hitBtn);
+          UICtrl.enableBtn(UISelectors.standBtn);
+          UICtrl.enableBtn(UISelectors.splitBtn);
+          UICtrl.enableBtn(UISelectors.doubleBtn);
+        }
+      }, 1000);
+
     } else {
-      console.log('dealer does not have a natural. User loses insurance bet.')
-      betCtrl.userLosesInsuranceBet(insuranceBet);
-      displayBankroll();
+      UICtrl.showElement(UISelectors.insuranceInputWarning);
+      setTimeout(() => {
+        UICtrl.hideElement(UISelectors.insuranceInputWarning)
+      }, 5000);
     }
-
-    UICtrl.hideElement(UISelectors.insuranceBet);
   };
 
   const insuranceNo = () => {
     const score = scoreCtrl.getScore();
     const cardData = cardCtrl.getCardData();
+    const bankroll = betCtrl.getBankroll();
+    const bet = betCtrl.getBet();
 
     UICtrl.hideElement(UISelectors.insuranceWarning);
-    console.log('checking dealer\'s hole card...');
-    if (score.dealer === 21) {
-      console.log('dealer has a natural');
-      UICtrl.displayCard(cardData.dealer.hand[0], UISelectors.dealerCard1);
-      betCtrl.dealerWinsBet();
-      displayBankroll();
-      UICtrl.prepareNextHand();
-    } else {
-      console.log('dealer does not have a natural');
-    }
+    UICtrl.logText(`Dealer is checking hole card...`);
+    setTimeout(() => {
+      if (score.dealer === 21) {
+        UICtrl.logHand(`Dealer has blackjack.`, `Chip count: ${bankroll} - ${bet} = ${bankroll - bet}`);
+        UICtrl.logBlank();
+        UICtrl.displayCard(cardData.dealer.hand[0], UISelectors.dealerCard1);
+        betCtrl.dealerWinsBet();
+        displayBankroll();
+        UICtrl.prepareNextHand();
+      } else {
+        UICtrl.logText(`Dealer does not have blackjack.`);
+        // enable all buttons
+        UICtrl.enableBtn(UISelectors.hitBtn);
+        UICtrl.enableBtn(UISelectors.splitBtn);
+        UICtrl.enableBtn(UISelectors.doubleBtn);
+        UICtrl.enableBtn(UISelectors.standBtn);
+      }
+    }, 1000);
   };
 
   // DEALER FUNCTIONS
@@ -704,9 +740,10 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     UICtrl.loadElement(bet, UISelectors.bet, `Bet is doubled to: `);
     UICtrl.showElement(UISelectors.bet);
 
-    // disable stand and double buttons
+    // disable stand, double, split buttons
     UICtrl.disableBtn(UISelectors.standBtn);
     UICtrl.disableBtn(UISelectors.doubleBtn);
+    UICtrl.disableBtn(UISelectors.splitBtn);
   };
 
   const betControlCenter = e => {
@@ -763,6 +800,8 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
   const hitControlCenter = () => {
     const cardData = cardCtrl.getCardData();
+    const bet = betCtrl.getBet();
+    const bankroll = betCtrl.getBankroll();
 
     // check for double state
     const betData = betCtrl.getBetData();
@@ -832,7 +871,8 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
         // 6. code for user bust and user 21. If user hits and gets 21, they shouldn't have to click stand button.
         if (score.user > 21) {
-          console.log('user busted');
+          UICtrl.logHand(`Player busts.`, `Chip count: ${bankroll} - ${bet} = ${bankroll - bet}`);
+          UICtrl.logBlank();
           betCtrl.dealerWinsBet();
           displayBankroll();
           UICtrl.prepareNextHand();
@@ -911,7 +951,7 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
     return new Promise((resolve) => {
       setTimeout(() => {
-        // const userCard2 = cardCtrl.dealUser();
+        //const userCard2 = cardCtrl.dealUser();
         const userCard2 = cardCtrl.testDealUser2();
         UICtrl.displayCard(userCard2, UISelectors.userCard2);
         resolve();
@@ -925,8 +965,8 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
     return new Promise((resolve) => {
       setTimeout(() => {
-        const dealerCard2 = cardCtrl.dealDealer();
-        // const dealerCard2 = cardCtrl.testDealDealer2();
+        // const dealerCard2 = cardCtrl.dealDealer();
+        const dealerCard2 = cardCtrl.testDealDealer2();
         UICtrl.displayCard(dealerCard2, UISelectors.dealerCard2);
         resolve();
       }, 200);
@@ -934,6 +974,9 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
   };
 
   const dealCards = () => {
+    const handCount = cardCtrl.getHandCount();
+    UICtrl.logText(`Dealing hand #${handCount}...`)
+    cardCtrl.incrementHandCount();
     // disable deal btn. Hide it right before hit and stand btns show
     UICtrl.disableBtn(UISelectors.dealBtn);
     setTimeout(() => {
@@ -1000,6 +1043,12 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     } else if (cardData.dealer.hand[1].value === 'ace') {
       // dealer is showing an ace. User does not have blackjack.
       UICtrl.showElement(UISelectors.insuranceWarning);
+
+      // must disable all buttons until user selects yes or no
+      UICtrl.disableBtn(UISelectors.hitBtn);
+      UICtrl.disableBtn(UISelectors.standBtn);
+      UICtrl.disableBtn(UISelectors.splitBtn);
+      UICtrl.disableBtn(UISelectors.doubleBtn);
     }
 
     // 8. user can split if cards are same point value, and they have enough money in bankroll.
@@ -1028,8 +1077,11 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     UICtrl.enableBtn(UISelectors.doubleBtn);
 
     // remove split-pot elements from the DOM.
-    document.getElementById('split-pot-1').remove();
-    document.getElementById('split-pot-2').remove();
+    if (document.getElementById('split-pot-1')) {
+      document.getElementById('split-pot-1').remove();
+      document.getElementById('split-pot-2').remove();
+    }
+    
 
     // create a blank line in console
     console.log('');

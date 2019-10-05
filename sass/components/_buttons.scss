@@ -1,7 +1,6 @@
 .btn {
   background-image: linear-gradient(to bottom, rgba($color-btn-light, .9), rgba($color-btn-medium, .9));
   color: black;
-  position: absolute;
   font-family: $font-primary;
   font-size: 1.6rem;
   box-shadow: 1rem 1rem .7rem rgba($color-black, .2);
@@ -17,6 +16,7 @@
   }
 
   &--deal {
+    position: absolute;
     top: 50rem;
     left: 50%;
     border-radius: .5rem;
@@ -32,7 +32,8 @@
   }
 
   &--hit {
-    top: 50rem;
+    position: absolute;
+    top: 49rem;
     left: 50%;
     height: 8rem;
     width: 12rem;
@@ -46,7 +47,8 @@
   }
 
   &--stand {
-    top: 50rem;
+    position: absolute;
+    top: 49rem;
     left: 50%;
     height: 8rem;
     width: 12rem;
@@ -60,9 +62,8 @@
   }
 
   &--nextHand {
+    @include centerElement;
     top: 50rem;
-    left: 50%;
-    transform: translateX(-50%);
     height: 8rem;
     width: 12rem;
     border-radius: .5rem;
@@ -79,6 +80,7 @@
     height: 8rem;
     width: 8rem;
     border-radius: 100%;
+    display: inline-block;
 
     &:active {
       transform: translateY($btn-depress);
@@ -86,20 +88,23 @@
     }
   }
 
-  &--split {
-    top: 54rem;
-    left: 65%;
-    height: 8rem;
-    width: 8rem;
-    border-radius: 100%;
+  // &--split {
+  //   top: 60rem;
+  //   left: 50%;
+  //   height: 8rem;
+  //   width: 8rem;
+  //   border-radius: 100%;
+  //   transform: translateX(-50%);
+  //   display: inline-block;
 
-    &:active {
-      transform: translateY($btn-depress);
-      box-shadow: 0 .5rem 1rem rgba($color-black, .2);
-    }
-  }
+  //   &:active {
+  //     transform: translateY($btn-depress);
+  //     box-shadow: 0 .5rem 1rem rgba($color-black, .2);
+  //   }
+  // }
 
   &--resetBet {
+    position: absolute;
     top: 63rem;
     left: 12%;
     height: 3.2rem;
@@ -112,8 +117,69 @@
       box-shadow: 0 .5rem 1rem rgba($color-black, .2);
     }
   }
+
+  &--insurance {
+    height: 3.2rem;
+    width: 7rem;
+    border-radius: .5rem;
+    font-size: 1.3rem;
+    margin-top: 2rem;
+
+    &:not(:last-child) {
+      margin-right: 2rem;
+    }
+  }
+
+  &--insurance-submit {
+    position: absolute;
+    right: -7rem;
+    top: 0;
+    height: 3.2rem;
+    width: 7rem;
+    border-radius: .5rem;
+    font-size: 1.3rem;
+  }
 }
 
+
+
+.option-buttons {
+  position: absolute;
+  top: 60rem;
+  @include centerElement;
+  
+}
+
+.option-btn {
+  background-image: linear-gradient(to bottom, rgba($color-btn-light, .9), rgba($color-btn-medium, .9));
+  color: black;
+  font-family: $font-primary;
+  font-size: 1.6rem;
+  box-shadow: 1rem 1rem .7rem rgba($color-black, .2);
+  height: 8rem;
+  width: 8rem;
+  border-radius: 50%;
+  display: inline-block;
+  border: none;
+
+  &:not(:last-child) {
+    margin-right: 2.4rem;
+  }
+
+  &:active {
+    transform: translateY($btn-depress);
+    box-shadow: 0 .5rem 1rem rgba($color-black, .2);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-image: linear-gradient(to bottom, rgba($color-btn-light, .9), rgba($color-btn-dark, .9));
+  }
+}
 
 
 .betBtns {

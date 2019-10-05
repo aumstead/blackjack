@@ -13,9 +13,12 @@
 <body>
   <div class="container">
 
+    <div class="tab">
+      <p>Log</p>
+    </div>
 
     <ul id="history" class="history">
-      <li id="history-heading" class="history__heading">Hand history</li>
+      <li id="history-heading" class="history__heading">Welcome! Place a bet and click deal to start playing.</li>
     </ul>
 
 
@@ -94,9 +97,12 @@
     <button id="hit" class="btn btn--hit">Hit</button>
     <button id="stand" class="btn btn--stand">Stand</button>
     <button id="next-hand" class="btn btn--nextHand">Next Hand</button>
-    <button id="split" class="btn btn--split">Split</button>
-    <button id="double" class="btn btn--double">Double</button>
     <button id="reset-bet" class="btn btn--resetBet">Reset Bet</button>
+
+    <div class="option-buttons">
+      <button id="split" class="option-btn">Split</button>
+      <button id="double" class="option-btn">Double</button>
+    </div>
 
     <p id="bankroll" class="bankroll"></p>
 
@@ -105,26 +111,26 @@
     <p id="split-bet-1" class="split-bet split-bet--1"></p>
     <p id="split-bet-2" class="split-bet split-bet--2"></p>
 
-    <!-- <div id="split-pot-1" class="split-pot split-pot--1"><p>text</p></div>
-    <div id="split-pot-2" class="split-pot split-pot--2"><p>text</p></div> -->
-
-    <div id="insurance-warning">
-      <p>Dealer is showing an Ace. Do you want insurance?</p>
-      <button id="insurance-yes-btn">Yes</button>
-      <button id="insurance-no-btn">No</button>
+    <div id="insurance-warning" class="insurance-warning">
+      <p class="insurance-warning__text">Dealer is showing an Ace. Do you want insurance?</p>
+      <button id="insurance-yes-btn" class="btn btn--insurance">Yes</button>
+      <button id="insurance-no-btn" class="btn btn--insurance">No</button>
     </div>
 
-    <p id="insurance-bet"></p>
+    <form id="insurance-form" class="insurance-form">
+      <span id="insurance-input-warning" class="insurance-form__tooltip">Maximum insurance bet is half of original bet.
+        Minimum is $1.</span>
+      <input type="number" id="insurance-input" placeholder="How much?" class="insurance-form__input">
 
-
-
-
-
-    <form id="insurance-form">
-      <label for="insurance-input">How much? (up to half of original bet)</label>
-      <input type="number" id="insurance-input" placeholder="">
-      <button type="submit" id="insurance-submit-btn">Submit</button>
+      <label for="insurance-input" class="insurance-form__label">(Up to half of original bet)</label>
+      <button type="submit" id="insurance-submit-btn" class="btn btn--insurance-submit">Submit</button>
     </form>
+
+
+
+
+
+
 
   </div>
 
