@@ -1,5 +1,6 @@
 .history {
-  background-color: rgb(231, 231, 231);
+  background-color: $color-history-background;
+  border: solid 1px $color-primary;
   height: 15rem;
   width: 40rem;
   border-radius: 3px;
@@ -11,7 +12,7 @@
   list-style: none;
 
   &__heading {
-    color: black;
+    color: $color-primary;
     margin-left: 1rem;
     margin-top: .5rem;
   }
@@ -19,18 +20,38 @@
   
 
   &__item {
-    &--score {
-      color: rgb(182, 28, 28);
+    &--score-green {
+      color: rgb(0, 255, 0);
       margin-left: 1rem;
     }
 
-    &--result {
-      color: grey;
+    &--chip-count-green {
+      color: rgb(0, 255, 0);
+      margin-left: 1rem;
+    }
+
+    &--score-red {
+      color: rgb(255, 30, 30);
+      margin-left: 1rem;
+    }
+
+    &--chip-count-red {
+      color: rgb(255, 30, 30);
+      margin-left: 1rem;
+    }
+
+    &--score {
+      color: $color-primary;
+      margin-left: 1rem;
+    }
+
+    &--chip-count {
+      color: $color-primary;
       margin-left: 1rem;
     }
 
     &--text {
-      color: grey;
+      color: $color-history-log;
       margin-left: 1rem;
     }
   }
@@ -40,12 +61,16 @@
   position: absolute;
   top: 50.5rem;
   right: 3rem;
-  background-color: rgb(228, 228, 228);
+  background-color: $color-history-background;
   font-size: 2rem;
   padding: .5rem 2rem;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  border-bottom: solid 1px black;
+  //border-bottom: solid 1px black;
   z-index: 2;
-  box-shadow: 0 .2rem .5rem rgba($color: black, $alpha: .2)
+  //box-shadow: 0 .2rem .5rem rgba($color: black, $alpha: .2);
+  color: $color-primary;
+  border-top: solid 1px $color-primary;
+  border-right: solid 1px $color-primary;
+  border-left: solid 1px $color-primary;
 }

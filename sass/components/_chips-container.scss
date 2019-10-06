@@ -1,0 +1,27 @@
+.chips-container {
+  position: absolute;
+  top: 49rem;
+  left: 11%;
+  text-align: center;
+}
+
+.bankroll {
+  font-size: 3rem;
+  color: $color-primary;
+  margin-bottom: 2rem;
+}
+
+// BET BUTTONS
+
+.chip {
+  height: 7rem;
+  margin-left: 1rem;
+}
+
+.chip:focus {
+  outline: none;
+}
+
+.chip:first-child {
+  margin-left: 0;
+}

@@ -30,8 +30,8 @@
 
 .placeBet {
   @include centerElement;
-  top: 23rem;
-  font-size: 3rem;
+  top: 17rem;
+  font-size: 4rem;
   color: $color-primary;
 }
 
@@ -121,7 +121,7 @@
 .insurance-form {
   @include centerElement;
   position: absolute;
-  top: 20rem;
+  top: 18rem;
   text-align: center;
 
   &__label {

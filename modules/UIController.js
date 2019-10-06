@@ -111,13 +111,13 @@ const UIController = (function () {
     document.getElementById(UISelectors.potChipGhost1).style.display = 'none';
     document.getElementById(UISelectors.potChipGhost5).style.display = 'none';
     document.getElementById(UISelectors.potChipGhost20).style.display = 'none';
+    document.getElementById(UISelectors.bet).style.display = 'none';
 
     // show elements
     document.getElementById(UISelectors.placeBet).style.display = 'inline-block';
     document.getElementById(UISelectors.betBtn1).style.display = 'inline-block';
     document.getElementById(UISelectors.betBtn5).style.display = 'inline-block';
     document.getElementById(UISelectors.betBtn20).style.display = 'inline-block';
-    document.getElementById(UISelectors.bet).style.display = 'inline-block';
     document.getElementById(UISelectors.pot).style.display = 'inline-block';
 
     // load card back for all cards
@@ -163,7 +163,7 @@ const UIController = (function () {
 
 
 
-  
+
 
   return {
     hideElement: selector => {
@@ -209,8 +209,8 @@ const UIController = (function () {
     },
 
     displaySplitBets: bet => {
-      document.getElementById(UISelectors.splitBet1).textContent = `Hand 1 bet: ${bet}`;
-      document.getElementById(UISelectors.splitBet2).textContent = `Hand 2 bet: ${bet}`;
+      document.getElementById(UISelectors.splitBet1).textContent = `Hand one: $${bet}`;
+      document.getElementById(UISelectors.splitBet2).textContent = `Hand two: $${bet}`;
       document.getElementById(UISelectors.splitBet1).style.display = 'block';
       document.getElementById(UISelectors.splitBet2).style.display = 'block';
     },
@@ -227,6 +227,12 @@ const UIController = (function () {
     prepareNextHand: () => {
       // show next hand button
       document.getElementById(UISelectors.nextHandBtn).style.display = 'inline-block';
+
+      // put a new line in log
+      const history = document.getElementById(UISelectors.history);
+      const li = document.createElement('li');
+      li.innerHTML = '&nbsp';
+      history.insertAdjacentElement('beforeend', li);
 
       // hide buttons
       document.getElementById(UISelectors.hitBtn).style.display = 'none';
@@ -266,18 +272,35 @@ const UIController = (function () {
       document.getElementById(selector).classList.add('disabled-bet');
     },
 
-    logHand: (scoreText, resultText) => {
+    setFormFocus: () => {
+      document.getElementById(UISelectors.insuranceInput).focus();
+    },
+
+    logHand: (scoreText, resultText, color) => {
+
       const history = document.getElementById(UISelectors.history);
       // create li elements
       const scoreItem = document.createElement('li');
       const resultItem = document.createElement('li');
-      
-      // add class names and argument text
-      scoreItem.className = 'history__item--score';
-      scoreItem.innerHTML = scoreText;
-      resultItem.className = 'history__item--result';
-      resultItem.innerHTML = resultText;
-      
+
+      if (color === 'red') {
+        // add class names and argument text
+        scoreItem.className = 'history__item--score-red';
+        scoreItem.innerHTML = scoreText;
+        resultItem.className = 'history__item--chip-count-red';
+        resultItem.innerHTML = resultText;
+      } else if (color ==='green') {
+        scoreItem.className = 'history__item--score-green';
+        scoreItem.innerHTML = scoreText;
+        resultItem.className = 'history__item--chip-count-green';
+        resultItem.innerHTML = resultText;
+      } else {
+        scoreItem.className = 'history__item--score';
+        scoreItem.innerHTML = scoreText;
+        resultItem.className = 'history__item--chip-count';
+        resultItem.innerHTML = resultText;
+      }
+
       // insert into unordered list.
       history.insertAdjacentElement('beforeend', scoreItem);
       history.insertAdjacentElement('beforeend', resultItem);

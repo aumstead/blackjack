@@ -85,9 +85,11 @@ const betController = (function () {
 
     userWinsSplitHand: hand => {
       if (hand === '1') {
+        console.log('user is winning split hand 1')
         bankroll += bet;
         console.log(`Bankroll + ${bet} = ${bankroll}`);
       } else if (hand === '2') {
+        console.log('user is winning split hand 2')
         bankroll += bet;
         console.log(`Bankroll + ${bet} = ${bankroll}`);
         bet = 0;

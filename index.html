@@ -88,23 +88,24 @@
 
     <button id="deal" class="btn btn--deal">DEAL</button>
 
-    <div class="betBtns">
+    <div class="chips-container">
+      <p id="bankroll" class="bankroll"></p>
+
       <input type="image" class="chip" id="bet-1" src="./images/chip-blue.png" alt="bet 1 chip button">
       <input type="image" class="chip" id="bet-5" src="./images/chip-green.png" alt="bet 5 chip button">
       <input type="image" class="chip" id="bet-20" src="./images/chip-red.png" alt="bet 20 chip button">
+
+      <button id="reset-bet" class="btn btn--resetBet">Reset Bet</button>
     </div>
 
     <button id="hit" class="btn btn--hit">Hit</button>
     <button id="stand" class="btn btn--stand">Stand</button>
     <button id="next-hand" class="btn btn--nextHand">Next Hand</button>
-    <button id="reset-bet" class="btn btn--resetBet">Reset Bet</button>
 
     <div class="option-buttons">
-      <button id="split" class="option-btn">Split</button>
-      <button id="double" class="option-btn">Double</button>
+      <button id="split" class="option-btn option-btn--split">Split</button>
+      <button id="double" class="option-btn option-btn--double">Double</button>
     </div>
-
-    <p id="bankroll" class="bankroll"></p>
 
     <p id="split-score-1" class="split-score split-score--1"></p>
     <p id="split-score-2" class="split-score split-score--2"></p>
@@ -120,8 +121,7 @@
     <form id="insurance-form" class="insurance-form">
       <span id="insurance-input-warning" class="insurance-form__tooltip">Maximum insurance bet is half of original bet.
         Minimum is $1.</span>
-      <input type="number" id="insurance-input" placeholder="How much?" class="insurance-form__input">
-
+      <input type="number" id="insurance-input" placeholder="How much?" class="insurance-form__input" autofocus>
       <label for="insurance-input" class="insurance-form__label">(Up to half of original bet)</label>
       <button type="submit" id="insurance-submit-btn" class="btn btn--insurance-submit">Submit</button>
     </form>

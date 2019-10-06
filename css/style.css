@@ -44,13 +44,6 @@ body {
 body {
   font-family: "Rubik"; }
 
-.bankroll {
-  position: absolute;
-  left: 12%;
-  top: 50rem;
-  font-size: 3.5rem;
-  color: #f0f8ff; }
-
 .btn {
   background-image: linear-gradient(to bottom, rgba(249, 249, 249, 0.9), rgba(168, 168, 168, 0.9));
   color: black;
@@ -118,9 +111,9 @@ body {
       transform: translateY(0.2rem);
       box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
   .btn--resetBet {
-    position: absolute;
-    top: 63rem;
-    left: 12%;
+    display: block;
+    margin: 0 auto;
+    margin-top: 2rem;
     height: 3.2rem;
     width: 10rem;
     border-radius: .5rem;
@@ -153,6 +146,7 @@ body {
   transform: translateX(-50%); }
 
 .option-btn {
+  position: absolute;
   background-image: linear-gradient(to bottom, rgba(249, 249, 249, 0.9), rgba(168, 168, 168, 0.9));
   color: black;
   font-family: "Rubik";
@@ -161,33 +155,22 @@ body {
   height: 8rem;
   width: 8rem;
   border-radius: 50%;
-  display: inline-block;
   border: none; }
-  .option-btn:not(:last-child) {
-    margin-right: 2.4rem; }
-  .option-btn:active {
-    transform: translateY(0.2rem);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
+  .option-btn--split {
+    transform: translateX(-145%); }
+    .option-btn--split:active {
+      transform: translateY(0.2rem) translateX(-145%);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
+  .option-btn--double {
+    transform: translateX(45%); }
+    .option-btn--double:active {
+      transform: translateY(0.2rem) translateX(45%);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
   .option-btn:focus {
     outline: none; }
   .option-btn:hover {
     cursor: pointer;
     background-image: linear-gradient(to bottom, rgba(249, 249, 249, 0.9), rgba(126, 126, 126, 0.9)); }
-
-.betBtns {
-  position: absolute;
-  top: 55rem;
-  left: 12%; }
-
-.chip {
-  height: 7rem;
-  margin-left: 1rem; }
-
-.chip:focus {
-  outline: none; }
-
-.chip:first-child {
-  margin-left: 0; }
 
 .disabled {
   color: aliceblue; }
@@ -200,8 +183,30 @@ body {
   .disabled-bet:hover {
     cursor: default; }
 
+.chips-container {
+  position: absolute;
+  top: 49rem;
+  left: 11%;
+  text-align: center; }
+
+.bankroll {
+  font-size: 3rem;
+  color: #f0f8ff;
+  margin-bottom: 2rem; }
+
+.chip {
+  height: 7rem;
+  margin-left: 1rem; }
+
+.chip:focus {
+  outline: none; }
+
+.chip:first-child {
+  margin-left: 0; }
+
 .history {
-  background-color: #e7e7e7;
+  background-color: #071b03;
+  border: solid 1px #f0f8ff;
   height: 15rem;
   width: 40rem;
   border-radius: 3px;
@@ -212,31 +217,45 @@ body {
   overflow: auto;
   list-style: none; }
   .history__heading {
-    color: black;
+    color: #f0f8ff;
     margin-left: 1rem;
     margin-top: .5rem; }
-  .history__item--score {
-    color: #b61c1c;
+  .history__item--score-green {
+    color: lime;
     margin-left: 1rem; }
-  .history__item--result {
-    color: grey;
+  .history__item--chip-count-green {
+    color: lime;
+    margin-left: 1rem; }
+  .history__item--score-red {
+    color: #ff1e1e;
+    margin-left: 1rem; }
+  .history__item--chip-count-red {
+    color: #ff1e1e;
+    margin-left: 1rem; }
+  .history__item--score {
+    color: #f0f8ff;
+    margin-left: 1rem; }
+  .history__item--chip-count {
+    color: #f0f8ff;
     margin-left: 1rem; }
   .history__item--text {
-    color: grey;
+    color: #bebebe;
     margin-left: 1rem; }
 
 .tab {
   position: absolute;
   top: 50.5rem;
   right: 3rem;
-  background-color: #e4e4e4;
+  background-color: #071b03;
   font-size: 2rem;
   padding: .5rem 2rem;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  border-bottom: solid 1px black;
   z-index: 2;
-  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.2); }
+  color: #f0f8ff;
+  border-top: solid 1px #f0f8ff;
+  border-right: solid 1px #f0f8ff;
+  border-left: solid 1px #f0f8ff; }
 
 .placeholderContainer--dealer {
   position: absolute;
@@ -271,8 +290,8 @@ body {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 23rem;
-  font-size: 3rem;
+  top: 17rem;
+  font-size: 4rem;
   color: #f0f8ff; }
 
 .bet {
@@ -349,7 +368,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   position: absolute;
-  top: 20rem;
+  top: 18rem;
   text-align: center; }
   .insurance-form__label {
     font-size: 1.5rem;
@@ -419,11 +438,11 @@ body {
   color: #f0f8ff; }
   .split-bet--1 {
     left: 25%;
-    top: 28rem;
+    top: 27rem;
     transform: translateX(-50%); }
   .split-bet--2 {
     right: 25%;
-    top: 28rem;
+    top: 27rem;
     transform: translateX(50%); }
 
 .split-pot--1 {

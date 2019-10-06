@@ -104,9 +104,9 @@
   // }
 
   &--resetBet {
-    position: absolute;
-    top: 63rem;
-    left: 12%;
+    display: block;
+    margin: 0 auto;
+    margin-top: 2rem;
     height: 3.2rem;
     width: 10rem;
     border-radius: .5rem;
@@ -151,6 +151,7 @@
 }
 
 .option-btn {
+  position: absolute;
   background-image: linear-gradient(to bottom, rgba($color-btn-light, .9), rgba($color-btn-medium, .9));
   color: black;
   font-family: $font-primary;
@@ -159,17 +160,27 @@
   height: 8rem;
   width: 8rem;
   border-radius: 50%;
-  display: inline-block;
   border: none;
 
-  &:not(:last-child) {
-    margin-right: 2.4rem;
+  &--split {
+    transform: translateX(-145%);
+
+    &:active {
+      transform: translateY($btn-depress) translateX(-145%);
+      box-shadow: 0 .5rem 1rem rgba($color-black, .2);
+    }
   }
 
-  &:active {
-    transform: translateY($btn-depress);
-    box-shadow: 0 .5rem 1rem rgba($color-black, .2);
+  &--double {
+    transform: translateX(45%);
+
+    &:active {
+      transform: translateY($btn-depress) translateX(45%);
+      box-shadow: 0 .5rem 1rem rgba($color-black, .2);
+    }
   }
+
+  
 
   &:focus {
     outline: none;
@@ -182,25 +193,7 @@
 }
 
 
-.betBtns {
-  position: absolute;
-  top: 55rem;
-  left: 12%;
-}
-
-.chip {
-  height: 7rem;
-  margin-left: 1rem;
-}
-
-.chip:focus {
-  outline: none;
-}
-
-.chip:first-child {
-  margin-left: 0;
-}
-
+// DISABLED BUTTONS
 .disabled {
   color: aliceblue;
   
