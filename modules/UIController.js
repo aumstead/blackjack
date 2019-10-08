@@ -40,6 +40,7 @@ const UIController = (function () {
     insuranceInput: 'insurance-input',
     history: 'history',
     historyHeading: 'history-heading',
+    activatePopup: 'activate-popup',
 
     // bet buttons
     betBtn1: 'bet-1',
@@ -53,6 +54,7 @@ const UIController = (function () {
     bankroll: 'bankroll',
     insuranceWarning: 'insurance-warning',
     insuranceInputWarning: 'insurance-input-warning',
+    insuranceMoneyWarning: 'insurance-money-warning',
     dealerScore: 'dealer-score',
     userScore: 'user-score',
     splitScore1: 'split-score-1',
@@ -99,6 +101,7 @@ const UIController = (function () {
     document.getElementById(UISelectors.insuranceForm).style.display = 'none';
     document.getElementById(UISelectors.insuranceWarning).style.display = 'none';
     document.getElementById(UISelectors.insuranceInputWarning).style.display = 'none';
+    document.getElementById(UISelectors.insuranceMoneyWarning).style.display = 'none';
     document.getElementById(UISelectors.splitBet1).style.display = 'none';
     document.getElementById(UISelectors.splitBet2).style.display = 'none';
     document.getElementById(UISelectors.userScore).style.display = 'none';
@@ -213,6 +216,15 @@ const UIController = (function () {
       document.getElementById(UISelectors.splitBet2).textContent = `Hand two: $${bet}`;
       document.getElementById(UISelectors.splitBet1).style.display = 'block';
       document.getElementById(UISelectors.splitBet2).style.display = 'block';
+    },
+
+    renderGuidanceBorder: selector => {
+      document.getElementById(selector).classList.add('guidance-border');
+      
+    },
+
+    removeGuidanceBorder: selector => {
+      document.getElementById(selector).classList.remove('guidance-border');
     },
 
     displaySplitScore1: score => {

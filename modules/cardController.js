@@ -86,7 +86,6 @@ const cardController = (function () {
     return cardArr[0];
   };
 
-
   // function for hit button. Parameter is user turn from data object. Called in the public function.
   const hit = obj => {
     let card;
@@ -103,15 +102,9 @@ const cardController = (function () {
   };
 
   return {
-    dealDealer: () => {
-      let card = dealCard(cardData.dealer);
-      return card;
-    },
+    dealDealer: () => dealCard(cardData.dealer),
 
-    dealUser: () => {
-      let card = dealCard(cardData.user);
-      return card;
-    },
+    dealUser: () => dealCard(cardData.user),
 
     dealSplit: (obj, hand) => {
       // splice a card from deck and push it to split hand array
@@ -124,10 +117,7 @@ const cardController = (function () {
       return cardArr[0];
     },
 
-    hitUser: () => {
-      let card = hit(cardData.user.turn);
-      return card;
-    },
+    hitUser: () => hit(cardData.user.turn),
 
     incrementUserTurn: () => {
       cardData.user.turn++;
@@ -169,7 +159,7 @@ const cardController = (function () {
       return card;
     },
     testDealDealer1: () => {
-      let card = spades_1;
+      let card = spades_10;
       cardData.dealer.hand.push(card);
       return card;
     },

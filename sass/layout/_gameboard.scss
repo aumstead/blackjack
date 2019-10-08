@@ -108,7 +108,7 @@
 .insurance-warning {
   @include centerElement;
   position: absolute;
-  top: 17rem;
+  top: 16rem;
   text-align: center;
 
   &__text {
@@ -121,8 +121,10 @@
 .insurance-form {
   @include centerElement;
   position: absolute;
-  top: 18rem;
+  top: 17rem;
   text-align: center;
+  padding-left: 8.5rem;
+  padding-right: 8.5rem;
 
   &__label {
     font-size: 1.5rem;
@@ -149,13 +151,13 @@
   &__tooltip {
     background-color: $color-warning;
     color: $color-primary;
-    border-radius: 6px;
+    border-radius: $border-radius-md;
     position: absolute;
     z-index: 1;
-    top: -5.5rem;
-    left: -4.5rem;
+    top: -4.3rem;
+    left: 3.5rem;
     font-size: 1.5rem;
-    width: 150%;
+    width: 80%;
     padding: .5rem;
 
     &::after {

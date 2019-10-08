@@ -130,6 +130,7 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     UICtrl.displaySplitBets(bet);
     UICtrl.hideElement(UISelectors.bet);
 
+    // 6. take care of pot graphics
     // hide the main pot.
     UICtrl.hideElement(UISelectors.pot);
     // copy the pot element twice.
@@ -160,7 +161,7 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     // disable stand button. User must hit at least once.
     UICtrl.disableBtn(UISelectors.standBtn);
 
-    // log text and check for split aces
+    // check for split aces and if not, log regular split text and put guidance border around splitBet1.
     if (cardData.user.splitHand1[0].value === 'ace' && cardData.user.splitHand2[0].value === 'ace') {
       UICtrl.logText('Player splits aces. Only one card for each ace is given.');
       UICtrl.disableBtn(UISelectors.hitBtn);
@@ -170,6 +171,7 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
       }, 1000);
     } else {
       UICtrl.logText('Player splits.');
+      UICtrl.renderGuidanceBorder(UISelectors.splitBet1);
     }
   };
 
@@ -400,20 +402,23 @@ const splitCheckHand1 = () => {
   const bet = betCtrl.getBet();
 
   if (scoreSplit1 > 21) {
-    UICtrl.logHand('Player busts.', `Chip count: ${bankroll} - ${bet} = ${bankroll - bet}.`, 'red');
+    UICtrl.logHand('Hand one busts.', `Chip count: ${bankroll} - ${bet} = ${bankroll - bet}.`, 'red');
     betCtrl.userLosesSplitHand('1');
     displayBankroll();
 
     // 1. change the user turn to 7. Split hand 1 is over. Start split hand 2.
     cardData.user.turn = 7;
-
     // 2. disable the stand button for turn 7. User must hit at least once.
     UICtrl.disableBtn(UISelectors.standBtn);
-
+    // 3. remove guidance border for first split hand. Add it to second.
+    UICtrl.removeGuidanceBorder(UISelectors.splitBet1);
+    UICtrl.renderGuidanceBorder(UISelectors.splitBet2);
   } else if (scoreSplit1 === 21) {
-    UICtrl.logText('Player has 21.');
+    UICtrl.logText('Hand one has 21.');
     cardData.user.turn = 7;
     UICtrl.disableBtn(UISelectors.standBtn);
+    UICtrl.removeGuidanceBorder(UISelectors.splitBet1);
+    UICtrl.renderGuidanceBorder(UISelectors.splitBet2);
   } else {
     // 3. show the stand button because it was hidden for initial hit, but now user can stand.
     UICtrl.showElement(UISelectors.standBtn);
@@ -427,11 +432,12 @@ const splitCheckHand2 = () => {
   const bet = betCtrl.getBet();
 
   if (scoreSplit2 > 21) {
-    UICtrl.logHand('Player busts.', `Chip count: ${bankroll} - ${bet} = ${bankroll - bet}.`, 'red');
+    UICtrl.logHand('Hand two busts.', `Chip count: ${bankroll} - ${bet} = ${bankroll - bet}.`, 'red');
     betCtrl.userLosesSplitHand('2');
     displayBankroll();
     UICtrl.disableBtn(UISelectors.standBtn);
     UICtrl.disableBtn(UISelectors.hitBtn);
+    UICtrl.removeGuidanceBorder(UISelectors.splitBet2);
     if (scoreSplit1 > 21) {
       // handle prepare next hand here because dealer code doesn't need to run. Both split hands busted.
       UICtrl.prepareNextHand();
@@ -440,7 +446,8 @@ const splitCheckHand2 = () => {
       dealerFinishes();
     }
   } else if (scoreSplit2 === 21) {
-    UICtrl.logText('Player has 21.');
+    UICtrl.logText('Hand two has 21.');
+    UICtrl.removeGuidanceBorder(UISelectors.splitBet2);
     dealerFinishes();
   }
 };
@@ -450,26 +457,27 @@ const splitCheckWinner = () => {
   let bankroll = betCtrl.getBankroll();
   const bet = betCtrl.getBet();
 
-  if (score.dealer >= score.split1 && score.split1 < 21) {
+  if (score.dealer === score.split1 && score.dealer < 22) {
+    UICtrl.logHand(`Hand one is a push: ${score.split1}-${score.dealer}. Bet is returned.`, `Chip count: ${bankroll}.`);
+  } else if (score.dealer > score.split1 && score.split1 < 21) {
     UICtrl.logHand(`House wins hand one: ${score.dealer}-${score.split1}.`, `Chip count: ${bankroll} - ${bet} = ${bankroll - bet}.`, 'red');
     betCtrl.userLosesSplitHand('1');
-  } else if (score.dealer === 21 && score.split1 === 21) {
-    UICtrl.logHand(`Hand one is a push: ${score.split1}-${score.dealer}. Bet is returned.`, `Chip count: ${bankroll}.`);
-  } else {
+  } else if (score.split1 <= 21) {
     // split hand 1 beats the dealer
     UICtrl.logHand(`User wins hand one: ${score.split1}-${score.dealer}.`, `Chip count: ${bankroll} + ${bet} = ${bankroll + bet}.`, 'green');
+    console.log('user winning split hand 1')
     betCtrl.userWinsSplitHand('1');
   }
 
   // get the new bankroll after hand one calculations
   bankroll = betCtrl.getBankroll();
 
-  if (score.dealer >= score.split2 && score.split2 < 21) {
+  if (score.dealer === score.split2 && score.dealer < 22) {
+    UICtrl.logHand(`Hand two is a push: ${score.split1}-${score.dealer}. Bet is returned.`, `Chip count: ${bankroll}.`);
+  } else if (score.dealer > score.split2 && score.split2 < 21) {
     UICtrl.logHand(`House wins hand two: ${score.dealer}-${score.split2}.`, `Chip count: ${bankroll} - ${bet} = ${bankroll - bet}.`, 'red');
     betCtrl.userLosesSplitHand('2');
-  } else if (score.dealer === 21 && score.split2 === 21) {
-    UICtrl.logHand(`Hand two is a push: ${score.split2}-${score.dealer}. Bet is returned.`, `Chip count: ${bankroll}.`);
-  } else {
+  } else if (score.split2 <= 21) {
     // split hand 2 beats the dealer
     UICtrl.logHand(`User wins hand two: ${score.split2}-${score.dealer}.`, `Chip count: ${bankroll} + ${bet} = ${bankroll + bet}.`, 'green');
     betCtrl.userWinsSplitHand('2')
@@ -531,36 +539,46 @@ const insuranceSubmit = (e) => {
 
   // verify user input. If more than zero and less than half of original bet, run code. Else, show warning.
   if (insuranceBet > 0 && insuranceBet <= maxBet) {
-    UICtrl.hideElement(UISelectors.insuranceForm);
+    // check to see if user has enough chips
+    if (bankroll - bet - insuranceBet >= 0) {
+      UICtrl.hideElement(UISelectors.insuranceForm);
 
-    UICtrl.logText(`Dealer checking hole card...`);
-    setTimeout(() => {
-      if (score.dealer === 21) {
-        UICtrl.displayCard(cardData.dealer.hand[0], UISelectors.dealerCard1);
-        UICtrl.logHand(`Dealer has blackjack.`, `Chip count: ${bankroll} - ${bet} = ${bankroll - bet}.`, 'red');
-        betCtrl.dealerWinsBet();
-        bankroll = betCtrl.getBankroll();
-        UICtrl.logHand(`Player wins insurance bet. Pays 2:1.`, `Chip count: ${bankroll} + ${insuranceBet * 2} = ${bankroll + insuranceBet * 2}.`, 'green');
-        betCtrl.userWinsInsuranceBet(insuranceBet);
-        displayBankroll();
-        UICtrl.prepareNextHand();
-      } else {
-        UICtrl.logHand(`Dealer does not have blackjack. Player loses insurance bet.`, `Chip count: ${bankroll} - ${insuranceBet} = ${bankroll - insuranceBet}.`, 'red');
-        betCtrl.userLosesInsuranceBet(insuranceBet);
-        displayBankroll();
-
-        // enable all buttons for user
-        UICtrl.enableBtn(UISelectors.hitBtn);
-        UICtrl.enableBtn(UISelectors.standBtn);
-        UICtrl.enableBtn(UISelectors.splitBtn);
-        UICtrl.enableBtn(UISelectors.doubleBtn);
-      }
-    }, 1000);
+      UICtrl.logText(`Dealer checking hole card...`);
+      setTimeout(() => {
+        if (score.dealer === 21) {
+          UICtrl.displayCard(cardData.dealer.hand[0], UISelectors.dealerCard1);
+          UICtrl.logHand(`Dealer has blackjack.`, `Chip count: ${bankroll} - ${bet} = ${bankroll - bet}.`, 'red');
+          betCtrl.dealerWinsBet();
+          bankroll = betCtrl.getBankroll();
+          UICtrl.logHand(`Player wins insurance bet. Pays 2:1.`, `Chip count: ${bankroll} + ${insuranceBet * 2} = ${bankroll + insuranceBet * 2}.`, 'green');
+          betCtrl.userWinsInsuranceBet(insuranceBet);
+          displayBankroll();
+          UICtrl.prepareNextHand();
+        } else {
+          UICtrl.logHand(`Dealer does not have blackjack. Player loses insurance bet.`, `Chip count: ${bankroll} - ${insuranceBet} = ${bankroll - insuranceBet}.`, 'red');
+          betCtrl.userLosesInsuranceBet(insuranceBet);
+          displayBankroll();
+  
+          // enable all buttons for user
+          UICtrl.enableBtn(UISelectors.hitBtn);
+          UICtrl.enableBtn(UISelectors.standBtn);
+          UICtrl.enableBtn(UISelectors.splitBtn);
+          UICtrl.enableBtn(UISelectors.doubleBtn);
+        }
+      }, 1000);
+    } else {
+      // show money warning
+      UICtrl.showElement(UISelectors.insuranceMoneyWarning);
+      setTimeout(() => {
+      UICtrl.hideElement(UISelectors.insuranceMoneyWarning);
+    }, 5000);
+    }
+    
 
   } else {
     UICtrl.showElement(UISelectors.insuranceInputWarning);
     setTimeout(() => {
-      UICtrl.hideElement(UISelectors.insuranceInputWarning)
+      UICtrl.hideElement(UISelectors.insuranceInputWarning);
     }, 5000);
   }
 };
@@ -742,6 +760,7 @@ const dealerFinishes = () => {
 // CONTROL CENTER FUNCTIONS
 const doubleControlCenter = () => {
   let bet = betCtrl.getBet();
+  const cardData = cardCtrl.getCardData();
 
   // get and set double state.
   const betData = betCtrl.getBetData();
@@ -754,10 +773,6 @@ const doubleControlCenter = () => {
   // log statement
   UICtrl.logText(`Bet is doubled to ${bet}. Player may hit only once.`);
 
-  // load bet and show element
-  // UICtrl.loadElement(bet, UISelectors.bet, `Bet is doubled to: `);
-  // UICtrl.showElement(UISelectors.bet);
-
   // display bet
   UICtrl.displayBet(bet);
 
@@ -765,6 +780,21 @@ const doubleControlCenter = () => {
   UICtrl.disableBtn(UISelectors.standBtn);
   UICtrl.disableBtn(UISelectors.doubleBtn);
   UICtrl.disableBtn(UISelectors.splitBtn);
+  UICtrl.disableBtn(UISelectors.hitBtn);
+
+  // run double code
+  UICtrl.showElement(UISelectors.userCard3);
+  UICtrl.animateCard(UISelectors.userCard3);
+    
+
+  setTimeout(() => {
+    const card = cardCtrl.dealUser();
+    UICtrl.displayCard(card, UISelectors.userCard3);
+    calcScore(cardData.user, 'user');
+    displayScore('user');
+    // user can only hit once in double state.
+    dealerFinishes();
+  }, 200);
 };
 
 const betControlCenter = e => {
@@ -785,6 +815,9 @@ const betControlCenter = e => {
       UICtrl.enableBtn(UISelectors.resetBetBtn);
       // show bet in UI
       UICtrl.showElement(UISelectors.bet);
+    } else {
+      // trigger click to bring up popup.
+      document.getElementById(UISelectors.activatePopup).click();
     }
   } else if (e.target.id === 'bet-5') {
     if (betCtrl.bet5()) {
@@ -800,6 +833,8 @@ const betControlCenter = e => {
       UICtrl.enableBtn(UISelectors.dealBtn);
       UICtrl.enableBtn(UISelectors.resetBetBtn);
       UICtrl.showElement(UISelectors.bet);
+    } else {
+      document.getElementById(UISelectors.activatePopup).click();
     }
   } else if (e.target.id === 'bet-20') {
     if (betCtrl.bet20()) {
@@ -815,6 +850,8 @@ const betControlCenter = e => {
       UICtrl.enableBtn(UISelectors.dealBtn);
       UICtrl.enableBtn(UISelectors.resetBetBtn);
       UICtrl.showElement(UISelectors.bet);
+    } else {
+      document.getElementById(UISelectors.activatePopup).click();
     }
   }
 
@@ -828,26 +865,8 @@ const hitControlCenter = () => {
   const bet = betCtrl.getBet();
   const bankroll = betCtrl.getBankroll();
 
-  // check for double state
-  const betData = betCtrl.getBetData();
-
-  if (betData.doubleState) {
-    UICtrl.showElement(UISelectors.userCard3);
-    UICtrl.animateCard(UISelectors.userCard3);
-    // disable hit. User can only hit once.
-    UICtrl.disableBtn(UISelectors.hitBtn);
-
-    setTimeout(() => {
-      const card = cardCtrl.dealUser();
-      UICtrl.displayCard(card, UISelectors.userCard3);
-      calcScore(cardData.user, 'user');
-      displayScore('user');
-      // user can only hit once in double state.
-      dealerFinishes();
-    }, 200);
-  }
   // check for split state and a split aces situation.
-  else if (cardData.splitState && cardData.user.splitHand1[0].value === 'ace' && cardData.user.splitHand2[0].value === 'ace') {
+  if (cardData.splitState && cardData.user.splitHand1[0].value === 'ace' && cardData.user.splitHand2[0].value === 'ace') {
     splitAcesControlCenter();
   } else if (cardData.splitState) {
     splitHandControlCenter();
@@ -933,9 +952,18 @@ const standControlCenter = () => {
       cardData.user.turn = 7;
       // 2b. disable stand button. User must hit once.
       UICtrl.disableBtn(UISelectors.standBtn);
+      // 2c. guidance border
+      UICtrl.removeGuidanceBorder(UISelectors.splitBet1);
+      UICtrl.renderGuidanceBorder(UISelectors.splitBet2);
     } else {
-      dealerFinishes();
-
+      UICtrl.disableBtn(UISelectors.hitBtn);
+      UICtrl.disableBtn(UISelectors.standBtn);
+      UICtrl.removeGuidanceBorder(UISelectors.splitBet2);
+      // pause for gameplay flow
+      setTimeout(() => {
+        dealerFinishes();
+      }, 200);
+      
     }
   } else {
     // if not split state, dealer plays hand
@@ -957,8 +985,8 @@ const dealUserCard1 = () => {
 
   return new Promise((resolve) => {
     setTimeout(() => {
-      //const userCard1 = cardCtrl.dealUser();
-      const userCard1 = cardCtrl.testDealUser1();
+      const userCard1 = cardCtrl.dealUser();
+      //const userCard1 = cardCtrl.testDealUser1();
       UICtrl.displayCard(userCard1, UISelectors.userCard1);
       resolve();
     }, 200);
@@ -985,8 +1013,8 @@ const dealUserCard2 = () => {
 
   return new Promise((resolve) => {
     setTimeout(() => {
-      //const userCard2 = cardCtrl.dealUser();
-      const userCard2 = cardCtrl.testDealUser2();
+      const userCard2 = cardCtrl.dealUser();
+      //const userCard2 = cardCtrl.testDealUser2();
       UICtrl.displayCard(userCard2, UISelectors.userCard2);
       resolve();
     }, 200);
@@ -1075,7 +1103,7 @@ const dealControlCenter = () => {
       displayBankroll();
       UICtrl.prepareNextHand();
     }, 2000);
-  } else if (cardData.dealer.hand[1].value === 'ace') {
+  } else if (cardData.dealer.hand[1].value === 'ace' && bankroll - bet > 0) {
     // dealer is showing an ace. User does not have blackjack.
     UICtrl.showElement(UISelectors.insuranceWarning);
 
@@ -1092,8 +1120,9 @@ const dealControlCenter = () => {
   }
 
   // 9. user can double if they have enough money.
-  if (score.user === 9 || score.user === 10 || score.user === 11 && bankroll - bet * 2 >= 0) {
+  if ((score.user === 9 || score.user === 10 || score.user) === 11 && bankroll - (bet * 2) >= 0) {
     UICtrl.showElement(UISelectors.doubleBtn);
+    console.log(bankroll - (bet * 2))
   }
 };
 

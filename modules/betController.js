@@ -14,7 +14,6 @@ const betController = (function () {
         bet++;
         return true;
       } else {
-        alert('not enough money');
         return false;
       }
     },
@@ -24,7 +23,6 @@ const betController = (function () {
         bet += 5;
         return true;
       } else {
-        alert('not enough money');
         return false;
       }
     },
@@ -34,7 +32,6 @@ const betController = (function () {
         bet += 20;
         return true;
       } else {
-        alert('not enough money');
         return false;
       }
     },
@@ -79,7 +76,6 @@ const betController = (function () {
       } else if (hand === '2') {
         bankroll -= bet;
         console.log(`Bankroll - ${bet} = ${bankroll}`);
-        bet = 0;
       }
     },
 
@@ -92,7 +88,6 @@ const betController = (function () {
         console.log('user is winning split hand 2')
         bankroll += bet;
         console.log(`Bankroll + ${bet} = ${bankroll}`);
-        bet = 0;
       }
     },
 

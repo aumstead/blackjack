@@ -12,7 +12,26 @@
 
 <body>
   <div class="container">
+    <!-- NAVIGATION -->
+    <div class="navigation">
+      <input type="checkbox" class="navigation__checkbox" id="navi-toggle">
 
+      <label for="navi-toggle" class="navigation__button">
+        <span class="navigation__icon"></span>
+      </label>
+
+      <div class="navigation__background">&nbsp;</div>
+
+      <nav class="navigation__nav">
+        <ul class="navigation__list">
+          <li class="navigation__item"><a href="#" class="navigation__link">Learn the rules most people know</a></li>
+          <li class="navigation__item"><a href="#" class="navigation__link">Learn the rules most people DON'T know</a></li>
+          <li class="navigation__item"><a href="#" class="navigation__link">Reload chips</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- HISTORY LOG -->
     <div class="tab">
       <p>Log</p>
     </div>
@@ -21,7 +40,7 @@
       <li id="history-heading" class="history__heading">Welcome! Place a bet and click deal to start playing.</li>
     </ul>
 
-
+    <!-- GAMEBOARD - HTML IS TOP TO BOTTOM -->
     <svg width="100" height="180" class="placeholderContainer--dealer">
       <rect x="10" y="10" rx="10" ry="10" width="78" height="100" class="placeholderRect" />
     </svg>
@@ -88,9 +107,9 @@
 
     <button id="deal" class="btn btn--deal">DEAL</button>
 
+    <!-- CHIPS SECTION -->
     <div class="chips-container">
       <p id="bankroll" class="bankroll"></p>
-
       <input type="image" class="chip" id="bet-1" src="./images/chip-blue.png" alt="bet 1 chip button">
       <input type="image" class="chip" id="bet-5" src="./images/chip-green.png" alt="bet 5 chip button">
       <input type="image" class="chip" id="bet-20" src="./images/chip-red.png" alt="bet 20 chip button">
@@ -98,6 +117,7 @@
       <button id="reset-bet" class="btn btn--resetBet">Reset Bet</button>
     </div>
 
+    <!-- BUTTONS FOR GAMEPLAY -->
     <button id="hit" class="btn btn--hit">Hit</button>
     <button id="stand" class="btn btn--stand">Stand</button>
     <button id="next-hand" class="btn btn--nextHand">Next Hand</button>
@@ -107,32 +127,45 @@
       <button id="double" class="option-btn option-btn--double">Double</button>
     </div>
 
+    <!-- SPLIT DISPLAYS FOR BET AND SCORE -->
     <p id="split-score-1" class="split-score split-score--1"></p>
     <p id="split-score-2" class="split-score split-score--2"></p>
     <p id="split-bet-1" class="split-bet split-bet--1"></p>
     <p id="split-bet-2" class="split-bet split-bet--2"></p>
 
-    <div id="insurance-warning" class="insurance-warning">
+    <!-- INSURANCE UI -->
+    <div id="insurance-warning" class="insurance-warning guidance-border">
       <p class="insurance-warning__text">Dealer is showing an Ace. Do you want insurance?</p>
-      <button id="insurance-yes-btn" class="btn btn--insurance">Yes</button>
-      <button id="insurance-no-btn" class="btn btn--insurance">No</button>
+      <button id="insurance-yes-btn" class="btn btn__insurance">Yes</button>
+      <button id="insurance-no-btn" class="btn btn__insurance">No</button>
     </div>
 
-    <form id="insurance-form" class="insurance-form">
+    <form id="insurance-form" class="insurance-form guidance-border">
       <span id="insurance-input-warning" class="insurance-form__tooltip">Maximum insurance bet is half of original bet.
         Minimum is $1.</span>
+      <span id="insurance-money-warning" class="insurance-form__tooltip">Not enough money. Choose a lower amount.</span>
       <input type="number" id="insurance-input" placeholder="How much?" class="insurance-form__input" autofocus>
       <label for="insurance-input" class="insurance-form__label">(Up to half of original bet)</label>
-      <button type="submit" id="insurance-submit-btn" class="btn btn--insurance-submit">Submit</button>
+      <button type="submit" id="insurance-submit-btn" class="btn btn__insurance-submit">Submit</button>
     </form>
 
-
-
-
-
-
-
   </div>
+  <!-- END GAMEBOARD CONTAINER -->
+
+  <!-- POPUP -->
+  <div id="popup" class="popup">
+    <div class="popup__content">
+      <a href="#" class="popup__close">&times;</a>
+      <p class="popup__content--heading">Dealer says...</p>
+      <p class="popup__content--text">You don't have enough chips! Reload from the menu in between hands.</p>
+      <!-- <a href="#" class="popup-btn">Yes</a>
+        <a href="#" class="popup-btn">No</a> -->
+    </div>
+  </div>
+
+  <!-- POPUP ANCHOR -->
+  <a href="#popup" class="btn activate-popup" id="activate-popup">Bring up popup</a>
+
 
 
   <script src="/modules/UIController.js"></script>

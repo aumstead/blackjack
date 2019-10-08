@@ -7,8 +7,11 @@
 
 @import "components/buttons";
 @import "components/chips-container";
+@import "components/guidance-border";
 @import "components/history";
+@import "components/popup";
 
-@import "pages/gameboard";
-@import "pages/split-gameboard";
+@import "layout/gameboard";
+@import "layout/navigation";
+@import "layout/split-gameboard";
 
