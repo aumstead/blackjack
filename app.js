@@ -32,7 +32,21 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
     // reset button event listener
     document.getElementById(UISelectors.resetBetBtn).addEventListener('click', resetBet);
+
+    // log and menu checkbox event listeners
+    document.getElementById(UISelectors.logCheckbox).addEventListener('click', logTab);
+    document.getElementById(UISelectors.menuCheckbox).addEventListener('click', menuTab);
   };
+
+  const logTab = () => {
+    const menuCheckbox = document.getElementById(UISelectors.menuCheckbox);
+    menuCheckbox.checked ? menuCheckbox.checked = false: menuCheckbox.checked = false;
+  }
+
+  const menuTab = () => {
+    const menuCheckbox = document.getElementById(UISelectors.menuCheckbox);
+    menuCheckbox.checked ? menuCheckbox.checked = true: menuCheckbox.checked = true;
+  }
 
   // UTILITY FUNCTIONS
   const prepareReanimation = (selector) => {

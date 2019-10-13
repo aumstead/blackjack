@@ -41,6 +41,8 @@ const UIController = (function () {
     history: 'history',
     historyHeading: 'history-heading',
     activatePopup: 'activate-popup',
+    logCheckbox: 'history-toggle',
+    menuCheckbox: 'menu-toggle',
 
     // bet buttons
     betBtn1: 'bet-1',
@@ -297,19 +299,19 @@ const UIController = (function () {
 
       if (color === 'red') {
         // add class names and argument text
-        scoreItem.className = 'history__item--score-red';
+        scoreItem.className = 'navigation__history__item--score-red';
         scoreItem.innerHTML = scoreText;
-        resultItem.className = 'history__item--chip-count-red';
+        resultItem.className = 'navigation__history__item--chip-count-red';
         resultItem.innerHTML = resultText;
       } else if (color ==='green') {
-        scoreItem.className = 'history__item--score-green';
+        scoreItem.className = 'navigation__history__item--score-green';
         scoreItem.innerHTML = scoreText;
-        resultItem.className = 'history__item--chip-count-green';
+        resultItem.className = 'navigation__history__item--chip-count-green';
         resultItem.innerHTML = resultText;
       } else {
-        scoreItem.className = 'history__item--score';
+        scoreItem.className = 'navigation__history__item--score';
         scoreItem.innerHTML = scoreText;
-        resultItem.className = 'history__item--chip-count';
+        resultItem.className = 'navigation__history__item--chip-count';
         resultItem.innerHTML = resultText;
       }
 
@@ -324,7 +326,7 @@ const UIController = (function () {
     logText: (text) => {
       const history = document.getElementById(UISelectors.history);
       const li = document.createElement('li');
-      li.className = 'history__item--text';
+      li.className = 'navigation__history__item--text';
       li.innerHTML = text;
       history.insertAdjacentElement('beforeend', li);
       history.scrollTop = history.scrollHeight - history.clientHeight;
