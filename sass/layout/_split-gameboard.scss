@@ -12,24 +12,6 @@
   transform: translateX(50%);
 }
 
-.split-score {
-  position: absolute;
-  font-size: 2rem;
-  color: $color-primary;
-
-  &--1 {
-    left: 25%;
-    top: 20rem;
-    transform: translateX(-50%);
-  }
-
-  &--2 {
-    right: 25%;
-    top: 20rem;
-    transform: translateX(50%);
-  }
-}
-
 .split-bet {
   position: absolute;
   font-size: 2rem;

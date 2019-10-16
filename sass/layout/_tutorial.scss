@@ -1,0 +1,111 @@
+.tut-text-container {
+  position: absolute;
+  top: 15rem;
+  left: 10%;
+  max-width: 30rem;
+
+  &>:not(:first-child) {
+    margin-top: 2rem;
+  }
+}
+
+.tutorial__bubble {
+  background-color: rgb(197, 117, 43);
+  color: $color-history-background;
+  border-radius: $border-radius-md;
+  padding: 1.5rem 2rem;
+  
+  
+  font-size: 1.8rem;
+  border: 1px solid $color-history-background;
+  line-height: 3rem;
+  animation: tutorialFromRight .7s cubic-bezier(.76,1.39,.6,1.53);
+
+  &--line03 {
+    top: 25rem;
+  }
+}
+
+
+
+
+
+
+
+// NEXT TEXT BUTTONS
+
+.tutorial-btn {
+  font-family: $font-primary;
+  font-size: 1.8rem;
+  box-shadow: 1rem 1rem .7rem rgba($color-black, .2);
+  border: 1px solid $color-history-background;
+  border-radius: $border-radius-md;
+  height: 4rem;
+  width: 10rem;
+  background-color: $color-tutorial-background;
+  animation: tutorialFromRight .7s cubic-bezier(.76,1.39,.6,1.53);
+  //margin-top: 2rem;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+    //background-image: linear-gradient(to bottom, rgba($color-btn-light, .9), rgba($color-btn-dark, .9));
+  }
+}
+
+
+// HIT AND STAND BUTTONS
+
+
+
+
+// OPTION BUTTONS
+.tut-option-buttons {
+  position: absolute;
+  top: 60rem;
+  @include centerElement;
+  
+}
+
+.tut-option-btn {
+  position: absolute;
+  background-image: linear-gradient(to bottom, rgba($color-btn-light, .9), rgba($color-btn-medium, .9));
+  color: black;
+  font-family: $font-primary;
+  font-size: 1.6rem;
+  box-shadow: 1rem 1rem .7rem rgba($color-black, .2);
+  height: 8rem;
+  width: 8rem;
+  border-radius: 50%;
+  border: none;
+
+  &--split {
+    transform: translateX(-145%);
+
+    &:active {
+      transform: translateY($btn-depress) translateX(-145%);
+      box-shadow: 0 .5rem 1rem rgba($color-black, .2);
+    }
+  }
+
+  &--double {
+    transform: translateX(45%);
+
+    &:active {
+      transform: translateY($btn-depress) translateX(45%);
+      box-shadow: 0 .5rem 1rem rgba($color-black, .2);
+    }
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-image: linear-gradient(to bottom, rgba($color-btn-light, .9), rgba($color-btn-dark, .9));
+  }
+}

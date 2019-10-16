@@ -1,0 +1,51 @@
+.scoreboard {
+  position: absolute;
+  top: 1rem;
+  right: 12rem;
+  height: 18rem;
+  width: 18rem;
+  color: $color-primary;
+
+  &__heading {
+    font-size: 2.5rem;
+    text-align: center;
+  }
+
+  &__card {
+    position: absolute;
+    background-color: $color-history-background;
+    border: solid 1px $color-primary;
+    border-radius: $border-radius-md;
+    height: 5rem;
+    width: 7rem;
+    text-align: center;
+    margin-top: 1rem;
+
+    &--user {
+      left: 1rem;
+    }
+
+    &--dealer {
+      right: 1rem;
+    }
+
+    &--split1 {
+      left: 1rem;
+
+    }
+
+    &--split2 {
+      left: 1rem;
+      top: 9rem;
+    }
+  }
+
+  &__card-heading {
+    font-size: 1.6rem;
+  }
+
+  &__score {
+    font-size: 2rem;
+  }
+  
+}

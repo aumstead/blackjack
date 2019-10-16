@@ -111,5 +111,9 @@ const betController = (function () {
     setBet: (amount) => {
       bet = amount;
     },
+
+    reloadChips: () => {
+      bankroll += 100;
+    }
   }
 })();

@@ -38,6 +38,16 @@
   }
 }
 
+@keyframes tutorialFromRight {
+  0% {
+    transform: translateX(-25rem);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
 // @keyframes fadeDealBtn {
 //   1% {
 //     opacity: .5;

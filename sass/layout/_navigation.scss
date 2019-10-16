@@ -69,26 +69,24 @@
     z-index: 9;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 1s;
     padding: .8rem 1rem 1rem 1rem;
   }
 
   &__list {
     list-style: none;
-
   }
 
   &__link {
     &:link,
     &:visited {
-      font-size: 1.4rem;
+      font-size: 1.8rem;
       color: $color-primary;
       text-decoration: none;
     }
 
     &:hover,
     &:active {
-      color: red;
+      color: $color-text-red;
     }
   }
 
@@ -123,11 +121,11 @@
       }
   
       &--score-red {
-        color: rgb(255, 36, 36);
+        color: $color-text-red;
       }
   
       &--chip-count-red {
-        color: rgb(255, 36, 36);
+        color: $color-text-red;
       }
   
       &--score {

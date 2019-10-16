@@ -1,7 +1,8 @@
 // APP CONTROLLER
-const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
+const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl, tutCtrl) {
   // get UI selectors
   const UISelectors = UICtrl.getUISelectors();
+  const tutSelectors = tutCtrl.getTutSelectors();
 
   const loadEventListeners = () => {
     // bet button event listeners
@@ -36,8 +37,17 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     // log and menu checkbox event listeners
     document.getElementById(UISelectors.logCheckbox).addEventListener('click', logTab);
     document.getElementById(UISelectors.menuCheckbox).addEventListener('click', menuTab);
+
+    // reload chips event listener
+    document.getElementById(UISelectors.reloadChips).addEventListener('click', reloadChips);
+
+    // tutorial start event listener
+    document.getElementById(UISelectors.tutorialLink).addEventListener('click', tutorialControlCenter);
+
+    document.getElementById(tutSelectors.tutBtn01).addEventListener('click', tutCtrl.showStep02);
   };
 
+  // NAVIGATION AND MENU FUNCTIONS
   const logTab = () => {
     const menuCheckbox = document.getElementById(UISelectors.menuCheckbox);
     menuCheckbox.checked ? menuCheckbox.checked = false: menuCheckbox.checked = false;
@@ -46,6 +56,12 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
   const menuTab = () => {
     const menuCheckbox = document.getElementById(UISelectors.menuCheckbox);
     menuCheckbox.checked ? menuCheckbox.checked = true: menuCheckbox.checked = true;
+  }
+
+  const reloadChips = () => {
+    betCtrl.reloadChips();
+    const bankroll = betCtrl.getBankroll();
+    UICtrl.displayBankroll(bankroll);
   }
 
   // UTILITY FUNCTIONS
@@ -169,8 +185,12 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
     UICtrl.showElement(UISelectors.splitPot1);
     UICtrl.showElement(UISelectors.splitPot2);
 
-    // 6. hide user score display
-    UICtrl.hideElement(UISelectors.userScore);
+    // 6. hide user score card
+    UICtrl.hideElement(UISelectors.userScoreCard);
+
+    // show split cards in scoreboard
+    UICtrl.showElement(UISelectors.splitCard1);
+    UICtrl.showElement(UISelectors.splitCard2);
 
     // disable stand button. User must hit at least once.
     UICtrl.disableBtn(UISelectors.standBtn);
@@ -204,7 +224,7 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
       // display score for split hand 1. Try new load feature.
       const score = scoreCtrl.getScore();
-      UICtrl.loadElement(score.split1, UISelectors.splitScore1, `Hand 1 score: `);
+      UICtrl.loadSplitScore(score.split1, UISelectors.splitScore1);
       UICtrl.showElement(UISelectors.splitScore1);
 
       setTimeout(() => {
@@ -218,7 +238,7 @@ const app = (function (UICtrl, cardCtrl, betCtrl, scoreCtrl) {
 
           // display score for split hand 2. Try new load feature.
           const score = scoreCtrl.getScore();
-          UICtrl.loadElement(score.split2, UISelectors.splitScore2, `Hand 2 score: `);
+          UICtrl.loadSplitScore(score.split2, UISelectors.splitScore2);
           UICtrl.showElement(UISelectors.splitScore2);
 
           // users turn is over. Run dealer code.
@@ -250,7 +270,7 @@ const splitHandControlCenter = () => {
 
         // 4. get score for split1, load it into element, and display element.
         scoreSplit1 = scoreCtrl.getScoreSplit1();
-        UICtrl.loadElement(scoreSplit1, UISelectors.splitScore1, `Hand 1 score: `);
+        UICtrl.loadSplitScore(scoreSplit1, UISelectors.splitScore1);
         UICtrl.showElement(UISelectors.splitScore1, 'block');
 
         // 5. increment user turn before calling splitCheckHand1 because the function changes user turn to 7 if bust or score = 21.
@@ -276,7 +296,7 @@ const splitHandControlCenter = () => {
 
         // 4. get score, load, and display
         scoreSplit1 = scoreCtrl.getScoreSplit1();
-        UICtrl.loadElement(scoreSplit1, UISelectors.splitScore1, `Hand 1 score: `);
+        UICtrl.loadSplitScore(scoreSplit1, UISelectors.splitScore1);
         UICtrl.showElement(UISelectors.splitScore1, 'block');
 
         cardData.user.turn++;
@@ -295,7 +315,7 @@ const splitHandControlCenter = () => {
 
         // 4. get score, load, and display
         scoreSplit1 = scoreCtrl.getScoreSplit1();
-        UICtrl.loadElement(scoreSplit1, UISelectors.splitScore1, `Hand 1 score: `);
+        UICtrl.loadSplitScore(scoreSplit1, UISelectors.splitScore1);
         UICtrl.showElement(UISelectors.splitScore1, 'block');
 
         cardData.user.turn++;
@@ -314,13 +334,16 @@ const splitHandControlCenter = () => {
 
         // 4. get score, load, and display
         scoreSplit1 = scoreCtrl.getScoreSplit1();
-        UICtrl.loadElement(scoreSplit1, UISelectors.splitScore1, `Hand 1 score: `);
+        UICtrl.loadSplitScore(scoreSplit1, UISelectors.splitScore1);
         UICtrl.showElement(UISelectors.splitScore1, 'block');
 
         cardData.user.turn++;
         splitCheckHand1();
         // disable the stand button for case 7. Player must hit at least once.
         UICtrl.disableBtn(UISelectors.standBtn);
+        // remove guidance border and add to split2
+        UICtrl.removeGuidanceBorder(UISelectors.splitBet1);
+        UICtrl.renderGuidanceBorder(UISelectors.splitBet2);
       }, 200);
 
       break;
@@ -335,7 +358,7 @@ const splitHandControlCenter = () => {
 
         // 4. get score, load, and display
         scoreSplit2 = scoreCtrl.getScoreSplit2();
-        UICtrl.loadElement(scoreSplit2, UISelectors.splitScore2, `Hand 2 score: `);
+        UICtrl.loadSplitScore(scoreSplit2, UISelectors.splitScore2);
         UICtrl.showElement(UISelectors.splitScore2, 'block');
 
         cardData.user.turn++;
@@ -356,7 +379,7 @@ const splitHandControlCenter = () => {
 
         // 4. get score, load, and display
         scoreSplit2 = scoreCtrl.getScoreSplit2();
-        UICtrl.loadElement(scoreSplit2, UISelectors.splitScore2, `Hand 2 score: `);
+        UICtrl.loadSplitScore(scoreSplit2, UISelectors.splitScore2);
         UICtrl.showElement(UISelectors.splitScore2, 'block');
 
         cardData.user.turn++;
@@ -375,7 +398,7 @@ const splitHandControlCenter = () => {
 
         // 4. get score, load, and display
         scoreSplit2 = scoreCtrl.getScoreSplit2();
-        UICtrl.loadElement(scoreSplit2, UISelectors.splitScore2, `Hand 2 score: `);
+        UICtrl.loadSplitScore(scoreSplit2, UISelectors.splitScore2);
         UICtrl.showElement(UISelectors.splitScore2, 'block');
 
         cardData.user.turn++;
@@ -394,13 +417,15 @@ const splitHandControlCenter = () => {
 
         // 4. get score, load, and display
         scoreSplit2 = scoreCtrl.getScoreSplit2();
-        UICtrl.loadElement(scoreSplit2, UISelectors.splitScore2, `Hand 2 score: `);
+        UICtrl.loadSplitScore(scoreSplit2, UISelectors.splitScore2);
         UICtrl.showElement(UISelectors.splitScore2, 'block');
 
         cardData.user.turn++;
         splitCheckHand2();
         // hit all the way through without busting or getting 21. Run dealer code.
-        dealerFinishes();
+        if (scoreSplit2 <= 21) {
+          dealerFinishes();
+        }
       }, 200);
 
       break;
@@ -462,6 +487,7 @@ const splitCheckHand2 = () => {
   } else if (scoreSplit2 === 21) {
     UICtrl.logText('Hand two has 21.');
     UICtrl.removeGuidanceBorder(UISelectors.splitBet2);
+    UICtrl.disableBtn(UISelectors.hitBtn);
     dealerFinishes();
   }
 };
@@ -487,7 +513,7 @@ const splitCheckWinner = () => {
   bankroll = betCtrl.getBankroll();
 
   if (score.dealer === score.split2 && score.dealer < 22) {
-    UICtrl.logHand(`Hand two is a push: ${score.split1}-${score.dealer}. Bet is returned.`, `Chip count: ${bankroll}.`);
+    UICtrl.logHand(`Hand two is a push: ${score.split2}-${score.dealer}. Bet is returned.`, `Chip count: ${bankroll}.`);
   } else if (score.dealer > score.split2 && score.split2 < 21) {
     UICtrl.logHand(`House wins hand two: ${score.dealer}-${score.split2}.`, `Chip count: ${bankroll} - ${bet} = ${bankroll - bet}.`, 'red');
     betCtrl.userLosesSplitHand('2');
@@ -506,6 +532,7 @@ const splitDealerBusts = () => {
   let bankroll = betCtrl.getBankroll();
   const bet = betCtrl.getBet();
 
+  console.log('in splitdealerbusts')
   // check if split hand 1 busted
   if (score.split1 <= 21) {
     UICtrl.logHand(`Dealer busts.`, `Chip count: ${bankroll} + ${bet} = ${bankroll + bet}.`, 'green');
@@ -999,8 +1026,8 @@ const dealUserCard1 = () => {
 
   return new Promise((resolve) => {
     setTimeout(() => {
-      const userCard1 = cardCtrl.dealUser();
-      //const userCard1 = cardCtrl.testDealUser1();
+      // const userCard1 = cardCtrl.dealUser();
+      const userCard1 = cardCtrl.testDealUser1();
       UICtrl.displayCard(userCard1, UISelectors.userCard1);
       resolve();
     }, 200);
@@ -1013,8 +1040,8 @@ const dealDealerCard1 = () => {
 
   return new Promise((resolve) => {
     setTimeout(() => {
-      cardCtrl.dealDealer();
-      //cardCtrl.testDealDealer1();
+      // cardCtrl.dealDealer();
+      cardCtrl.testDealDealer1();
       // dealer card 1 is face down. No need to display card.
       resolve();
     }, 200);
@@ -1027,8 +1054,8 @@ const dealUserCard2 = () => {
 
   return new Promise((resolve) => {
     setTimeout(() => {
-      const userCard2 = cardCtrl.dealUser();
-      //const userCard2 = cardCtrl.testDealUser2();
+      // const userCard2 = cardCtrl.dealUser();
+      const userCard2 = cardCtrl.testDealUser2();
       UICtrl.displayCard(userCard2, UISelectors.userCard2);
       resolve();
     }, 200);
@@ -1041,8 +1068,8 @@ const dealDealerCard2 = () => {
 
   return new Promise((resolve) => {
     setTimeout(() => {
-      const dealerCard2 = cardCtrl.dealDealer();
-      //const dealerCard2 = cardCtrl.testDealDealer2();
+      // const dealerCard2 = cardCtrl.dealDealer();
+      const dealerCard2 = cardCtrl.testDealDealer2();
       UICtrl.displayCard(dealerCard2, UISelectors.dealerCard2);
       resolve();
     }, 200);
@@ -1099,24 +1126,28 @@ const dealControlCenter = () => {
 
   // 7. handle blackjacks and insurance logic
   if (score.user === 21 && score.dealer === 21) {
-    console.log('blackjack');
+    // disable buttons
+    UICtrl.disableBtn(UISelectors.hitBtn);
+    UICtrl.disableBtn(UISelectors.standBtn);
     setTimeout(() => {
       // show dealer's first card in UI.
       UICtrl.displayCard(cardData.dealer.hand[0], UISelectors.dealerCard1);
-      console.log('dealer and user both have naturals. bet is returned to player');
+      UICtrl.logHand(`Push. Player and dealer both have blackjack. Bet is returned`, `Chip count: ${bankroll}.`)
       betCtrl.push();
       UICtrl.prepareNextHand();
-    }, 2000);
+    }, 600);
   } else if (score.user === 21) {
-    console.log('blackjack');
+    // disable buttons
+    UICtrl.disableBtn(UISelectors.hitBtn);
+    UICtrl.disableBtn(UISelectors.standBtn);
     setTimeout(() => {
       // show dealer's first card in UI.
       UICtrl.displayCard(cardData.dealer.hand[0], UISelectors.dealerCard1);
-      console.log('user has a natural. user wins 1.5x bet');
+      UICtrl.logHand(`Player has blackjack. Pays 3:2.`, `Chip count: ${bankroll} + ${bet * 1.5} = ${bankroll + bet * 1.5}.`, 'green')
       betCtrl.blackjack();
       displayBankroll();
       UICtrl.prepareNextHand();
-    }, 2000);
+    }, 600);
   } else if (cardData.dealer.hand[1].value === 'ace' && bankroll - bet > 0) {
     // dealer is showing an ace. User does not have blackjack.
     UICtrl.showElement(UISelectors.insuranceWarning);
@@ -1132,11 +1163,10 @@ const dealControlCenter = () => {
   if (cardData.user.hand[0].points === cardData.user.hand[1].points && bankroll - bet * 2 >= 0) {
     UICtrl.showElement(UISelectors.splitBtn);
   }
-
+  
   // 9. user can double if they have enough money.
-  if ((score.user === 9 || score.user === 10 || score.user) === 11 && bankroll - (bet * 2) >= 0) {
+  if (score.user === 9 || score.user === 10 || score.user === 11 && bankroll - (bet * 2) >= 0) {
     UICtrl.showElement(UISelectors.doubleBtn);
-    console.log(bankroll - (bet * 2))
   }
 };
 
@@ -1164,9 +1194,15 @@ const nextHandControlCenter = () => {
   console.log('');
 };
 
+const tutorialControlCenter = () => {
+  tutCtrl.showStep01();
+};
+
 return {
   init: function () {
     console.log('Application started');
+    // set all to visible
+    document.querySelector(UISelectors.container).style.display = 'block';
 
     // sets the UI for a new hand. Hides all the elements.
     UICtrl.nextHand();
@@ -1175,6 +1211,6 @@ return {
     displayBankroll();
   }
 }
-}) (UIController, cardController, betController, scoreController);
+}) (UIController, cardController, betController, scoreController, tutorialController);
 
 app.init();

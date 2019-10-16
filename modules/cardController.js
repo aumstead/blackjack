@@ -154,7 +154,7 @@ const cardController = (function () {
 
     // METHODS USED FOR TESTING
     testDealUser1: () => {
-      let card = clubs_5;
+      let card = clubs_6;
       cardData.user.hand.push(card);
       return card;
     },
@@ -164,12 +164,12 @@ const cardController = (function () {
       return card;
     },
     testDealUser2: () => {
-      let card = diamonds_5;
+      let card = diamonds_3;
       cardData.user.hand.push(card);
       return card;
     },
     testDealDealer2: () => {
-      let card = hearts_1;
+      let card = hearts_6;
       cardData.dealer.hand.push(card);
       return card;
     },
@@ -178,8 +178,19 @@ const cardController = (function () {
       let card = hearts_1;
       obj.push(card);
       return card;
-    }
+    },
 
+    dealSplitTest: (obj, hand) => {
+      // splice a card from deck and push it to split hand array
+      //let cardArr = deck.splice(Math.floor(Math.random() * deck.length), 1)
+      let cardArr = [clubs_2];
+      if (hand === '1') {
+        obj.splitHand1.push(cardArr[0]);
+      } else if (hand === '2') {
+        obj.splitHand2.push(cardArr[0]);
+      }
+      return cardArr[0];
+    }
     
   }
 })();

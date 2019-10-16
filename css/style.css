@@ -22,6 +22,12 @@
   100% {
     transform: translateX(0) translateY(0); } }
 
+@keyframes tutorialFromRight {
+  0% {
+    transform: translateX(-25rem); }
+  100% {
+    transform: translateX(0); } }
+
 *,
 *::after,
 *::before {
@@ -39,7 +45,8 @@ body {
 
 .container {
   position: relative;
-  height: 100vh; }
+  height: 100vh;
+  display: none; }
 
 body {
   font-family: "Rubik"; }
@@ -48,7 +55,7 @@ body {
   background-image: linear-gradient(to bottom, rgba(249, 249, 249, 0.9), rgba(168, 168, 168, 0.9));
   color: black;
   font-family: "Rubik";
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   box-shadow: 1rem 1rem 0.7rem rgba(0, 0, 0, 0.2);
   border: none; }
   .btn:focus {
@@ -99,16 +106,6 @@ body {
     border-radius: 0.5rem; }
     .btn--nextHand:active {
       transform: translate(-50%, 0.2rem);
-      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
-  .btn--double {
-    top: 45rem;
-    left: 65%;
-    height: 8rem;
-    width: 8rem;
-    border-radius: 100%;
-    display: inline-block; }
-    .btn--double:active {
-      transform: translateY(0.2rem);
       box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
   .btn--resetBet {
     display: block;
@@ -275,14 +272,6 @@ body {
   height: 12rem;
   animation: dealCard .2s paused; }
 
-.score--dealer {
-  position: absolute;
-  left: 70%;
-  transform: translateX(-50%);
-  top: 15.5rem;
-  font-size: 2rem;
-  color: #f0f8ff; }
-
 .placeBet {
   position: absolute;
   left: 50%;
@@ -328,14 +317,6 @@ body {
   .pot__chip__ghost--20 {
     position: absolute;
     left: .2rem; }
-
-.score--user {
-  position: absolute;
-  left: 70%;
-  transform: translateX(-50%);
-  top: 32rem;
-  font-size: 2rem;
-  color: #f0f8ff; }
 
 .placeholderContainer--user {
   position: absolute;
@@ -448,19 +429,18 @@ body {
   z-index: 9;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 1s;
   padding: .8rem 1rem 1rem 1rem; }
 
 .navigation__list {
   list-style: none; }
 
 .navigation__link:link, .navigation__link:visited {
-  font-size: 1.4rem;
+  font-size: 1.8rem;
   color: #f0f8ff;
   text-decoration: none; }
 
 .navigation__link:hover, .navigation__link:active {
-  color: red; }
+  color: #ff2424; }
 
 .navigation__history {
   background-color: #222222;
@@ -504,6 +484,39 @@ body {
   background-image: linear-gradient(to bottom, rgba(249, 249, 249, 0.9), rgba(168, 168, 168, 0.9));
   color: black; }
 
+.scoreboard {
+  position: absolute;
+  top: 1rem;
+  right: 12rem;
+  height: 18rem;
+  width: 18rem;
+  color: #f0f8ff; }
+  .scoreboard__heading {
+    font-size: 2.5rem;
+    text-align: center; }
+  .scoreboard__card {
+    position: absolute;
+    background-color: #222222;
+    border: solid 1px #f0f8ff;
+    border-radius: 0.5rem;
+    height: 5rem;
+    width: 7rem;
+    text-align: center;
+    margin-top: 1rem; }
+    .scoreboard__card--user {
+      left: 1rem; }
+    .scoreboard__card--dealer {
+      right: 1rem; }
+    .scoreboard__card--split1 {
+      left: 1rem; }
+    .scoreboard__card--split2 {
+      left: 1rem;
+      top: 9rem; }
+  .scoreboard__card-heading {
+    font-size: 1.6rem; }
+  .scoreboard__score {
+    font-size: 2rem; }
+
 .userSplit1 {
   position: absolute;
   top: 34rem;
@@ -515,19 +528,6 @@ body {
   top: 34rem;
   right: 25%;
   transform: translateX(50%); }
-
-.split-score {
-  position: absolute;
-  font-size: 2rem;
-  color: #f0f8ff; }
-  .split-score--1 {
-    left: 25%;
-    top: 20rem;
-    transform: translateX(-50%); }
-  .split-score--2 {
-    right: 25%;
-    top: 20rem;
-    transform: translateX(50%); }
 
 .split-bet {
   position: absolute;
@@ -551,3 +551,72 @@ body {
   position: absolute;
   right: 25%;
   top: 30rem; }
+
+.tut-text-container {
+  position: absolute;
+  top: 15rem;
+  left: 10%;
+  max-width: 30rem; }
+  .tut-text-container > :not(:first-child) {
+    margin-top: 2rem; }
+
+.tutorial__bubble {
+  background-color: #c5752b;
+  color: #222222;
+  border-radius: 0.5rem;
+  padding: 1.5rem 2rem;
+  font-size: 1.8rem;
+  border: 1px solid #222222;
+  line-height: 3rem;
+  animation: tutorialFromRight 0.7s cubic-bezier(0.76, 1.39, 0.6, 1.53); }
+  .tutorial__bubble--line03 {
+    top: 25rem; }
+
+.tutorial-btn {
+  font-family: "Rubik";
+  font-size: 1.8rem;
+  box-shadow: 1rem 1rem 0.7rem rgba(0, 0, 0, 0.2);
+  border: 1px solid #222222;
+  border-radius: 0.5rem;
+  height: 4rem;
+  width: 10rem;
+  background-color: #c5752b;
+  animation: tutorialFromRight 0.7s cubic-bezier(0.76, 1.39, 0.6, 1.53); }
+  .tutorial-btn:focus {
+    outline: none; }
+  .tutorial-btn:hover {
+    cursor: pointer; }
+
+.tut-option-buttons {
+  position: absolute;
+  top: 60rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); }
+
+.tut-option-btn {
+  position: absolute;
+  background-image: linear-gradient(to bottom, rgba(249, 249, 249, 0.9), rgba(168, 168, 168, 0.9));
+  color: black;
+  font-family: "Rubik";
+  font-size: 1.6rem;
+  box-shadow: 1rem 1rem 0.7rem rgba(0, 0, 0, 0.2);
+  height: 8rem;
+  width: 8rem;
+  border-radius: 50%;
+  border: none; }
+  .tut-option-btn--split {
+    transform: translateX(-145%); }
+    .tut-option-btn--split:active {
+      transform: translateY(0.2rem) translateX(-145%);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
+  .tut-option-btn--double {
+    transform: translateX(45%); }
+    .tut-option-btn--double:active {
+      transform: translateY(0.2rem) translateX(45%);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
+  .tut-option-btn:focus {
+    outline: none; }
+  .tut-option-btn:hover {
+    cursor: pointer;
+    background-image: linear-gradient(to bottom, rgba(249, 249, 249, 0.9), rgba(126, 126, 126, 0.9)); }

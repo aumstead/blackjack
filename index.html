@@ -7,12 +7,13 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css?family=Arimo|Rubik|Work+Sans&display=swap" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
   <title>Blackjack</title>
 </head>
 
 <body>
   <div class="container">
-
+    
     <!-- NAVIGATION -->
     <div class="navigation">
       <!-- MENU CHECKBOX -->
@@ -30,9 +31,8 @@
       <!-- MENU/NAV -->
       <nav class="navigation__nav">
         <ul class="navigation__list">
-          <li class="navigation__item"><a href="#" class="navigation__link">Learn the rules most people know</a></li>
-          <li class="navigation__item"><a href="#" class="navigation__link">Learn the rules most people DON'T know</a></li>
-          <li class="navigation__item"><a href="#" class="navigation__link">Reload chips</a></li>
+          <li class="navigation__item"><a href="#" class="navigation__link" id="reload-chips">Get another $100 in chips</a></li>
+          <li class="navigation__item"><a href="#" class="navigation__link" id="tutorial-link">Take a tutorial on the lesser known rules!</a></li>
         </ul>
       </nav>
 
@@ -55,11 +55,31 @@
       <img src="/images/playing-card-back-1.png" id="dealer-card-5" class="card">
     </div>
 
-    <p id="dealer-score" class="score--dealer"></p>
-
     <svg width="100" height="180" class="placeholderContainer--user">
       <rect x="10" y="10" rx="10" ry="10" width="78" height="100" class="placeholderRect" />
     </svg>
+
+    <!-- SCOREBOARD -->
+    <div class="scoreboard">
+      <p class="scoreboard__heading">Score</p>
+      <div class="scoreboard__card scoreboard__card--user" id="user-score-card">
+          <p class="scoreboard__card-heading">Player</p>
+          <p id="user-score" class="scoreboard__score"></p>
+      </div>
+      <div class="scoreboard__card scoreboard__card--dealer">
+          <p class="scoreboard__card-heading">Dealer</p>
+          <p id="dealer-score" class="scoreboard__score"></p>
+      </div>
+      <!-- SPLIT SCORES -->
+      <div class="scoreboard__card scoreboard__card--split1" id="split-card-1">
+          <p class="scoreboard__card-heading">Split 1</p>
+          <p id="split-score-1" class="scoreboard__score"></p>
+      </div>
+      <div class="scoreboard__card scoreboard__card--split2" id="split-card-2">
+          <p class="scoreboard__card-heading">Split 2</p>
+          <p id="split-score-2" class="scoreboard__score"></p>
+      </div>
+    </div>
 
     <p id="place-bet" class="placeBet">Place your bet!</p>
 
@@ -80,8 +100,6 @@
       <img src="/images/chip-red-small.png" alt="$20 chip in pot for UI" class="pot__chip pot__chip__ghost--20"
         id="pot-chip-ghost-20">
     </div>
-
-    <p id="user-score" class="score--user"></p>
 
     <div class="userCards">
       <img src="/images/playing-card-back-1.png" id="user-card-1" class="card">
@@ -129,9 +147,7 @@
       <button id="double" class="option-btn option-btn--double">Double</button>
     </div>
 
-    <!-- SPLIT DISPLAYS FOR BET AND SCORE -->
-    <p id="split-score-1" class="split-score split-score--1"></p>
-    <p id="split-score-2" class="split-score split-score--2"></p>
+    <!-- SPLIT DISPLAYS FOR BET -->
     <p id="split-bet-1" class="split-bet split-bet--1"></p>
     <p id="split-bet-2" class="split-bet split-bet--2"></p>
 
@@ -168,12 +184,39 @@
   <!-- POPUP ANCHOR -->
   <a href="#popup" class="btn activate-popup" id="activate-popup">Bring up popup</a>
 
+  <!-- TUTORIAL -->
+  <div class="tut-text-container">
+    <p id="tut-line-01" class="tutorial__bubble">Welcome to the tutorial!<br>Click the arrow to continue.</p>
+    <button id="tut-btn-01" class="tutorial-btn"><i class="fa fa-arrow-right"></i></button>
+  
+    <p id="tut-line-02" class="tutorial__bubble">When your score is 9, 10, or 11, you have the option to double.</p>
+    <p id="tut-line-03" class="tutorial__bubble tutorial__bubble--line03">If you choose to double, your bet is doubled, and you only get 1 more card.</p>
+    <button id="tut-btn-02" class="tutorial-btn"><i class="fa fa-arrow-right"></i></button>
+  </div>
+  
+
+
+
+  <!-- TUTORIAL BOARD -->
+  <div class="tut-userCards">
+    <img src="/images/playing-card-back-1.png" id="tut-user-card-1" class="card">
+    <img src="/images/playing-card-back-1.png" id="tut-user-card-2" class="card">
+    <img src="/images/playing-card-back-1.png" id="tut-user-card-3" class="card">
+  </div>
+
+  <div class="tut-option-buttons">
+    <button id="tut-split" class="tut-option-btn tut-option-btn--split">Split</button>
+    <button id="tut-double" class="tut-option-btn tut-option-btn--double">Double</button>
+  </div>
+
+
 
 
   <script src="/modules/UIController.js"></script>
   <script src="/modules/scoreController.js"></script>
   <script src="/modules/betController.js"></script>
   <script src="/modules/cardController.js"></script>
+  <script src="/modules/tutorialController.js"></script>
 
   <script src="app.js"></script>
 </body>

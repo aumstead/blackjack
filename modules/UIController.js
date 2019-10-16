@@ -44,12 +44,17 @@ const UIController = (function () {
     logCheckbox: 'history-toggle',
     menuCheckbox: 'menu-toggle',
 
+    // menu links
+    reloadChips: 'reload-chips',
+    tutorialLink: 'tutorial-link',
+
     // bet buttons
     betBtn1: 'bet-1',
     betBtn5: 'bet-5',
     betBtn20: 'bet-20',
 
     // displays
+    container: '.container',
     bet: 'bet',
     splitBet1: 'split-bet-1',
     splitBet2: 'split-bet-2',
@@ -59,8 +64,11 @@ const UIController = (function () {
     insuranceMoneyWarning: 'insurance-money-warning',
     dealerScore: 'dealer-score',
     userScore: 'user-score',
+    userScoreCard: 'user-score-card',
     splitScore1: 'split-score-1',
     splitScore2: 'split-score-2',
+    splitCard1: 'split-card-1',
+    splitCard2: 'split-card-2',
     potChip1: 'pot-chip-1',
     potChip5: 'pot-chip-5',
     potChip20: 'pot-chip-20',
@@ -117,6 +125,8 @@ const UIController = (function () {
     document.getElementById(UISelectors.potChipGhost5).style.display = 'none';
     document.getElementById(UISelectors.potChipGhost20).style.display = 'none';
     document.getElementById(UISelectors.bet).style.display = 'none';
+    document.getElementById(UISelectors.splitCard1).style.display = 'none';
+    document.getElementById(UISelectors.splitCard2).style.display = 'none';
 
     // show elements
     document.getElementById(UISelectors.placeBet).style.display = 'inline-block';
@@ -124,6 +134,7 @@ const UIController = (function () {
     document.getElementById(UISelectors.betBtn5).style.display = 'inline-block';
     document.getElementById(UISelectors.betBtn20).style.display = 'inline-block';
     document.getElementById(UISelectors.pot).style.display = 'inline-block';
+    document.getElementById(UISelectors.userScoreCard).style.display = 'inline-block';
 
     // load card back for all cards
     document.getElementById(UISelectors.userCard1).src = '../images/playing-card-back-1.png';
@@ -234,8 +245,8 @@ const UIController = (function () {
       document.getElementById(UISelectors.splitScore1).style.display = 'block';
     },
 
-    loadElement: (value, selector, text) => {
-      document.getElementById(selector).textContent = `${text} ${value}`;
+    loadSplitScore: (value, selector) => {
+      document.getElementById(selector).textContent = `${value}`;
     },
 
     prepareNextHand: () => {
